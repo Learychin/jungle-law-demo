@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>丛林法则 Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Law of the Nature</p>
+          <h1>丛林法则 Demo</h1>
+        </div>
+        <div class="top-actions">
+          <button id="modeBtn" class="secondary">模式：对战 AI</button>
+          <button id="newGameBtn" class="secondary">新开一局</button>
+          <button id="endTurnBtn" class="primary">结束回合</button>
+        </div>
+      </header>
+
+      <section id="winnerBanner" class="winner hidden"></section>
+
+      <section class="game-table">
+        <article class="side-column player-side">
+          <section id="player1Panel" class="player-panel active">
+            <div>
+              <span class="player-label">你 / 玩家一</span>
+              <strong id="p1Status">生命 20 · 食物 3</strong>
+            </div>
+            <div class="small-stats">
+              <span id="p1Deck">私有 0</span>
+              <span id="p1Hand">手牌 0</span>
+              <span id="p1Grave">阵亡 0</span>
+            </div>
+          </section>
+
+          <section class="player-zone self">
+            <div class="zone-head">
+              <h2>你的场地</h2>
+              <span>选手牌后点空格上场</span>
+            </div>
+            <div id="p1Board" class="board compact-board"></div>
+          </section>
+
+          <section class="panel hand-panel">
+            <div class="panel-title">
+              <h2 id="handTitle">你的手牌</h2>
+              <span>上限 6</span>
+            </div>
+            <div id="hand" class="hand"></div>
+          </section>
+        </article>
+
+        <aside class="center-column">
+          <article class="panel action-panel">
+            <div class="panel-title">
+              <h2>下一步</h2>
+              <span id="turnLabel">玩家一回合</span>
+            </div>
+            <div class="hint-box" id="selectionHint">选择一张手牌或场上生物开始操作。</div>
+            <div class="button-grid">
+              <button data-action="drawPrivate">抽自己牌 -1</button>
+              <button data-action="drawA">抽强牌A -3</button>
+              <button data-action="drawB">抽中牌B -2</button>
+              <button data-action="drawC">抽小牌C -2</button>
+              <button data-action="summon">上场说明</button>
+              <button data-action="recover">恢复休息 -1</button>
+              <button data-action="sacrifice">当食物 +1</button>
+              <button data-action="attackPlayer">攻击 AI</button>
+              <button data-action="attackCreature">攻击生物</button>
+            </div>
+          </article>
+
+          <article class="panel public-panel">
+            <div class="panel-title">
+              <h2>公共牌池</h2>
+              <span id="publicCounts">A 0 · B 0 · C 0</span>
+            </div>
+            <div class="public-piles">
+              <div class="pile level-a">A</div>
+              <div class="pile level-b">B</div>
+              <div class="pile level-c">C</div>
+            </div>
+          </article>
+
+          <article class="panel log-panel">
+            <div class="panel-title">
+              <h2>日志</h2>
+              <button id="clearLogBtn" class="ghost">清空</button>
+            </div>
+            <ol id="log" class="log"></ol>
+          </article>
+        </aside>
+
+        <article class="side-column ai-side">
+          <section id="player2Panel" class="player-panel">
+            <div>
+              <span class="player-label" id="player2Label">AI 对手</span>
+              <strong id="p2Status">生命 20 · 食物 4</strong>
+            </div>
+            <div class="small-stats">
+              <span id="p2Deck">私有 0</span>
+              <span id="p2Hand">手牌 0</span>
+              <span id="p2Grave">阵亡 0</span>
+            </div>
+          </section>
+
+          <section class="player-zone opponent">
+            <div class="zone-head">
+              <h2>AI 场地</h2>
+              <span>选己方生物后点 AI 生物攻击</span>
+            </div>
+            <div id="p2Board" class="board compact-board"></div>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <template id="slotTemplate">
+      <button class="slot" type="button">
+        <span class="slot-label"></span>
+        <span class="slot-card"></span>
+      </button>
+    </template>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
