@@ -1,0 +1,1113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="640" viewBox="0 0 768 640" shape-rendering="crispEdges">
+<rect x="0" y="0" width="768" height="640" fill="#d8dfc9"/>
+
+  <g id="card-0" data-name="鹰">
+    <rect x="0" y="0" width="64" height="64" fill="#eef0dc"/>
+    <rect x="3" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="12" y="56" width="40" height="4" fill="#26302722"/>
+    <rect x="28" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="16" y="28" width="12" height="12" fill="#3f5f98"/><rect x="44" y="28" width="16" height="12" fill="#3f5f98"/><rect x="32" y="44" width="8" height="8" fill="#263f73"/><rect x="40" y="20" width="8" height="8" fill="#d7ecff"/><rect x="44" y="24" width="4" height="4" fill="#111"/><rect x="48" y="20" width="8" height="4" fill="#fff6c8"/><rect x="24" y="48" width="4" height="8" fill="#fff6c8"/><rect x="40" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="20" y="12" width="8" height="4" fill="#d7ecff"/>
+    <rect x="8" y="8" width="8" height="8" fill="#f0c14b"/>
+    <rect x="52" y="8" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-1" data-name="鹫">
+    <rect x="64" y="0" width="64" height="64" fill="#eef0dc"/>
+    <rect x="67" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="76" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="92" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="80" y="28" width="12" height="12" fill="#3f5f98"/><rect x="108" y="28" width="16" height="12" fill="#3f5f98"/><rect x="96" y="44" width="8" height="8" fill="#263f73"/><rect x="104" y="20" width="8" height="8" fill="#d7ecff"/><rect x="108" y="24" width="4" height="4" fill="#111"/><rect x="112" y="20" width="8" height="4" fill="#fff6c8"/><rect x="88" y="48" width="4" height="8" fill="#fff6c8"/><rect x="104" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="80" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="116" y="8" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-2" data-name="雕">
+    <rect x="128" y="0" width="64" height="64" fill="#eef0dc"/>
+    <rect x="131" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="140" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="156" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="144" y="28" width="12" height="12" fill="#3f5f98"/><rect x="172" y="28" width="16" height="12" fill="#3f5f98"/><rect x="160" y="44" width="8" height="8" fill="#263f73"/><rect x="168" y="20" width="8" height="8" fill="#d7ecff"/><rect x="172" y="24" width="4" height="4" fill="#111"/><rect x="176" y="20" width="8" height="4" fill="#fff6c8"/><rect x="152" y="48" width="4" height="8" fill="#fff6c8"/><rect x="168" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="136" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="180" y="8" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-3" data-name="猫头鹰">
+    <rect x="192" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="204" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="220" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="208" y="28" width="12" height="12" fill="#3f5f98"/><rect x="236" y="28" width="16" height="12" fill="#3f5f98"/><rect x="224" y="44" width="8" height="8" fill="#263f73"/><rect x="232" y="20" width="8" height="8" fill="#d7ecff"/><rect x="236" y="24" width="4" height="4" fill="#111"/><rect x="240" y="20" width="8" height="4" fill="#fff6c8"/><rect x="216" y="48" width="4" height="8" fill="#fff6c8"/><rect x="232" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="208" y="12" width="8" height="4" fill="#d7ecff"/>
+    <rect x="200" y="8" width="8" height="8" fill="#f0c14b"/>
+    <rect x="244" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-4" data-name="海鸥">
+    <rect x="256" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="259" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="268" y="56" width="40" height="4" fill="#26302722"/>
+    <rect x="284" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="272" y="28" width="12" height="12" fill="#3f5f98"/><rect x="300" y="28" width="16" height="12" fill="#3f5f98"/><rect x="288" y="44" width="8" height="8" fill="#263f73"/><rect x="296" y="20" width="8" height="8" fill="#d7ecff"/><rect x="300" y="24" width="4" height="4" fill="#111"/><rect x="304" y="20" width="8" height="4" fill="#fff6c8"/><rect x="280" y="48" width="4" height="8" fill="#fff6c8"/><rect x="296" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="268" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="308" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-5" data-name="蜂鸟">
+    <rect x="320" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="323" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="332" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="348" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="336" y="28" width="12" height="12" fill="#3f5f98"/><rect x="364" y="28" width="16" height="12" fill="#3f5f98"/><rect x="352" y="44" width="8" height="8" fill="#263f73"/><rect x="360" y="20" width="8" height="8" fill="#d7ecff"/><rect x="364" y="24" width="4" height="4" fill="#111"/><rect x="368" y="20" width="8" height="4" fill="#fff6c8"/><rect x="344" y="48" width="4" height="8" fill="#fff6c8"/><rect x="360" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="336" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="372" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-6" data-name="蝙蝠">
+    <rect x="384" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="396" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="412" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="400" y="28" width="12" height="12" fill="#3f5f98"/><rect x="428" y="28" width="16" height="12" fill="#3f5f98"/><rect x="416" y="44" width="8" height="8" fill="#263f73"/><rect x="424" y="20" width="8" height="8" fill="#d7ecff"/><rect x="428" y="24" width="4" height="4" fill="#111"/><rect x="432" y="20" width="8" height="4" fill="#fff6c8"/><rect x="408" y="48" width="4" height="8" fill="#fff6c8"/><rect x="424" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="392" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="436" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-7" data-name="大雁">
+    <rect x="448" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="3" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="460" y="56" width="40" height="4" fill="#26302722"/>
+    <rect x="476" y="24" width="16" height="20" fill="#6fa8dc"/><rect x="464" y="28" width="12" height="12" fill="#3f5f98"/><rect x="492" y="28" width="16" height="12" fill="#3f5f98"/><rect x="480" y="44" width="8" height="8" fill="#263f73"/><rect x="488" y="20" width="8" height="8" fill="#d7ecff"/><rect x="492" y="24" width="4" height="4" fill="#111"/><rect x="496" y="20" width="8" height="4" fill="#fff6c8"/><rect x="472" y="48" width="4" height="8" fill="#fff6c8"/><rect x="488" y="48" width="4" height="8" fill="#fff6c8"/>
+    <rect x="460" y="12" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="500" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-8" data-name="普通人类">
+    <rect x="512" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="515" y="3" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="524" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="532" y="32" width="28" height="20" fill="#a76c3b"/><rect x="548" y="20" width="16" height="16" fill="#a76c3b"/><rect x="524" y="40" width="12" height="12" fill="#a76c3b"/><rect x="536" y="52" width="8" height="8" fill="#2f241b"/><rect x="556" y="52" width="8" height="8" fill="#2f241b"/><rect x="560" y="24" width="4" height="4" fill="#111"/><rect x="528" y="28" width="8" height="8" fill="#6f4a2e"/><rect x="564" y="28" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="528" y="12" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="564" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-9" data-name="刺猬">
+    <rect x="576" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="3" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="588" y="56" width="40" height="4" fill="#26302722"/>
+    <rect x="596" y="32" width="28" height="20" fill="#a76c3b"/><rect x="612" y="20" width="16" height="16" fill="#a76c3b"/><rect x="588" y="40" width="12" height="12" fill="#a76c3b"/><rect x="600" y="52" width="8" height="8" fill="#2f241b"/><rect x="620" y="52" width="8" height="8" fill="#2f241b"/><rect x="624" y="24" width="4" height="4" fill="#111"/><rect x="592" y="28" width="8" height="8" fill="#6f4a2e"/><rect x="628" y="28" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="596" y="12" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="628" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-10" data-name="松鼠">
+    <rect x="640" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="643" y="3" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="56" width="40" height="4" fill="#26302722"/>
+    <rect x="660" y="32" width="28" height="20" fill="#a76c3b"/><rect x="676" y="20" width="16" height="16" fill="#a76c3b"/><rect x="652" y="40" width="12" height="12" fill="#a76c3b"/><rect x="664" y="52" width="8" height="8" fill="#2f241b"/><rect x="684" y="52" width="8" height="8" fill="#2f241b"/><rect x="688" y="24" width="4" height="4" fill="#111"/><rect x="656" y="28" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="28" width="4" height="8" fill="#6f4a2e"/><rect x="680" y="12" width="4" height="8" fill="#f5dfaa"/><rect x="688" y="12" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="660" y="12" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-11" data-name="袋鼠">
+    <rect x="704" y="0" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="3" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="716" y="56" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="724" y="32" width="28" height="20" fill="#a76c3b"/><rect x="740" y="20" width="16" height="16" fill="#a76c3b"/><rect x="716" y="40" width="12" height="12" fill="#a76c3b"/><rect x="728" y="52" width="8" height="8" fill="#2f241b"/><rect x="748" y="52" width="8" height="8" fill="#2f241b"/><rect x="752" y="24" width="4" height="4" fill="#111"/><rect x="720" y="28" width="8" height="8" fill="#6f4a2e"/><rect x="756" y="28" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="720" y="12" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="756" y="8" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-12" data-name="猴子">
+    <rect x="0" y="64" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="12" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="20" y="96" width="28" height="20" fill="#a76c3b"/><rect x="36" y="84" width="16" height="16" fill="#a76c3b"/><rect x="12" y="104" width="12" height="12" fill="#a76c3b"/><rect x="24" y="116" width="8" height="8" fill="#2f241b"/><rect x="44" y="116" width="8" height="8" fill="#2f241b"/><rect x="48" y="88" width="4" height="4" fill="#111"/><rect x="16" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="52" y="92" width="4" height="8" fill="#6f4a2e"/><rect x="40" y="76" width="4" height="8" fill="#f5dfaa"/><rect x="48" y="76" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="12" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="8" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="52" y="72" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-13" data-name="兔子">
+    <rect x="64" y="64" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="76" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="84" y="96" width="28" height="20" fill="#a76c3b"/><rect x="100" y="84" width="16" height="16" fill="#a76c3b"/><rect x="76" y="104" width="12" height="12" fill="#a76c3b"/><rect x="88" y="116" width="8" height="8" fill="#2f241b"/><rect x="108" y="116" width="8" height="8" fill="#2f241b"/><rect x="112" y="88" width="4" height="4" fill="#111"/><rect x="80" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="116" y="92" width="4" height="8" fill="#6f4a2e"/><rect x="104" y="76" width="4" height="8" fill="#f5dfaa"/><rect x="112" y="76" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="76" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="116" y="72" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-14" data-name="孔雀">
+    <rect x="128" y="64" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="131" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="140" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="148" y="96" width="28" height="20" fill="#a76c3b"/><rect x="164" y="84" width="16" height="16" fill="#a76c3b"/><rect x="140" y="104" width="12" height="12" fill="#a76c3b"/><rect x="152" y="116" width="8" height="8" fill="#2f241b"/><rect x="172" y="116" width="8" height="8" fill="#2f241b"/><rect x="176" y="88" width="4" height="4" fill="#111"/><rect x="144" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="180" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="140" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="136" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="180" y="72" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-15" data-name="狐狸">
+    <rect x="192" y="64" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="204" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="212" y="96" width="28" height="20" fill="#a76c3b"/><rect x="228" y="84" width="16" height="16" fill="#a76c3b"/><rect x="204" y="104" width="12" height="12" fill="#a76c3b"/><rect x="216" y="116" width="8" height="8" fill="#2f241b"/><rect x="236" y="116" width="8" height="8" fill="#2f241b"/><rect x="240" y="88" width="4" height="4" fill="#111"/><rect x="208" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="244" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="204" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="200" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="244" y="72" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-16" data-name="蛇">
+    <rect x="256" y="64" width="64" height="64" fill="#eef0dc"/>
+    <rect x="259" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="120" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="276" y="96" width="28" height="20" fill="#a76c3b"/><rect x="292" y="84" width="16" height="16" fill="#a76c3b"/><rect x="268" y="104" width="12" height="12" fill="#a76c3b"/><rect x="280" y="116" width="8" height="8" fill="#2f241b"/><rect x="300" y="116" width="8" height="8" fill="#2f241b"/><rect x="304" y="88" width="4" height="4" fill="#111"/><rect x="272" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="92" width="4" height="8" fill="#6f4a2e"/><rect x="296" y="76" width="4" height="8" fill="#f5dfaa"/><rect x="304" y="76" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="272" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="264" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="308" y="72" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-17" data-name="长颈鹿">
+    <rect x="320" y="64" width="64" height="64" fill="#eef0dc"/>
+    <rect x="323" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="340" y="96" width="28" height="20" fill="#a76c3b"/><rect x="356" y="84" width="16" height="16" fill="#a76c3b"/><rect x="332" y="104" width="12" height="12" fill="#a76c3b"/><rect x="344" y="116" width="8" height="8" fill="#2f241b"/><rect x="364" y="116" width="8" height="8" fill="#2f241b"/><rect x="368" y="88" width="4" height="4" fill="#111"/><rect x="336" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="340" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="372" y="72" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-18" data-name="熊">
+    <rect x="384" y="64" width="64" height="64" fill="#fff0d0"/>
+    <rect x="387" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="96" width="28" height="20" fill="#a76c3b"/><rect x="420" y="84" width="16" height="16" fill="#a76c3b"/><rect x="396" y="104" width="12" height="12" fill="#a76c3b"/><rect x="408" y="116" width="8" height="8" fill="#2f241b"/><rect x="428" y="116" width="8" height="8" fill="#2f241b"/><rect x="432" y="88" width="4" height="4" fill="#111"/><rect x="400" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="92" width="4" height="8" fill="#6f4a2e"/><rect x="424" y="76" width="4" height="8" fill="#f5dfaa"/><rect x="432" y="76" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="396" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="436" y="72" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-19" data-name="犀牛">
+    <rect x="448" y="64" width="64" height="64" fill="#fff0d0"/>
+    <rect x="451" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="460" y="120" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="468" y="96" width="28" height="20" fill="#a76c3b"/><rect x="484" y="84" width="16" height="16" fill="#a76c3b"/><rect x="460" y="104" width="12" height="12" fill="#a76c3b"/><rect x="472" y="116" width="8" height="8" fill="#2f241b"/><rect x="492" y="116" width="8" height="8" fill="#2f241b"/><rect x="496" y="88" width="4" height="4" fill="#111"/><rect x="464" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="500" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="456" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="456" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="500" y="72" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-20" data-name="狼">
+    <rect x="512" y="64" width="64" height="64" fill="#eef0dc"/>
+    <rect x="515" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="524" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="532" y="96" width="28" height="20" fill="#a76c3b"/><rect x="548" y="84" width="16" height="16" fill="#a76c3b"/><rect x="524" y="104" width="12" height="12" fill="#a76c3b"/><rect x="536" y="116" width="8" height="8" fill="#2f241b"/><rect x="556" y="116" width="8" height="8" fill="#2f241b"/><rect x="560" y="88" width="4" height="4" fill="#111"/><rect x="528" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="564" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="532" y="76" width="8" height="4" fill="#e0b36b"/>
+    <rect x="520" y="72" width="8" height="8" fill="#f0c14b"/>
+    <rect x="564" y="72" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-21" data-name="熊猫">
+    <rect x="576" y="64" width="64" height="64" fill="#eef0dc"/>
+    <rect x="579" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="588" y="120" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="596" y="96" width="28" height="20" fill="#a76c3b"/><rect x="612" y="84" width="16" height="16" fill="#a76c3b"/><rect x="588" y="104" width="12" height="12" fill="#a76c3b"/><rect x="600" y="116" width="8" height="8" fill="#2f241b"/><rect x="620" y="116" width="8" height="8" fill="#2f241b"/><rect x="624" y="88" width="4" height="4" fill="#111"/><rect x="592" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="628" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="592" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="628" y="72" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-22" data-name="虎">
+    <rect x="640" y="64" width="64" height="64" fill="#fff0d0"/>
+    <rect x="643" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="660" y="96" width="28" height="20" fill="#a76c3b"/><rect x="676" y="84" width="16" height="16" fill="#a76c3b"/><rect x="652" y="104" width="12" height="12" fill="#a76c3b"/><rect x="664" y="116" width="8" height="8" fill="#2f241b"/><rect x="684" y="116" width="8" height="8" fill="#2f241b"/><rect x="688" y="88" width="4" height="4" fill="#111"/><rect x="656" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="652" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="72" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-23" data-name="狮子">
+    <rect x="704" y="64" width="64" height="64" fill="#fff0d0"/>
+    <rect x="707" y="67" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="716" y="120" width="40" height="4" fill="#26302722"/>
+    <rect x="724" y="96" width="28" height="20" fill="#a76c3b"/><rect x="740" y="84" width="16" height="16" fill="#a76c3b"/><rect x="716" y="104" width="12" height="12" fill="#a76c3b"/><rect x="728" y="116" width="8" height="8" fill="#2f241b"/><rect x="748" y="116" width="8" height="8" fill="#2f241b"/><rect x="752" y="88" width="4" height="4" fill="#111"/><rect x="720" y="92" width="8" height="8" fill="#6f4a2e"/><rect x="756" y="92" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="724" y="76" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="756" y="72" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-24" data-name="疣猪">
+    <rect x="0" y="128" width="64" height="64" fill="#eef0dc"/>
+    <rect x="3" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="12" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="20" y="160" width="28" height="20" fill="#a76c3b"/><rect x="36" y="148" width="16" height="16" fill="#a76c3b"/><rect x="12" y="168" width="12" height="12" fill="#a76c3b"/><rect x="24" y="180" width="8" height="8" fill="#2f241b"/><rect x="44" y="180" width="8" height="8" fill="#2f241b"/><rect x="48" y="152" width="4" height="4" fill="#111"/><rect x="16" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="52" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="8" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="52" y="136" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-25" data-name="野牛">
+    <rect x="64" y="128" width="64" height="64" fill="#eef0dc"/>
+    <rect x="67" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="76" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="84" y="160" width="28" height="20" fill="#a76c3b"/><rect x="100" y="148" width="16" height="16" fill="#a76c3b"/><rect x="76" y="168" width="12" height="12" fill="#a76c3b"/><rect x="88" y="180" width="8" height="8" fill="#2f241b"/><rect x="108" y="180" width="8" height="8" fill="#2f241b"/><rect x="112" y="152" width="4" height="4" fill="#111"/><rect x="80" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="116" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="80" y="140" width="8" height="4" fill="#e0b36b"/>
+    <rect x="72" y="136" width="8" height="8" fill="#f0c14b"/>
+    <rect x="116" y="136" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-26" data-name="大象">
+    <rect x="128" y="128" width="64" height="64" fill="#fff0d0"/>
+    <rect x="131" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="140" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="148" y="160" width="28" height="20" fill="#a76c3b"/><rect x="164" y="148" width="16" height="16" fill="#a76c3b"/><rect x="140" y="168" width="12" height="12" fill="#a76c3b"/><rect x="152" y="180" width="8" height="8" fill="#2f241b"/><rect x="172" y="180" width="8" height="8" fill="#2f241b"/><rect x="176" y="152" width="4" height="4" fill="#111"/><rect x="144" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="180" y="156" width="4" height="8" fill="#6f4a2e"/><rect x="168" y="140" width="4" height="8" fill="#f5dfaa"/><rect x="176" y="140" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="140" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="180" y="136" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-27" data-name="穿山甲">
+    <rect x="192" y="128" width="64" height="64" fill="#fff0d0"/>
+    <rect x="195" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="204" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="212" y="160" width="28" height="20" fill="#a76c3b"/><rect x="228" y="148" width="16" height="16" fill="#a76c3b"/><rect x="204" y="168" width="12" height="12" fill="#a76c3b"/><rect x="216" y="180" width="8" height="8" fill="#2f241b"/><rect x="236" y="180" width="8" height="8" fill="#2f241b"/><rect x="240" y="152" width="4" height="4" fill="#111"/><rect x="208" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="244" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="204" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="244" y="136" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-28" data-name="鬣狗">
+    <rect x="256" y="128" width="64" height="64" fill="#eef0dc"/>
+    <rect x="259" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="276" y="160" width="28" height="20" fill="#a76c3b"/><rect x="292" y="148" width="16" height="16" fill="#a76c3b"/><rect x="268" y="168" width="12" height="12" fill="#a76c3b"/><rect x="280" y="180" width="8" height="8" fill="#2f241b"/><rect x="300" y="180" width="8" height="8" fill="#2f241b"/><rect x="304" y="152" width="4" height="4" fill="#111"/><rect x="272" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="156" width="4" height="8" fill="#6f4a2e"/><rect x="296" y="140" width="4" height="8" fill="#f5dfaa"/><rect x="304" y="140" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="276" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="308" y="136" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-29" data-name="豹">
+    <rect x="320" y="128" width="64" height="64" fill="#fff0d0"/>
+    <rect x="323" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="340" y="160" width="28" height="20" fill="#a76c3b"/><rect x="356" y="148" width="16" height="16" fill="#a76c3b"/><rect x="332" y="168" width="12" height="12" fill="#a76c3b"/><rect x="344" y="180" width="8" height="8" fill="#2f241b"/><rect x="364" y="180" width="8" height="8" fill="#2f241b"/><rect x="368" y="152" width="4" height="4" fill="#111"/><rect x="336" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="328" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="372" y="136" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-30" data-name="马">
+    <rect x="384" y="128" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="160" width="28" height="20" fill="#a76c3b"/><rect x="420" y="148" width="16" height="16" fill="#a76c3b"/><rect x="396" y="168" width="12" height="12" fill="#a76c3b"/><rect x="408" y="180" width="8" height="8" fill="#2f241b"/><rect x="428" y="180" width="8" height="8" fill="#2f241b"/><rect x="432" y="152" width="4" height="4" fill="#111"/><rect x="400" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="404" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="436" y="136" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-31" data-name="羊">
+    <rect x="448" y="128" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="460" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="468" y="160" width="28" height="20" fill="#a76c3b"/><rect x="484" y="148" width="16" height="16" fill="#a76c3b"/><rect x="460" y="168" width="12" height="12" fill="#a76c3b"/><rect x="472" y="180" width="8" height="8" fill="#2f241b"/><rect x="492" y="180" width="8" height="8" fill="#2f241b"/><rect x="496" y="152" width="4" height="4" fill="#111"/><rect x="464" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="500" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="460" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="500" y="136" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-32" data-name="牛">
+    <rect x="512" y="128" width="64" height="64" fill="#eef0dc"/>
+    <rect x="515" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="524" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="532" y="160" width="28" height="20" fill="#a76c3b"/><rect x="548" y="148" width="16" height="16" fill="#a76c3b"/><rect x="524" y="168" width="12" height="12" fill="#a76c3b"/><rect x="536" y="180" width="8" height="8" fill="#2f241b"/><rect x="556" y="180" width="8" height="8" fill="#2f241b"/><rect x="560" y="152" width="4" height="4" fill="#111"/><rect x="528" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="564" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="528" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="564" y="136" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-33" data-name="狗">
+    <rect x="576" y="128" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="588" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="596" y="160" width="28" height="20" fill="#a76c3b"/><rect x="612" y="148" width="16" height="16" fill="#a76c3b"/><rect x="588" y="168" width="12" height="12" fill="#a76c3b"/><rect x="600" y="180" width="8" height="8" fill="#2f241b"/><rect x="620" y="180" width="8" height="8" fill="#2f241b"/><rect x="624" y="152" width="4" height="4" fill="#111"/><rect x="592" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="628" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="592" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="628" y="136" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-34" data-name="猫">
+    <rect x="640" y="128" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="643" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="184" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="660" y="160" width="28" height="20" fill="#a76c3b"/><rect x="676" y="148" width="16" height="16" fill="#a76c3b"/><rect x="652" y="168" width="12" height="12" fill="#a76c3b"/><rect x="664" y="180" width="8" height="8" fill="#2f241b"/><rect x="684" y="180" width="8" height="8" fill="#2f241b"/><rect x="688" y="152" width="4" height="4" fill="#111"/><rect x="656" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="156" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="656" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="136" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-35" data-name="猪">
+    <rect x="704" y="128" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="131" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="716" y="184" width="40" height="4" fill="#26302722"/>
+    <rect x="724" y="160" width="28" height="20" fill="#a76c3b"/><rect x="740" y="148" width="16" height="16" fill="#a76c3b"/><rect x="716" y="168" width="12" height="12" fill="#a76c3b"/><rect x="728" y="180" width="8" height="8" fill="#2f241b"/><rect x="748" y="180" width="8" height="8" fill="#2f241b"/><rect x="752" y="152" width="4" height="4" fill="#111"/><rect x="720" y="156" width="8" height="8" fill="#6f4a2e"/><rect x="756" y="156" width="4" height="8" fill="#6f4a2e"/><rect x="744" y="140" width="4" height="8" fill="#f5dfaa"/><rect x="752" y="140" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="716" y="140" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="756" y="136" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-36" data-name="鸡">
+    <rect x="0" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="12" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="20" y="224" width="28" height="20" fill="#a76c3b"/><rect x="36" y="212" width="16" height="16" fill="#a76c3b"/><rect x="12" y="232" width="12" height="12" fill="#a76c3b"/><rect x="24" y="244" width="8" height="8" fill="#2f241b"/><rect x="44" y="244" width="8" height="8" fill="#2f241b"/><rect x="48" y="216" width="4" height="4" fill="#111"/><rect x="16" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="52" y="220" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="8" y="204" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="52" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-37" data-name="鸭">
+    <rect x="64" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="76" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="84" y="224" width="28" height="20" fill="#a76c3b"/><rect x="100" y="212" width="16" height="16" fill="#a76c3b"/><rect x="76" y="232" width="12" height="12" fill="#a76c3b"/><rect x="88" y="244" width="8" height="8" fill="#2f241b"/><rect x="108" y="244" width="8" height="8" fill="#2f241b"/><rect x="112" y="216" width="4" height="4" fill="#111"/><rect x="80" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="116" y="220" width="4" height="8" fill="#6f4a2e"/><rect x="104" y="204" width="4" height="8" fill="#f5dfaa"/><rect x="112" y="204" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="72" y="204" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="116" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-38" data-name="鹅">
+    <rect x="128" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="131" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="140" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="148" y="224" width="28" height="20" fill="#a76c3b"/><rect x="164" y="212" width="16" height="16" fill="#a76c3b"/><rect x="140" y="232" width="12" height="12" fill="#a76c3b"/><rect x="152" y="244" width="8" height="8" fill="#2f241b"/><rect x="172" y="244" width="8" height="8" fill="#2f241b"/><rect x="176" y="216" width="4" height="4" fill="#111"/><rect x="144" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="180" y="220" width="4" height="8" fill="#6f4a2e"/><rect x="168" y="204" width="4" height="8" fill="#f5dfaa"/><rect x="176" y="204" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="136" y="204" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="180" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-39" data-name="老鼠">
+    <rect x="192" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="204" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="212" y="224" width="28" height="20" fill="#a76c3b"/><rect x="228" y="212" width="16" height="16" fill="#a76c3b"/><rect x="204" y="232" width="12" height="12" fill="#a76c3b"/><rect x="216" y="244" width="8" height="8" fill="#2f241b"/><rect x="236" y="244" width="8" height="8" fill="#2f241b"/><rect x="240" y="216" width="4" height="4" fill="#111"/><rect x="208" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="244" y="220" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="200" y="204" width="8" height="4" fill="#e0b36b"/>
+    <rect x="200" y="200" width="8" height="8" fill="#f0c14b"/>
+    <rect x="244" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-40" data-name="袋鼠">
+    <rect x="256" y="192" width="64" height="64" fill="#eef0dc"/>
+    <rect x="259" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="276" y="224" width="28" height="20" fill="#a76c3b"/><rect x="292" y="212" width="16" height="16" fill="#a76c3b"/><rect x="268" y="232" width="12" height="12" fill="#a76c3b"/><rect x="280" y="244" width="8" height="8" fill="#2f241b"/><rect x="300" y="244" width="8" height="8" fill="#2f241b"/><rect x="304" y="216" width="4" height="4" fill="#111"/><rect x="272" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="220" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="272" y="204" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="308" y="200" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-41" data-name="猩猩">
+    <rect x="320" y="192" width="64" height="64" fill="#eef0dc"/>
+    <rect x="323" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="248" width="40" height="4" fill="#26302722"/>
+    <rect x="340" y="224" width="28" height="20" fill="#a76c3b"/><rect x="356" y="212" width="16" height="16" fill="#a76c3b"/><rect x="332" y="232" width="12" height="12" fill="#a76c3b"/><rect x="344" y="244" width="8" height="8" fill="#2f241b"/><rect x="364" y="244" width="8" height="8" fill="#2f241b"/><rect x="368" y="216" width="4" height="4" fill="#111"/><rect x="336" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="220" width="4" height="8" fill="#6f4a2e"/><rect x="360" y="204" width="4" height="8" fill="#f5dfaa"/><rect x="368" y="204" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="340" y="204" width="8" height="4" fill="#e0b36b"/>
+    <rect x="328" y="200" width="8" height="8" fill="#f0c14b"/>
+    <rect x="372" y="200" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-42" data-name="骆驼">
+    <rect x="384" y="192" width="64" height="64" fill="#eef0dc"/>
+    <rect x="387" y="195" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="248" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="224" width="28" height="20" fill="#a76c3b"/><rect x="420" y="212" width="16" height="16" fill="#a76c3b"/><rect x="396" y="232" width="12" height="12" fill="#a76c3b"/><rect x="408" y="244" width="8" height="8" fill="#2f241b"/><rect x="428" y="244" width="8" height="8" fill="#2f241b"/><rect x="432" y="216" width="4" height="4" fill="#111"/><rect x="400" y="220" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="220" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="404" y="204" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="436" y="200" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-43" data-name="水母">
+    <rect x="448" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="195" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="460" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="464" y="224" width="32" height="16" fill="#28a6a2"/><rect x="492" y="220" width="12" height="12" fill="#28a6a2"/><rect x="456" y="228" width="12" height="8" fill="#1d6d83"/><rect x="480" y="216" width="8" height="8" fill="#a8ecdf"/><rect x="500" y="224" width="4" height="4" fill="#111"/><rect x="472" y="240" width="16" height="4" fill="#0d4055"/><rect x="468" y="216" width="4" height="4" fill="#a8ecdf"/><rect x="460" y="244" width="8" height="4" fill="#a8ecdf"/><rect x="488" y="244" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="464" y="204" width="8" height="4" fill="#a8ecdf"/>
+    <rect x="456" y="200" width="8" height="8" fill="#f0c14b"/>
+    <rect x="500" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-44" data-name="鲸鱼">
+    <rect x="512" y="192" width="64" height="64" fill="#fff0d0"/>
+    <rect x="515" y="195" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="524" y="248" width="40" height="4" fill="#26302722"/>
+    <rect x="528" y="224" width="32" height="16" fill="#28a6a2"/><rect x="556" y="220" width="12" height="12" fill="#28a6a2"/><rect x="520" y="228" width="12" height="8" fill="#1d6d83"/><rect x="544" y="216" width="8" height="8" fill="#a8ecdf"/><rect x="564" y="224" width="4" height="4" fill="#111"/><rect x="536" y="240" width="16" height="4" fill="#0d4055"/><rect x="536" y="212" width="8" height="8" fill="#1d6d83"/><rect x="524" y="244" width="8" height="4" fill="#a8ecdf"/><rect x="552" y="244" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="524" y="204" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="564" y="200" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-45" data-name="海豚">
+    <rect x="576" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="195" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="588" y="248" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="592" y="224" width="32" height="16" fill="#28a6a2"/><rect x="620" y="220" width="12" height="12" fill="#28a6a2"/><rect x="584" y="228" width="12" height="8" fill="#1d6d83"/><rect x="608" y="216" width="8" height="8" fill="#a8ecdf"/><rect x="628" y="224" width="4" height="4" fill="#111"/><rect x="600" y="240" width="16" height="4" fill="#0d4055"/><rect x="596" y="216" width="4" height="4" fill="#a8ecdf"/><rect x="588" y="244" width="8" height="4" fill="#a8ecdf"/><rect x="616" y="244" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="584" y="204" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="628" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-46" data-name="鲨鱼">
+    <rect x="640" y="192" width="64" height="64" fill="#eef0dc"/>
+    <rect x="643" y="195" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="652" y="248" width="40" height="4" fill="#26302722"/>
+    <rect x="656" y="224" width="32" height="16" fill="#28a6a2"/><rect x="684" y="220" width="12" height="12" fill="#28a6a2"/><rect x="648" y="228" width="12" height="8" fill="#1d6d83"/><rect x="672" y="216" width="8" height="8" fill="#a8ecdf"/><rect x="692" y="224" width="4" height="4" fill="#111"/><rect x="664" y="240" width="16" height="4" fill="#0d4055"/><rect x="664" y="212" width="8" height="8" fill="#1d6d83"/><rect x="652" y="244" width="8" height="4" fill="#a8ecdf"/><rect x="680" y="244" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="652" y="204" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="692" y="200" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-47" data-name="海星">
+    <rect x="704" y="192" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="195" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="716" y="248" width="40" height="4" fill="#26302722"/>
+    <rect x="720" y="224" width="32" height="16" fill="#28a6a2"/><rect x="748" y="220" width="12" height="12" fill="#28a6a2"/><rect x="712" y="228" width="12" height="8" fill="#1d6d83"/><rect x="736" y="216" width="8" height="8" fill="#a8ecdf"/><rect x="756" y="224" width="4" height="4" fill="#111"/><rect x="728" y="240" width="16" height="4" fill="#0d4055"/><rect x="724" y="216" width="4" height="4" fill="#a8ecdf"/><rect x="716" y="244" width="8" height="4" fill="#a8ecdf"/><rect x="744" y="244" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="724" y="204" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="756" y="200" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-48" data-name="龙虾">
+    <rect x="0" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="259" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="12" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="16" y="288" width="32" height="16" fill="#28a6a2"/><rect x="44" y="284" width="12" height="12" fill="#28a6a2"/><rect x="8" y="292" width="12" height="8" fill="#1d6d83"/><rect x="32" y="280" width="8" height="8" fill="#a8ecdf"/><rect x="52" y="288" width="4" height="4" fill="#111"/><rect x="24" y="304" width="16" height="4" fill="#0d4055"/><rect x="20" y="280" width="4" height="4" fill="#a8ecdf"/><rect x="12" y="308" width="8" height="4" fill="#a8ecdf"/><rect x="40" y="308" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="16" y="268" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="52" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-49" data-name="鳗鱼">
+    <rect x="64" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="259" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="76" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="80" y="288" width="32" height="16" fill="#28a6a2"/><rect x="108" y="284" width="12" height="12" fill="#28a6a2"/><rect x="72" y="292" width="12" height="8" fill="#1d6d83"/><rect x="96" y="280" width="8" height="8" fill="#a8ecdf"/><rect x="116" y="288" width="4" height="4" fill="#111"/><rect x="88" y="304" width="16" height="4" fill="#0d4055"/><rect x="84" y="280" width="4" height="4" fill="#a8ecdf"/><rect x="76" y="308" width="8" height="4" fill="#a8ecdf"/><rect x="104" y="308" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="80" y="268" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="116" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-50" data-name="章鱼">
+    <rect x="128" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="131" y="259" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="140" y="312" width="40" height="4" fill="#26302722"/>
+    <rect x="144" y="288" width="32" height="16" fill="#28a6a2"/><rect x="172" y="284" width="12" height="12" fill="#28a6a2"/><rect x="136" y="292" width="12" height="8" fill="#1d6d83"/><rect x="160" y="280" width="8" height="8" fill="#a8ecdf"/><rect x="180" y="288" width="4" height="4" fill="#111"/><rect x="152" y="304" width="16" height="4" fill="#0d4055"/><rect x="148" y="280" width="4" height="4" fill="#a8ecdf"/><rect x="140" y="308" width="8" height="4" fill="#a8ecdf"/><rect x="168" y="308" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="140" y="268" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="180" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-51" data-name="牡蛎">
+    <rect x="192" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="259" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="204" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="208" y="288" width="32" height="16" fill="#28a6a2"/><rect x="236" y="284" width="12" height="12" fill="#28a6a2"/><rect x="200" y="292" width="12" height="8" fill="#1d6d83"/><rect x="224" y="280" width="8" height="8" fill="#a8ecdf"/><rect x="244" y="288" width="4" height="4" fill="#111"/><rect x="216" y="304" width="16" height="4" fill="#0d4055"/><rect x="212" y="280" width="4" height="4" fill="#a8ecdf"/><rect x="204" y="308" width="8" height="4" fill="#a8ecdf"/><rect x="232" y="308" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="208" y="268" width="8" height="4" fill="#a8ecdf"/>
+    <rect x="200" y="264" width="8" height="8" fill="#f0c14b"/>
+    <rect x="244" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-52" data-name="鳄鱼">
+    <rect x="256" y="256" width="64" height="64" fill="#fff0d0"/>
+    <rect x="259" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="268" y="312" width="40" height="4" fill="#26302722"/>
+    <rect x="276" y="288" width="28" height="20" fill="#79a848"/><rect x="284" y="280" width="16" height="12" fill="#426b38"/><rect x="300" y="288" width="12" height="12" fill="#79a848"/><rect x="308" y="292" width="4" height="4" fill="#111"/><rect x="272" y="304" width="8" height="8" fill="#254329"/><rect x="300" y="304" width="8" height="8" fill="#254329"/><rect x="268" y="292" width="8" height="8" fill="#426b38"/>
+    <rect x="268" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="308" y="264" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-53" data-name="河马">
+    <rect x="320" y="256" width="64" height="64" fill="#eef0dc"/>
+    <rect x="323" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="332" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="340" y="288" width="28" height="20" fill="#79a848"/><rect x="344" y="284" width="20" height="12" fill="#c8de7a"/><rect x="364" y="288" width="12" height="12" fill="#79a848"/><rect x="372" y="292" width="4" height="4" fill="#111"/><rect x="336" y="304" width="8" height="8" fill="#254329"/><rect x="364" y="304" width="8" height="8" fill="#254329"/><rect x="332" y="292" width="8" height="8" fill="#426b38"/><rect x="348" y="292" width="4" height="4" fill="#254329"/><rect x="356" y="292" width="4" height="4" fill="#254329"/>
+    <rect x="336" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="372" y="264" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-54" data-name="企鹅">
+    <rect x="384" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="396" y="312" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="288" width="28" height="20" fill="#79a848"/><rect x="412" y="280" width="16" height="12" fill="#426b38"/><rect x="428" y="288" width="12" height="12" fill="#79a848"/><rect x="436" y="292" width="4" height="4" fill="#111"/><rect x="400" y="304" width="8" height="8" fill="#254329"/><rect x="428" y="304" width="8" height="8" fill="#254329"/><rect x="396" y="292" width="8" height="8" fill="#426b38"/>
+    <rect x="404" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="436" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-55" data-name="乌龟">
+    <rect x="448" y="256" width="64" height="64" fill="#eef0dc"/>
+    <rect x="451" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="460" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="468" y="288" width="28" height="20" fill="#79a848"/><rect x="472" y="284" width="20" height="12" fill="#c8de7a"/><rect x="492" y="288" width="12" height="12" fill="#79a848"/><rect x="500" y="292" width="4" height="4" fill="#111"/><rect x="464" y="304" width="8" height="8" fill="#254329"/><rect x="492" y="304" width="8" height="8" fill="#254329"/><rect x="460" y="292" width="8" height="8" fill="#426b38"/><rect x="476" y="292" width="4" height="4" fill="#254329"/><rect x="484" y="292" width="4" height="4" fill="#254329"/>
+    <rect x="456" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="500" y="264" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-56" data-name="螃蟹">
+    <rect x="512" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="515" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="524" y="312" width="40" height="4" fill="#26302722"/>
+    <rect x="532" y="288" width="28" height="20" fill="#79a848"/><rect x="540" y="280" width="16" height="12" fill="#426b38"/><rect x="556" y="288" width="12" height="12" fill="#79a848"/><rect x="564" y="292" width="4" height="4" fill="#111"/><rect x="528" y="304" width="8" height="8" fill="#254329"/><rect x="556" y="304" width="8" height="8" fill="#254329"/><rect x="524" y="292" width="8" height="8" fill="#426b38"/>
+    <rect x="524" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="564" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-57" data-name="蛙">
+    <rect x="576" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="259" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="588" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="596" y="288" width="28" height="20" fill="#79a848"/><rect x="600" y="284" width="20" height="12" fill="#c8de7a"/><rect x="620" y="288" width="12" height="12" fill="#79a848"/><rect x="628" y="292" width="4" height="4" fill="#111"/><rect x="592" y="304" width="8" height="8" fill="#254329"/><rect x="620" y="304" width="8" height="8" fill="#254329"/><rect x="588" y="292" width="8" height="8" fill="#426b38"/><rect x="604" y="292" width="4" height="4" fill="#254329"/><rect x="612" y="292" width="4" height="4" fill="#254329"/>
+    <rect x="584" y="268" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="628" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-58" data-name="飞翔钱力">
+    <rect x="640" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="643" y="259" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="652" y="312" width="40" height="4" fill="#26302722"/>
+    <rect x="668" y="280" width="16" height="20" fill="#6fa8dc"/><rect x="656" y="284" width="12" height="12" fill="#3f5f98"/><rect x="684" y="284" width="16" height="12" fill="#3f5f98"/><rect x="672" y="300" width="8" height="8" fill="#263f73"/><rect x="680" y="276" width="8" height="8" fill="#d7ecff"/><rect x="684" y="280" width="4" height="4" fill="#111"/><rect x="688" y="276" width="8" height="4" fill="#fff6c8"/><rect x="664" y="304" width="4" height="8" fill="#fff6c8"/><rect x="680" y="304" width="4" height="8" fill="#fff6c8"/>
+    <rect x="660" y="268" width="8" height="4" fill="#d7ecff"/>
+    <rect x="648" y="264" width="8" height="8" fill="#f0c14b"/>
+    <rect x="692" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-59" data-name="泥烧鸽子">
+    <rect x="704" y="256" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="259" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="716" y="312" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="732" y="280" width="16" height="20" fill="#6fa8dc"/><rect x="720" y="284" width="12" height="12" fill="#3f5f98"/><rect x="748" y="284" width="16" height="12" fill="#3f5f98"/><rect x="736" y="300" width="8" height="8" fill="#263f73"/><rect x="744" y="276" width="8" height="8" fill="#d7ecff"/><rect x="748" y="280" width="4" height="4" fill="#111"/><rect x="752" y="276" width="8" height="4" fill="#fff6c8"/><rect x="728" y="304" width="4" height="8" fill="#fff6c8"/><rect x="744" y="304" width="4" height="8" fill="#fff6c8"/>
+    <rect x="712" y="268" width="8" height="4" fill="#d7ecff"/>
+    <rect x="712" y="264" width="8" height="8" fill="#f0c14b"/>
+    <rect x="756" y="264" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-60" data-name="潜海依霖">
+    <rect x="0" y="320" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="323" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="12" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="16" y="352" width="32" height="16" fill="#28a6a2"/><rect x="44" y="348" width="12" height="12" fill="#28a6a2"/><rect x="8" y="356" width="12" height="8" fill="#1d6d83"/><rect x="32" y="344" width="8" height="8" fill="#a8ecdf"/><rect x="52" y="352" width="4" height="4" fill="#111"/><rect x="24" y="368" width="16" height="4" fill="#0d4055"/><rect x="20" y="344" width="4" height="4" fill="#a8ecdf"/><rect x="12" y="372" width="8" height="4" fill="#a8ecdf"/><rect x="40" y="372" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="20" y="332" width="8" height="4" fill="#a8ecdf"/>
+    <rect x="8" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="52" y="328" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-61" data-name="天津河蟹">
+    <rect x="64" y="320" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="323" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="76" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="84" y="352" width="28" height="20" fill="#79a848"/><rect x="92" y="344" width="16" height="12" fill="#426b38"/><rect x="108" y="352" width="12" height="12" fill="#79a848"/><rect x="116" y="356" width="4" height="4" fill="#111"/><rect x="80" y="368" width="8" height="8" fill="#254329"/><rect x="108" y="368" width="8" height="8" fill="#254329"/><rect x="76" y="356" width="8" height="8" fill="#426b38"/>
+    <rect x="84" y="332" width="8" height="4" fill="#c8de7a"/>
+    <rect x="72" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="116" y="328" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-62" data-name="帝王蟹">
+    <rect x="128" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="131" y="323" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="140" y="376" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="148" y="352" width="28" height="20" fill="#79a848"/><rect x="152" y="348" width="20" height="12" fill="#c8de7a"/><rect x="172" y="352" width="12" height="12" fill="#79a848"/><rect x="180" y="356" width="4" height="4" fill="#111"/><rect x="144" y="368" width="8" height="8" fill="#254329"/><rect x="172" y="368" width="8" height="8" fill="#254329"/><rect x="140" y="356" width="8" height="8" fill="#426b38"/><rect x="156" y="356" width="4" height="4" fill="#254329"/><rect x="164" y="356" width="4" height="4" fill="#254329"/>
+    <rect x="136" y="332" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="180" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-63" data-name="大鳄龟">
+    <rect x="192" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="195" y="323" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="204" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="212" y="352" width="28" height="20" fill="#79a848"/><rect x="220" y="344" width="16" height="12" fill="#426b38"/><rect x="236" y="352" width="12" height="12" fill="#79a848"/><rect x="244" y="356" width="4" height="4" fill="#111"/><rect x="208" y="368" width="8" height="8" fill="#254329"/><rect x="236" y="368" width="8" height="8" fill="#254329"/><rect x="204" y="356" width="8" height="8" fill="#426b38"/>
+    <rect x="212" y="332" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="244" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-64" data-name="眼镜王蛇">
+    <rect x="256" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="259" y="323" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="276" y="352" width="28" height="20" fill="#a76c3b"/><rect x="292" y="340" width="16" height="16" fill="#a76c3b"/><rect x="268" y="360" width="12" height="12" fill="#a76c3b"/><rect x="280" y="372" width="8" height="8" fill="#2f241b"/><rect x="300" y="372" width="8" height="8" fill="#2f241b"/><rect x="304" y="344" width="4" height="4" fill="#111"/><rect x="272" y="348" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="348" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="276" y="332" width="8" height="4" fill="#e0b36b"/>
+    <rect x="264" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="308" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-65" data-name="东北虎">
+    <rect x="320" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="323" y="323" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="376" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="340" y="352" width="28" height="20" fill="#a76c3b"/><rect x="356" y="340" width="16" height="16" fill="#a76c3b"/><rect x="332" y="360" width="12" height="12" fill="#a76c3b"/><rect x="344" y="372" width="8" height="8" fill="#2f241b"/><rect x="364" y="372" width="8" height="8" fill="#2f241b"/><rect x="368" y="344" width="4" height="4" fill="#111"/><rect x="336" y="348" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="348" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="336" y="332" width="8" height="4" fill="#e0b36b"/>
+    <rect x="328" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="372" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-66" data-name="克鲁格狮">
+    <rect x="384" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="387" y="323" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="352" width="28" height="20" fill="#a76c3b"/><rect x="420" y="340" width="16" height="16" fill="#a76c3b"/><rect x="396" y="360" width="12" height="12" fill="#a76c3b"/><rect x="408" y="372" width="8" height="8" fill="#2f241b"/><rect x="428" y="372" width="8" height="8" fill="#2f241b"/><rect x="432" y="344" width="4" height="4" fill="#111"/><rect x="400" y="348" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="348" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="404" y="332" width="8" height="4" fill="#e0b36b"/>
+    <rect x="392" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="436" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-67" data-name="湾鳄">
+    <rect x="448" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="451" y="323" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="460" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="468" y="352" width="28" height="20" fill="#79a848"/><rect x="476" y="344" width="16" height="12" fill="#426b38"/><rect x="492" y="352" width="12" height="12" fill="#79a848"/><rect x="500" y="356" width="4" height="4" fill="#111"/><rect x="464" y="368" width="8" height="8" fill="#254329"/><rect x="492" y="368" width="8" height="8" fill="#254329"/><rect x="460" y="356" width="8" height="8" fill="#426b38"/>
+    <rect x="468" y="332" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="500" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-68" data-name="大白鲨">
+    <rect x="512" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="515" y="323" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="524" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="528" y="352" width="32" height="16" fill="#28a6a2"/><rect x="556" y="348" width="12" height="12" fill="#28a6a2"/><rect x="520" y="356" width="12" height="8" fill="#1d6d83"/><rect x="544" y="344" width="8" height="8" fill="#a8ecdf"/><rect x="564" y="352" width="4" height="4" fill="#111"/><rect x="536" y="368" width="16" height="4" fill="#0d4055"/><rect x="536" y="340" width="8" height="8" fill="#1d6d83"/><rect x="524" y="372" width="8" height="4" fill="#a8ecdf"/><rect x="552" y="372" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="532" y="332" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="564" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-69" data-name="蓝鲸">
+    <rect x="576" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="579" y="323" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="588" y="376" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="592" y="352" width="32" height="16" fill="#28a6a2"/><rect x="620" y="348" width="12" height="12" fill="#28a6a2"/><rect x="584" y="356" width="12" height="8" fill="#1d6d83"/><rect x="608" y="344" width="8" height="8" fill="#a8ecdf"/><rect x="628" y="352" width="4" height="4" fill="#111"/><rect x="600" y="368" width="16" height="4" fill="#0d4055"/><rect x="600" y="340" width="8" height="8" fill="#1d6d83"/><rect x="588" y="372" width="8" height="4" fill="#a8ecdf"/><rect x="616" y="372" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="584" y="332" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="628" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-70" data-name="科迪亚克棕熊">
+    <rect x="640" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="643" y="323" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="376" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="660" y="352" width="28" height="20" fill="#a76c3b"/><rect x="676" y="340" width="16" height="16" fill="#a76c3b"/><rect x="652" y="360" width="12" height="12" fill="#a76c3b"/><rect x="664" y="372" width="8" height="8" fill="#2f241b"/><rect x="684" y="372" width="8" height="8" fill="#2f241b"/><rect x="688" y="344" width="4" height="4" fill="#111"/><rect x="656" y="348" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="348" width="4" height="8" fill="#6f4a2e"/><rect x="680" y="332" width="4" height="8" fill="#f5dfaa"/><rect x="688" y="332" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="656" y="332" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-71" data-name="白犀牛">
+    <rect x="704" y="320" width="64" height="64" fill="#fff0d0"/>
+    <rect x="707" y="323" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="716" y="376" width="40" height="4" fill="#26302722"/>
+    <rect x="724" y="352" width="28" height="20" fill="#a76c3b"/><rect x="740" y="340" width="16" height="16" fill="#a76c3b"/><rect x="716" y="360" width="12" height="12" fill="#a76c3b"/><rect x="728" y="372" width="8" height="8" fill="#2f241b"/><rect x="748" y="372" width="8" height="8" fill="#2f241b"/><rect x="752" y="344" width="4" height="4" fill="#111"/><rect x="720" y="348" width="8" height="8" fill="#6f4a2e"/><rect x="756" y="348" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="716" y="332" width="8" height="4" fill="#e0b36b"/>
+    <rect x="712" y="328" width="8" height="8" fill="#f0c14b"/>
+    <rect x="756" y="328" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-72" data-name="美洲角雕">
+    <rect x="0" y="384" width="64" height="64" fill="#fff0d0"/>
+    <rect x="3" y="387" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="12" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="28" y="408" width="16" height="20" fill="#6fa8dc"/><rect x="16" y="412" width="12" height="12" fill="#3f5f98"/><rect x="44" y="412" width="16" height="12" fill="#3f5f98"/><rect x="32" y="428" width="8" height="8" fill="#263f73"/><rect x="40" y="404" width="8" height="8" fill="#d7ecff"/><rect x="44" y="408" width="4" height="4" fill="#111"/><rect x="48" y="404" width="8" height="4" fill="#fff6c8"/><rect x="24" y="432" width="4" height="8" fill="#fff6c8"/><rect x="40" y="432" width="4" height="8" fill="#fff6c8"/>
+    <rect x="8" y="396" width="8" height="4" fill="#d7ecff"/>
+    <rect x="8" y="392" width="8" height="8" fill="#f0c14b"/>
+    <rect x="52" y="392" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-73" data-name="非洲豹">
+    <rect x="64" y="384" width="64" height="64" fill="#fff0d0"/>
+    <rect x="67" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="76" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="84" y="416" width="28" height="20" fill="#a76c3b"/><rect x="100" y="404" width="16" height="16" fill="#a76c3b"/><rect x="76" y="424" width="12" height="12" fill="#a76c3b"/><rect x="88" y="436" width="8" height="8" fill="#2f241b"/><rect x="108" y="436" width="8" height="8" fill="#2f241b"/><rect x="112" y="408" width="4" height="4" fill="#111"/><rect x="80" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="116" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="72" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="116" y="392" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-74" data-name="太平洋巨型章鱼">
+    <rect x="128" y="384" width="64" height="64" fill="#fff0d0"/>
+    <rect x="131" y="387" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="140" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="144" y="416" width="32" height="16" fill="#28a6a2"/><rect x="172" y="412" width="12" height="12" fill="#28a6a2"/><rect x="136" y="420" width="12" height="8" fill="#1d6d83"/><rect x="160" y="408" width="8" height="8" fill="#a8ecdf"/><rect x="180" y="416" width="4" height="4" fill="#111"/><rect x="152" y="432" width="16" height="4" fill="#0d4055"/><rect x="148" y="408" width="4" height="4" fill="#a8ecdf"/><rect x="140" y="436" width="8" height="4" fill="#a8ecdf"/><rect x="168" y="436" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="144" y="396" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="180" y="392" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-75" data-name="猛犸象">
+    <rect x="192" y="384" width="64" height="64" fill="#fff0d0"/>
+    <rect x="195" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="204" y="440" width="40" height="4" fill="#26302722"/>
+    <rect x="212" y="416" width="28" height="20" fill="#a76c3b"/><rect x="228" y="404" width="16" height="16" fill="#a76c3b"/><rect x="204" y="424" width="12" height="12" fill="#a76c3b"/><rect x="216" y="436" width="8" height="8" fill="#2f241b"/><rect x="236" y="436" width="8" height="8" fill="#2f241b"/><rect x="240" y="408" width="4" height="4" fill="#111"/><rect x="208" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="244" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="204" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="244" y="392" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-76" data-name="剑齿虎">
+    <rect x="256" y="384" width="64" height="64" fill="#fff0d0"/>
+    <rect x="259" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="440" width="40" height="4" fill="#26302722"/>
+    <rect x="276" y="416" width="28" height="20" fill="#a76c3b"/><rect x="292" y="404" width="16" height="16" fill="#a76c3b"/><rect x="268" y="424" width="12" height="12" fill="#a76c3b"/><rect x="280" y="436" width="8" height="8" fill="#2f241b"/><rect x="300" y="436" width="8" height="8" fill="#2f241b"/><rect x="304" y="408" width="4" height="4" fill="#111"/><rect x="272" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="268" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="308" y="392" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-77" data-name="拉布拉多犬">
+    <rect x="320" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="323" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="340" y="416" width="28" height="20" fill="#a76c3b"/><rect x="356" y="404" width="16" height="16" fill="#a76c3b"/><rect x="332" y="424" width="12" height="12" fill="#a76c3b"/><rect x="344" y="436" width="8" height="8" fill="#2f241b"/><rect x="364" y="436" width="8" height="8" fill="#2f241b"/><rect x="368" y="408" width="4" height="4" fill="#111"/><rect x="336" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="412" width="4" height="8" fill="#6f4a2e"/><rect x="360" y="396" width="4" height="8" fill="#f5dfaa"/><rect x="368" y="396" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="336" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="372" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-78" data-name="中华田园犬">
+    <rect x="384" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="440" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="416" width="28" height="20" fill="#a76c3b"/><rect x="420" y="404" width="16" height="16" fill="#a76c3b"/><rect x="396" y="424" width="12" height="12" fill="#a76c3b"/><rect x="408" y="436" width="8" height="8" fill="#2f241b"/><rect x="428" y="436" width="8" height="8" fill="#2f241b"/><rect x="432" y="408" width="4" height="4" fill="#111"/><rect x="400" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="404" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="436" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-79" data-name="贵宾犬">
+    <rect x="448" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="460" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="468" y="416" width="28" height="20" fill="#a76c3b"/><rect x="484" y="404" width="16" height="16" fill="#a76c3b"/><rect x="460" y="424" width="12" height="12" fill="#a76c3b"/><rect x="472" y="436" width="8" height="8" fill="#2f241b"/><rect x="492" y="436" width="8" height="8" fill="#2f241b"/><rect x="496" y="408" width="4" height="4" fill="#111"/><rect x="464" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="500" y="412" width="4" height="8" fill="#6f4a2e"/><rect x="488" y="396" width="4" height="8" fill="#f5dfaa"/><rect x="496" y="396" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="464" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="500" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-80" data-name="博美犬">
+    <rect x="512" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="515" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="524" y="440" width="40" height="4" fill="#26302722"/>
+    <rect x="532" y="416" width="28" height="20" fill="#a76c3b"/><rect x="548" y="404" width="16" height="16" fill="#a76c3b"/><rect x="524" y="424" width="12" height="12" fill="#a76c3b"/><rect x="536" y="436" width="8" height="8" fill="#2f241b"/><rect x="556" y="436" width="8" height="8" fill="#2f241b"/><rect x="560" y="408" width="4" height="4" fill="#111"/><rect x="528" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="564" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="532" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="564" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-81" data-name="吉娃娃犬">
+    <rect x="576" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="588" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="596" y="416" width="28" height="20" fill="#a76c3b"/><rect x="612" y="404" width="16" height="16" fill="#a76c3b"/><rect x="588" y="424" width="12" height="12" fill="#a76c3b"/><rect x="600" y="436" width="8" height="8" fill="#2f241b"/><rect x="620" y="436" width="8" height="8" fill="#2f241b"/><rect x="624" y="408" width="4" height="4" fill="#111"/><rect x="592" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="628" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="592" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="628" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-82" data-name="萨摩耶犬">
+    <rect x="640" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="643" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="660" y="416" width="28" height="20" fill="#a76c3b"/><rect x="676" y="404" width="16" height="16" fill="#a76c3b"/><rect x="652" y="424" width="12" height="12" fill="#a76c3b"/><rect x="664" y="436" width="8" height="8" fill="#2f241b"/><rect x="684" y="436" width="8" height="8" fill="#2f241b"/><rect x="688" y="408" width="4" height="4" fill="#111"/><rect x="656" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="412" width="4" height="8" fill="#6f4a2e"/><rect x="680" y="396" width="4" height="8" fill="#f5dfaa"/><rect x="688" y="396" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="648" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-83" data-name="藏獒犬">
+    <rect x="704" y="384" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="387" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="716" y="440" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="724" y="416" width="28" height="20" fill="#a76c3b"/><rect x="740" y="404" width="16" height="16" fill="#a76c3b"/><rect x="716" y="424" width="12" height="12" fill="#a76c3b"/><rect x="728" y="436" width="8" height="8" fill="#2f241b"/><rect x="748" y="436" width="8" height="8" fill="#2f241b"/><rect x="752" y="408" width="4" height="4" fill="#111"/><rect x="720" y="412" width="8" height="8" fill="#6f4a2e"/><rect x="756" y="412" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="712" y="396" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="756" y="392" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-84" data-name="德国牧羊犬">
+    <rect x="0" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="12" y="504" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="20" y="480" width="28" height="20" fill="#a76c3b"/><rect x="36" y="468" width="16" height="16" fill="#a76c3b"/><rect x="12" y="488" width="12" height="12" fill="#a76c3b"/><rect x="24" y="500" width="8" height="8" fill="#2f241b"/><rect x="44" y="500" width="8" height="8" fill="#2f241b"/><rect x="48" y="472" width="4" height="4" fill="#111"/><rect x="16" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="52" y="476" width="4" height="8" fill="#6f4a2e"/><rect x="40" y="460" width="4" height="8" fill="#f5dfaa"/><rect x="48" y="460" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="8" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="52" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-85" data-name="哈士奇犬">
+    <rect x="64" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="76" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="84" y="480" width="28" height="20" fill="#a76c3b"/><rect x="100" y="468" width="16" height="16" fill="#a76c3b"/><rect x="76" y="488" width="12" height="12" fill="#a76c3b"/><rect x="88" y="500" width="8" height="8" fill="#2f241b"/><rect x="108" y="500" width="8" height="8" fill="#2f241b"/><rect x="112" y="472" width="4" height="4" fill="#111"/><rect x="80" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="116" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="84" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="116" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-86" data-name="松狮犬">
+    <rect x="128" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="131" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="140" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="148" y="480" width="28" height="20" fill="#a76c3b"/><rect x="164" y="468" width="16" height="16" fill="#a76c3b"/><rect x="140" y="488" width="12" height="12" fill="#a76c3b"/><rect x="152" y="500" width="8" height="8" fill="#2f241b"/><rect x="172" y="500" width="8" height="8" fill="#2f241b"/><rect x="176" y="472" width="4" height="4" fill="#111"/><rect x="144" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="180" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="148" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="180" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-87" data-name="英国短毛猫">
+    <rect x="192" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="204" y="504" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="212" y="480" width="28" height="20" fill="#a76c3b"/><rect x="228" y="468" width="16" height="16" fill="#a76c3b"/><rect x="204" y="488" width="12" height="12" fill="#a76c3b"/><rect x="216" y="500" width="8" height="8" fill="#2f241b"/><rect x="236" y="500" width="8" height="8" fill="#2f241b"/><rect x="240" y="472" width="4" height="4" fill="#111"/><rect x="208" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="244" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="200" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="244" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-88" data-name="美国短毛猫">
+    <rect x="256" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="259" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="268" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="276" y="480" width="28" height="20" fill="#a76c3b"/><rect x="292" y="468" width="16" height="16" fill="#a76c3b"/><rect x="268" y="488" width="12" height="12" fill="#a76c3b"/><rect x="280" y="500" width="8" height="8" fill="#2f241b"/><rect x="300" y="500" width="8" height="8" fill="#2f241b"/><rect x="304" y="472" width="4" height="4" fill="#111"/><rect x="272" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="308" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="268" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="308" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-89" data-name="布偶猫">
+    <rect x="320" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="323" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="332" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="340" y="480" width="28" height="20" fill="#a76c3b"/><rect x="356" y="468" width="16" height="16" fill="#a76c3b"/><rect x="332" y="488" width="12" height="12" fill="#a76c3b"/><rect x="344" y="500" width="8" height="8" fill="#2f241b"/><rect x="364" y="500" width="8" height="8" fill="#2f241b"/><rect x="368" y="472" width="4" height="4" fill="#111"/><rect x="336" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="372" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="332" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="372" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-90" data-name="波斯猫">
+    <rect x="384" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="396" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="404" y="480" width="28" height="20" fill="#a76c3b"/><rect x="420" y="468" width="16" height="16" fill="#a76c3b"/><rect x="396" y="488" width="12" height="12" fill="#a76c3b"/><rect x="408" y="500" width="8" height="8" fill="#2f241b"/><rect x="428" y="500" width="8" height="8" fill="#2f241b"/><rect x="432" y="472" width="4" height="4" fill="#111"/><rect x="400" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="436" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="404" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="436" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-91" data-name="苏格兰折耳猫">
+    <rect x="448" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="460" y="504" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="468" y="480" width="28" height="20" fill="#a76c3b"/><rect x="484" y="468" width="16" height="16" fill="#a76c3b"/><rect x="460" y="488" width="12" height="12" fill="#a76c3b"/><rect x="472" y="500" width="8" height="8" fill="#2f241b"/><rect x="492" y="500" width="8" height="8" fill="#2f241b"/><rect x="496" y="472" width="4" height="4" fill="#111"/><rect x="464" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="500" y="476" width="4" height="8" fill="#6f4a2e"/><rect x="488" y="460" width="4" height="8" fill="#f5dfaa"/><rect x="496" y="460" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="456" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="500" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-92" data-name="斯芬克斯猫">
+    <rect x="512" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="515" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="524" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="532" y="480" width="28" height="20" fill="#a76c3b"/><rect x="548" y="468" width="16" height="16" fill="#a76c3b"/><rect x="524" y="488" width="12" height="12" fill="#a76c3b"/><rect x="536" y="500" width="8" height="8" fill="#2f241b"/><rect x="556" y="500" width="8" height="8" fill="#2f241b"/><rect x="560" y="472" width="4" height="4" fill="#111"/><rect x="528" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="564" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="524" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="564" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-93" data-name="狸花猫">
+    <rect x="576" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="451" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="588" y="504" width="40" height="4" fill="#26302722"/>
+    <rect x="596" y="480" width="28" height="20" fill="#a76c3b"/><rect x="612" y="468" width="16" height="16" fill="#a76c3b"/><rect x="588" y="488" width="12" height="12" fill="#a76c3b"/><rect x="600" y="500" width="8" height="8" fill="#2f241b"/><rect x="620" y="500" width="8" height="8" fill="#2f241b"/><rect x="624" y="472" width="4" height="4" fill="#111"/><rect x="592" y="476" width="8" height="8" fill="#6f4a2e"/><rect x="628" y="476" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="596" y="460" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="628" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-94" data-name="虎皮鹦鹉">
+    <rect x="640" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="643" y="451" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="652" y="504" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="668" y="472" width="16" height="20" fill="#6fa8dc"/><rect x="656" y="476" width="12" height="12" fill="#3f5f98"/><rect x="684" y="476" width="16" height="12" fill="#3f5f98"/><rect x="672" y="492" width="8" height="8" fill="#263f73"/><rect x="680" y="468" width="8" height="8" fill="#d7ecff"/><rect x="684" y="472" width="4" height="4" fill="#111"/><rect x="688" y="468" width="8" height="4" fill="#fff6c8"/><rect x="664" y="496" width="4" height="8" fill="#fff6c8"/><rect x="680" y="496" width="4" height="8" fill="#fff6c8"/>
+    <rect x="648" y="460" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="692" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-95" data-name="八哥鹦鹉">
+    <rect x="704" y="448" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="707" y="451" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="716" y="504" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="732" y="472" width="16" height="20" fill="#6fa8dc"/><rect x="720" y="476" width="12" height="12" fill="#3f5f98"/><rect x="748" y="476" width="16" height="12" fill="#3f5f98"/><rect x="736" y="492" width="8" height="8" fill="#263f73"/><rect x="744" y="468" width="8" height="8" fill="#d7ecff"/><rect x="748" y="472" width="4" height="4" fill="#111"/><rect x="752" y="468" width="8" height="4" fill="#fff6c8"/><rect x="728" y="496" width="4" height="8" fill="#fff6c8"/><rect x="744" y="496" width="4" height="8" fill="#fff6c8"/>
+    <rect x="712" y="460" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="756" y="456" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-96" data-name="画眉鸟">
+    <rect x="0" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="3" y="515" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="12" y="568" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="28" y="536" width="16" height="20" fill="#6fa8dc"/><rect x="16" y="540" width="12" height="12" fill="#3f5f98"/><rect x="44" y="540" width="16" height="12" fill="#3f5f98"/><rect x="32" y="556" width="8" height="8" fill="#263f73"/><rect x="40" y="532" width="8" height="8" fill="#d7ecff"/><rect x="44" y="536" width="4" height="4" fill="#111"/><rect x="48" y="532" width="8" height="4" fill="#fff6c8"/><rect x="24" y="560" width="4" height="8" fill="#fff6c8"/><rect x="40" y="560" width="4" height="8" fill="#fff6c8"/>
+    <rect x="16" y="524" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="52" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-97" data-name="百灵鸟">
+    <rect x="64" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="67" y="515" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="76" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="92" y="536" width="16" height="20" fill="#6fa8dc"/><rect x="80" y="540" width="12" height="12" fill="#3f5f98"/><rect x="108" y="540" width="16" height="12" fill="#3f5f98"/><rect x="96" y="556" width="8" height="8" fill="#263f73"/><rect x="104" y="532" width="8" height="8" fill="#d7ecff"/><rect x="108" y="536" width="4" height="4" fill="#111"/><rect x="112" y="532" width="8" height="4" fill="#fff6c8"/><rect x="88" y="560" width="4" height="8" fill="#fff6c8"/><rect x="104" y="560" width="4" height="8" fill="#fff6c8"/>
+    <rect x="76" y="524" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="116" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-98" data-name="金丝雀">
+    <rect x="128" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="131" y="515" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="140" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="156" y="536" width="16" height="20" fill="#6fa8dc"/><rect x="144" y="540" width="12" height="12" fill="#3f5f98"/><rect x="172" y="540" width="16" height="12" fill="#3f5f98"/><rect x="160" y="556" width="8" height="8" fill="#263f73"/><rect x="168" y="532" width="8" height="8" fill="#d7ecff"/><rect x="172" y="536" width="4" height="4" fill="#111"/><rect x="176" y="532" width="8" height="4" fill="#fff6c8"/><rect x="152" y="560" width="4" height="8" fill="#fff6c8"/><rect x="168" y="560" width="4" height="8" fill="#fff6c8"/>
+    <rect x="140" y="524" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="180" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-99" data-name="喜鹊">
+    <rect x="192" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="195" y="515" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="204" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="220" y="536" width="16" height="20" fill="#6fa8dc"/><rect x="208" y="540" width="12" height="12" fill="#3f5f98"/><rect x="236" y="540" width="16" height="12" fill="#3f5f98"/><rect x="224" y="556" width="8" height="8" fill="#263f73"/><rect x="232" y="532" width="8" height="8" fill="#d7ecff"/><rect x="236" y="536" width="4" height="4" fill="#111"/><rect x="240" y="532" width="8" height="4" fill="#fff6c8"/><rect x="216" y="560" width="4" height="8" fill="#fff6c8"/><rect x="232" y="560" width="4" height="8" fill="#fff6c8"/>
+    <rect x="212" y="524" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="244" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-100" data-name="锦鲤">
+    <rect x="256" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="259" y="515" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="268" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="272" y="544" width="32" height="16" fill="#28a6a2"/><rect x="300" y="540" width="12" height="12" fill="#28a6a2"/><rect x="264" y="548" width="12" height="8" fill="#1d6d83"/><rect x="288" y="536" width="8" height="8" fill="#a8ecdf"/><rect x="308" y="544" width="4" height="4" fill="#111"/><rect x="280" y="560" width="16" height="4" fill="#0d4055"/><rect x="276" y="536" width="4" height="4" fill="#a8ecdf"/><rect x="268" y="564" width="8" height="4" fill="#a8ecdf"/><rect x="296" y="564" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="276" y="524" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="308" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-101" data-name="孔雀鱼">
+    <rect x="320" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="323" y="515" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="332" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="336" y="544" width="32" height="16" fill="#28a6a2"/><rect x="364" y="540" width="12" height="12" fill="#28a6a2"/><rect x="328" y="548" width="12" height="8" fill="#1d6d83"/><rect x="352" y="536" width="8" height="8" fill="#a8ecdf"/><rect x="372" y="544" width="4" height="4" fill="#111"/><rect x="344" y="560" width="16" height="4" fill="#0d4055"/><rect x="340" y="536" width="4" height="4" fill="#a8ecdf"/><rect x="332" y="564" width="8" height="4" fill="#a8ecdf"/><rect x="360" y="564" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="340" y="524" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="372" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-102" data-name="清道夫鱼">
+    <rect x="384" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="387" y="515" width="58" height="58" fill="none" stroke="#1d6d83" stroke-width="2"/>
+    <rect x="396" y="568" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="400" y="544" width="32" height="16" fill="#28a6a2"/><rect x="428" y="540" width="12" height="12" fill="#28a6a2"/><rect x="392" y="548" width="12" height="8" fill="#1d6d83"/><rect x="416" y="536" width="8" height="8" fill="#a8ecdf"/><rect x="436" y="544" width="4" height="4" fill="#111"/><rect x="408" y="560" width="16" height="4" fill="#0d4055"/><rect x="404" y="536" width="4" height="4" fill="#a8ecdf"/><rect x="396" y="564" width="8" height="4" fill="#a8ecdf"/><rect x="424" y="564" width="12" height="4" fill="#a8ecdf"/>
+    <rect x="400" y="524" width="8" height="4" fill="#a8ecdf"/>
+
+    <rect x="436" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-103" data-name="剃刀龟">
+    <rect x="448" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="451" y="515" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="460" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="468" y="544" width="28" height="20" fill="#79a848"/><rect x="476" y="536" width="16" height="12" fill="#426b38"/><rect x="492" y="544" width="12" height="12" fill="#79a848"/><rect x="500" y="548" width="4" height="4" fill="#111"/><rect x="464" y="560" width="8" height="8" fill="#254329"/><rect x="492" y="560" width="8" height="8" fill="#254329"/><rect x="460" y="548" width="8" height="8" fill="#426b38"/>
+    <rect x="468" y="524" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="500" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-104" data-name="金钱龟">
+    <rect x="512" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="515" y="515" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="524" y="568" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="532" y="544" width="28" height="20" fill="#79a848"/><rect x="536" y="540" width="20" height="12" fill="#c8de7a"/><rect x="556" y="544" width="12" height="12" fill="#79a848"/><rect x="564" y="548" width="4" height="4" fill="#111"/><rect x="528" y="560" width="8" height="8" fill="#254329"/><rect x="556" y="560" width="8" height="8" fill="#254329"/><rect x="524" y="548" width="8" height="8" fill="#426b38"/><rect x="540" y="548" width="4" height="4" fill="#254329"/><rect x="548" y="548" width="4" height="4" fill="#254329"/>
+    <rect x="520" y="524" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="564" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-105" data-name="巴西红耳龟">
+    <rect x="576" y="512" width="64" height="64" fill="#e9f2ec"/>
+    <rect x="579" y="515" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="588" y="568" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="596" y="544" width="28" height="20" fill="#79a848"/><rect x="600" y="540" width="20" height="12" fill="#c8de7a"/><rect x="620" y="544" width="12" height="12" fill="#79a848"/><rect x="628" y="548" width="4" height="4" fill="#111"/><rect x="592" y="560" width="8" height="8" fill="#254329"/><rect x="620" y="560" width="8" height="8" fill="#254329"/><rect x="588" y="548" width="8" height="8" fill="#426b38"/><rect x="604" y="548" width="4" height="4" fill="#254329"/><rect x="612" y="548" width="4" height="4" fill="#254329"/>
+    <rect x="584" y="524" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="628" y="520" width="4" height="8" fill="#4d7357"/>
+  </g>
+
+  <g id="card-106" data-name="龟虎">
+    <rect x="640" y="512" width="64" height="64" fill="#fff0d0"/>
+    <rect x="643" y="515" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="652" y="568" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="660" y="544" width="28" height="20" fill="#a76c3b"/><rect x="676" y="532" width="16" height="16" fill="#a76c3b"/><rect x="652" y="552" width="12" height="12" fill="#a76c3b"/><rect x="664" y="564" width="8" height="8" fill="#2f241b"/><rect x="684" y="564" width="8" height="8" fill="#2f241b"/><rect x="688" y="536" width="4" height="4" fill="#111"/><rect x="656" y="540" width="8" height="8" fill="#6f4a2e"/><rect x="692" y="540" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="648" y="524" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="692" y="520" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-107" data-name="巨翼熊">
+    <rect x="704" y="512" width="64" height="64" fill="#fff0d0"/>
+    <rect x="707" y="515" width="58" height="58" fill="none" stroke="#3f5f98" stroke-width="2"/>
+    <rect x="716" y="568" width="40" height="4" fill="#26302722"/>
+    <rect x="732" y="536" width="16" height="20" fill="#6fa8dc"/><rect x="720" y="540" width="12" height="12" fill="#3f5f98"/><rect x="748" y="540" width="16" height="12" fill="#3f5f98"/><rect x="736" y="556" width="8" height="8" fill="#263f73"/><rect x="744" y="532" width="8" height="8" fill="#d7ecff"/><rect x="748" y="536" width="4" height="4" fill="#111"/><rect x="752" y="532" width="8" height="4" fill="#fff6c8"/><rect x="728" y="560" width="4" height="8" fill="#fff6c8"/><rect x="744" y="560" width="4" height="8" fill="#fff6c8"/>
+    <rect x="716" y="524" width="8" height="4" fill="#d7ecff"/>
+
+    <rect x="756" y="520" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-108" data-name="蚣尾狼">
+    <rect x="0" y="576" width="64" height="64" fill="#fff0d0"/>
+    <rect x="3" y="579" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="12" y="632" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="20" y="608" width="28" height="20" fill="#a76c3b"/><rect x="36" y="596" width="16" height="16" fill="#a76c3b"/><rect x="12" y="616" width="12" height="12" fill="#a76c3b"/><rect x="24" y="628" width="8" height="8" fill="#2f241b"/><rect x="44" y="628" width="8" height="8" fill="#2f241b"/><rect x="48" y="600" width="4" height="4" fill="#111"/><rect x="16" y="604" width="8" height="8" fill="#6f4a2e"/><rect x="52" y="604" width="4" height="8" fill="#6f4a2e"/><rect x="40" y="588" width="4" height="8" fill="#f5dfaa"/><rect x="48" y="588" width="4" height="8" fill="#f5dfaa"/>
+    <rect x="8" y="588" width="8" height="4" fill="#e0b36b"/>
+    <rect x="8" y="584" width="8" height="8" fill="#f0c14b"/>
+    <rect x="52" y="584" width="4" height="8" fill="#b84028"/>
+  </g>
+
+  <g id="card-109" data-name="企鹅兔">
+    <rect x="64" y="576" width="64" height="64" fill="#eef0dc"/>
+    <rect x="67" y="579" width="58" height="58" fill="none" stroke="#426b38" stroke-width="2"/>
+    <rect x="76" y="632" width="40" height="4" fill="#26302722"/>
+    <rect x="84" y="608" width="28" height="20" fill="#79a848"/><rect x="92" y="600" width="16" height="12" fill="#426b38"/><rect x="108" y="608" width="12" height="12" fill="#79a848"/><rect x="116" y="612" width="4" height="4" fill="#111"/><rect x="80" y="624" width="8" height="8" fill="#254329"/><rect x="108" y="624" width="8" height="8" fill="#254329"/><rect x="76" y="612" width="8" height="8" fill="#426b38"/>
+    <rect x="76" y="588" width="8" height="4" fill="#c8de7a"/>
+
+    <rect x="116" y="584" width="4" height="8" fill="#8f6a2e"/>
+  </g>
+
+  <g id="card-110" data-name="虎龟">
+    <rect x="128" y="576" width="64" height="64" fill="#fff0d0"/>
+    <rect x="131" y="579" width="58" height="58" fill="none" stroke="#6f4a2e" stroke-width="2"/>
+    <rect x="140" y="632" width="40" height="4" fill="#6d4b3022"/>
+    <rect x="148" y="608" width="28" height="20" fill="#a76c3b"/><rect x="164" y="596" width="16" height="16" fill="#a76c3b"/><rect x="140" y="616" width="12" height="12" fill="#a76c3b"/><rect x="152" y="628" width="8" height="8" fill="#2f241b"/><rect x="172" y="628" width="8" height="8" fill="#2f241b"/><rect x="176" y="600" width="4" height="4" fill="#111"/><rect x="144" y="604" width="8" height="8" fill="#6f4a2e"/><rect x="180" y="604" width="4" height="8" fill="#6f4a2e"/>
+    <rect x="144" y="588" width="8" height="4" fill="#e0b36b"/>
+
+    <rect x="180" y="584" width="4" height="8" fill="#b84028"/>
+  </g>
+</svg>

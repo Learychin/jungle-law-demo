@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>丛林法则 Demo</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css?v=20260705c" />
   </head>
   <body>
     <main class="app-shell">
@@ -14,7 +15,11 @@
           <h1>丛林法则 Demo</h1>
         </div>
         <div class="top-actions">
+          <button id="onlineHostBtn" class="secondary">开双人链接</button>
+          <button id="onlineCopyBtn" class="secondary hidden">复制邀请</button>
+          <button id="onlineLeaveBtn" class="secondary hidden">离开在线</button>
           <button id="modeBtn" class="secondary">模式：对战 AI</button>
+          <button id="aiPersonaBtn" class="secondary">AI 脾气：稳健派</button>
           <button id="newGameBtn" class="secondary">新开一局</button>
           <button id="endTurnBtn" class="primary">结束回合</button>
         </div>
@@ -22,18 +27,41 @@
 
       <section id="winnerBanner" class="winner hidden"></section>
 
+      <section class="table-ribbon">
+        <div class="ribbon-card">
+          <span class="ribbon-label">回合状态</span>
+          <strong id="turnMood">先挑一只动物上场</strong>
+        </div>
+        <div id="routeStrip" class="route-strip"></div>
+        <div class="ribbon-card compact">
+          <span class="ribbon-label">本地记录</span>
+          <strong id="saveStatus">本局结束后自动存档</strong>
+        </div>
+      </section>
+
       <section class="game-table">
         <article class="side-column player-side">
           <section id="player1Panel" class="player-panel active">
             <div>
-              <span class="player-label">你 / 玩家一</span>
+              <span class="player-label" id="player1Label">你 / 玩家一</span>
               <strong id="p1Status">生命 20 · 食物 3</strong>
             </div>
             <div class="small-stats">
+              <span id="p1Cue" class="cue-pill">开场：见招拆招</span>
               <span id="p1Deck">私有 0</span>
               <span id="p1Hand">手牌 0</span>
               <span id="p1Grave">阵亡 0</span>
+              <span id="p1Hype">热度 0/7</span>
             </div>
+          </section>
+          <div id="handPeek" class="hand-peek"></div>
+
+          <section class="panel hand-panel hand-dock">
+            <div class="panel-title">
+              <h2 id="handTitle">你的手牌</h2>
+              <span>上限 6</span>
+            </div>
+            <div id="hand" class="hand"></div>
           </section>
 
           <section class="player-zone self">
@@ -43,37 +71,193 @@
             </div>
             <div id="p1Board" class="board compact-board"></div>
           </section>
-
-          <section class="panel hand-panel">
-            <div class="panel-title">
-              <h2 id="handTitle">你的手牌</h2>
-              <span>上限 6</span>
-            </div>
-            <div id="hand" class="hand"></div>
-          </section>
         </article>
 
         <aside class="center-column">
           <article class="panel action-panel">
             <div class="panel-title">
-              <h2>下一步</h2>
+              <h2>操作</h2>
               <span id="turnLabel">玩家一回合</span>
             </div>
-            <div class="hint-box" id="selectionHint">选择一张手牌或场上生物开始操作。</div>
-            <div class="button-grid">
-              <button data-action="drawPrivate">抽自己牌 -1</button>
-              <button data-action="drawA">抽强牌A -3</button>
-              <button data-action="drawB">抽中牌B -2</button>
-              <button data-action="drawC">抽小牌C -2</button>
-              <button data-action="summon">上场说明</button>
-              <button data-action="recover">恢复休息 -1</button>
-              <button data-action="sacrifice">当食物 +1</button>
-              <button data-action="attackPlayer">攻击 AI</button>
-              <button data-action="attackCreature">攻击生物</button>
+            <section id="turnHint" class="turn-hint tone-support" aria-live="polite">
+              <div class="turn-hint-head">
+                <span class="turn-hint-label">本回合提示</span>
+                <strong id="turnHintTitle">先看手牌和场地</strong>
+              </div>
+              <div id="turnHintDetail" class="turn-hint-detail">能继续行动时，这里会告诉你还剩哪些动作。</div>
+              <div id="turnHintChips" class="turn-hint-chips"></div>
+            </section>
+            <div class="coach-note tone-neutral" id="coachNote">
+              <div class="coach-head">
+                <span id="coachTag" class="coach-tag">场边播报</span>
+                <strong id="coachTitle" class="coach-title">轮到你了</strong>
+              </div>
+              <div id="coachDetail" class="coach-detail">读手牌、看亮格，自己决定第一只动物怎么上场。</div>
+              <div id="coachAside" class="coach-aside">台下已经有人在催你整点离谱的了。</div>
+            </div>
+            <div id="actionStinger" class="action-stinger hidden"></div>
+            <div id="liveReaction" class="live-reaction"></div>
+            <div id="momentumStrip" class="momentum-strip hidden"></div>
+            <div id="momentRack" class="moment-rack"></div>
+            <div id="starterRail" class="starter-rail"></div>
+            <div class="guide-actions" id="guideActions">
+              <div class="guide-actions-head">
+                <span id="guideCue" class="cue-pill">开场：见招拆招</span>
+                <span id="guideShortcut" class="guide-shortcut">空格可执行当前动作</span>
+              </div>
+              <button id="guidePrimaryBtn" class="guide-primary">执行动作</button>
+              <div id="guideMeta" class="guide-meta">这会直接执行当前可选动作；也可以自己点亮起的位置。</div>
+              <div id="guidePayoff" class="payoff-strip"></div>
+              <div id="guideFocus" class="guide-focus"></div>
+            </div>
+            <div class="hint-box" id="selectionHint"></div>
+            <div id="stageDeck" class="stage-deck">
+              <div class="deck-switcher stage-switcher">
+                <button id="stageTabPlaybook" class="deck-tab is-active" type="button" data-stage-tab="playbook">
+                  <span>备选</span>
+                  <strong id="stagePlaybookMeta">动作</strong>
+                </button>
+                <button id="stageTabQuest" class="deck-tab" type="button" data-stage-tab="quest">
+                  <span>骚操作</span>
+                  <strong id="stageQuestMeta">待触发</strong>
+                </button>
+                <button id="stageTabHype" class="deck-tab" type="button" data-stage-tab="hype">
+                  <span>热度</span>
+                  <strong id="stageHypeMeta">0 / 7</strong>
+                </button>
+                <button id="stageTabShowtime" class="deck-tab" type="button" data-stage-tab="showtime">
+                  <span>串烧</span>
+                  <strong id="stageShowtimeMeta">连段 0</strong>
+                </button>
+              </div>
+              <section id="stageSheetPlaybook" class="deck-sheet">
+                <div class="playbook-box">
+                  <div class="playbook-box-head">
+                    <strong>备选动作</strong>
+                    <span id="playbookMeta">先自己想一手</span>
+                  </div>
+                  <div id="playbookList" class="playbook-list"></div>
+                  <div id="playbookTip" class="record-blurb">这里会给你当前回合最顺手的 1 到 3 步，也可以完全不听。</div>
+                </div>
+              </section>
+              <section id="stageSheetQuest" class="deck-sheet hidden">
+                <div class="quest-box">
+                  <div class="quest-box-head">
+                    <strong>本回合骚操作</strong>
+                    <span id="questMeta">自动奖励</span>
+                  </div>
+                  <div id="questCard" class="quest-card"></div>
+                  <div id="questTip" class="record-blurb">满足条件后会自动领奖，不需要额外点确认。</div>
+                </div>
+              </section>
+              <section id="stageSheetHype" class="deck-sheet hidden">
+                <div id="hypeBox" class="hype-box">
+                  <div class="hype-box-head">
+                    <strong>观众热度</strong>
+                    <span id="hypeMeta">0 / 7</span>
+                  </div>
+                  <div class="hype-track">
+                    <div id="hypeFill" class="hype-fill"></div>
+                  </div>
+                  <div id="hypeAlert" class="hype-alert">热场中</div>
+                  <div id="hypeTip" class="record-blurb">技能、击杀、节目卡和连招会涨热度，凑满档位就会有人往台上扔奖励。</div>
+                </div>
+              </section>
+              <section id="stageSheetShowtime" class="deck-sheet hidden">
+                <div class="showtime-strip">
+                  <div class="showtime-head">
+                    <strong>本回合串烧</strong>
+                    <span id="showtimeMeta">连段 0 手</span>
+                  </div>
+                  <div id="showtimeScore" class="showtime-score"></div>
+                  <div id="showtimeTitle" class="showtime-title">还没开演</div>
+                  <div id="showtimeChips" class="showtime-chips"></div>
+                  <div id="showtimeRewardsWrap" class="showtime-rewards-wrap hidden">
+                    <span class="showtime-rewards-label">本回合掉落</span>
+                    <div id="showtimeRewards" class="showtime-rewards"></div>
+                  </div>
+                  <div id="showtimeReplayWrap" class="showtime-replay-wrap hidden">
+                    <span class="showtime-replay-label">刚刚这一手</span>
+                    <div id="showtimeReplay" class="showtime-replay"></div>
+                  </div>
+                  <div id="showtimeTip" class="record-blurb">自己开一手，热度和连段会在这里记账。</div>
+                </div>
+              </section>
+            </div>
+            <div class="action-dock">
+              <section id="actionResourceBand" class="action-band" data-action-band="resource">
+                <div class="action-band-head" data-mobile-band-toggle="resource">
+                  <strong>补牌</strong>
+                  <span id="resourceMeta">先摸一口，选择会多很多。</span>
+                </div>
+                <div id="resourceCue" class="action-cue"></div>
+                <div class="button-grid button-grid-tight">
+                  <button data-action="drawPrivate">抽自己牌 -1</button>
+                  <button data-action="drawA">抽强牌A -3</button>
+                  <button data-action="drawB">抽中牌B -2</button>
+                  <button data-action="drawC">抽小牌C -2</button>
+                </div>
+              </section>
+              <section id="actionTacticsBand" class="action-band" data-action-band="tactics">
+                <div class="action-band-head" data-mobile-band-toggle="tactics">
+                  <strong>技能 / 移动</strong>
+                  <span id="tacticsMeta">大多需要先选场上的一只生物。</span>
+                </div>
+                <div id="tacticsCue" class="action-cue"></div>
+                <div id="tacticsLock" class="action-band-lock hidden"></div>
+                <div class="button-grid button-grid-tight">
+                  <button data-action="disaster">发动事件</button>
+                  <button data-action="skill">发动特技</button>
+                  <button data-action="move">移动空间 -1</button>
+                  <button data-action="recover">复工 -1</button>
+                  <button data-action="sacrifice">当食物 +1</button>
+                  <button data-action="cancelSelection">取消选择</button>
+                </div>
+              </section>
+              <section id="actionPressureBand" class="action-band" data-action-band="pressure">
+                <div class="action-band-head" data-mobile-band-toggle="pressure">
+                  <strong>攻击</strong>
+                  <span id="pressureMeta">先选一只己方生物，右侧目标才会亮。</span>
+                </div>
+                <div id="pressureCue" class="action-cue"></div>
+                <div id="pressureLock" class="action-band-lock hidden"></div>
+                <div class="button-grid">
+                  <button data-action="attackPlayer">攻击 AI</button>
+                  <button data-action="attackCreature">攻击动物</button>
+                </div>
+              </section>
+              <section id="actionDefenseBand" class="action-band hidden" data-action-band="defense">
+                <div class="action-band-head" data-mobile-band-toggle="defense">
+                  <strong>防守</strong>
+                  <span id="defenseMeta">先决定这下要不要硬接。</span>
+                </div>
+                <div id="defenseCue" class="action-cue"></div>
+                <div class="button-grid">
+                  <button data-action="confirmGuard">动物格挡</button>
+                  <button data-action="letThrough">玩家承受打击</button>
+                </div>
+              </section>
             </div>
           </article>
 
-          <article class="panel public-panel">
+          <div class="intel-dock">
+            <div class="deck-switcher intel-switcher">
+              <button id="intelTabReport" class="deck-tab is-active" type="button" data-intel-tab="report">
+                <span>战报</span>
+                <strong id="intelReportMeta">最新</strong>
+              </button>
+              <button id="intelTabDisaster" class="deck-tab" type="button" data-intel-tab="disaster">
+                <span>节目卡</span>
+                <strong id="intelDisasterMeta">待翻</strong>
+              </button>
+              <button id="intelTabPool" class="deck-tab" type="button" data-intel-tab="pool">
+                <span>公共池</span>
+                <strong id="intelPoolMeta">A / B / C</strong>
+              </button>
+            </div>
+          </div>
+
+          <article id="publicPanel" class="panel public-panel intel-sheet hidden">
             <div class="panel-title">
               <h2>公共牌池</h2>
               <span id="publicCounts">A 0 · B 0 · C 0</span>
@@ -85,11 +269,26 @@
             </div>
           </article>
 
-          <article class="panel log-panel">
+          <article id="chaosPanel" class="panel chaos-panel intel-sheet hidden">
             <div class="panel-title">
-              <h2>日志</h2>
-              <button id="clearLogBtn" class="ghost">清空</button>
+              <h2>本回合节目卡</h2>
+              <span id="disasterMeta">每回合随机一张</span>
             </div>
+            <div id="disasterCard" class="disaster-card"></div>
+            <div id="disasterTip" class="record-blurb">节目卡是试玩版的轻量自然灾害系统，会自动帮你选这边更不亏、那边更肉疼的目标。</div>
+          </article>
+
+          <article id="logPanel" class="panel log-panel intel-sheet">
+            <div class="panel-title">
+              <h2>战斗日志</h2>
+              <div class="log-tools">
+                <button id="exportCurrentBtn" class="ghost">导出本局</button>
+                <button id="exportArchiveBtn" class="ghost">导出记录</button>
+                <button id="clearLogBtn" class="ghost">清空日志</button>
+              </div>
+            </div>
+            <div id="recordBlurb" class="record-blurb">AI 动作、防守选择和食物变化会记录在这里。</div>
+            <div id="archiveShelf" class="archive-shelf"></div>
             <ol id="log" class="log"></ol>
           </article>
         </aside>
@@ -101,9 +300,11 @@
               <strong id="p2Status">生命 20 · 食物 4</strong>
             </div>
             <div class="small-stats">
+              <span id="p2Cue" class="cue-pill">开场：见招拆招</span>
               <span id="p2Deck">私有 0</span>
               <span id="p2Hand">手牌 0</span>
               <span id="p2Grave">阵亡 0</span>
+              <span id="p2Hype">热度 0/7</span>
             </div>
           </section>
 
@@ -116,6 +317,14 @@
           </section>
         </article>
       </section>
+      <section id="mobileGuide" class="mobile-guide" aria-live="polite">
+        <div class="mobile-guide-head">
+          <span id="mobileGuideBadge" class="mobile-guide-badge">下一拍</span>
+            <span id="mobileGuideSummary" class="mobile-guide-summary">新开局后，这里会显示当前可执行的动作。</span>
+        </div>
+        <div id="mobileGuidePayoff" class="payoff-strip mobile-guide-payoff"></div>
+        <button id="mobileGuidePrimaryBtn" class="guide-primary mobile-guide-primary" type="button">执行动作</button>
+      </section>
     </main>
 
     <template id="slotTemplate">
@@ -125,7 +334,9 @@
       </button>
     </template>
 
-    <script src="./data.js"></script>
-    <script src="./app.js"></script>
+    <script src="./data.js?v=20260626i"></script>
+    <script src="./sprite-data.js?v=20260705c"></script>
+    <script src="./peerjs.min.js?v=1.5.5"></script>
+    <script src="./app.js?v=20260705c"></script>
   </body>
 </html>
