@@ -21,7 +21,7 @@ const STORAGE_KEY = "jungle-law-match-archive-v2";
 const MAX_ARCHIVE_MATCHES = 24;
 const BALANCE_PATCH_NOTES = [
   "开局资源改成先手 5、后手 2。",
-  "节目卡费用上调到 2 / 3 / 4。",
+  "环境牌改为暗抽，固定 2 食物并自动发动。",
   "鹰眼改成 2 食物。",
   "每回合最多复工 1 只动物。",
   "可选动作和 AI 不再死盯便宜功能牌。",
@@ -140,7 +140,7 @@ const FEATURED_CARD_ROLES = {
 const HYPE_THRESHOLDS = [4, 7];
 const TURN_QUESTS = [
   { id: "sky_strike", title: "空袭秀", note: "让天空生物发动一次攻击", rewardType: "food", rewardAmount: 1, rewardLabel: "+1 食物" },
-  { id: "party_disaster", title: "节目效果拉满", note: "打出 1 张节目卡", rewardType: "draw_private", rewardAmount: 1, rewardLabel: "抽 1 张私有牌" },
+  { id: "party_disaster", title: "节目效果拉满", note: "抽并发动 1 张环境牌", rewardType: "draw_private", rewardAmount: 1, rewardLabel: "抽 1 张私有牌" },
   { id: "move_and_hit", title: "换线偷袭", note: "先移动，再让同一只生物发动攻击", rewardType: "food", rewardAmount: 1, rewardLabel: "+1 食物" },
   { id: "big_game_hunter", title: "狩猎大货", note: "击倒 1 只 A 类生物", rewardType: "heal", rewardAmount: 1, rewardLabel: "回 1 血" },
   { id: "skill_show", title: "整点绝活", note: "发动 1 次主动技能", rewardType: "draw_private", rewardAmount: 1, rewardLabel: "抽 1 张私有牌" },
@@ -214,6 +214,9 @@ const INTEL_TAB_KEYS = ["report", "disaster", "pool"];
 const ACTION_BAND_KEYS = ["resource", "tactics", "pressure", "defense"];
 const PRIVATE_DECK_SIZE = 28;
 const OPENING_HAND_SIZE = 5;
+const MAX_HAND_SIZE = 6;
+const DISASTER_DRAW_COST = 2;
+const COMBAT_FLASH_MS = 980;
 const PRIVATE_DECK_SPACE_TARGETS = {
   陆地: 12,
   天空: 5,
@@ -246,6 +249,9 @@ let playbookPeekExpanded = false;
 let playbookPeekScope = "";
 let endTurnConfirmScope = "";
 let damageFlashUids = new Set();
+let combatFlash = null;
+let combatFlashTimer = null;
+let pendingDiscard = null;
 const ONLINE_PROTOCOL = "jungle-law-peer-v1";
 const ONLINE_DATA_CONNECTION_OPTIONS = {
   reliable: true,
@@ -409,6 +415,7 @@ function onlineInputActorId() {
 function onlineCanControlCurrentDecision(actorId = onlineInputActorId()) {
   if (!isOnlineMode()) return true;
   if (!game || game.winner !== null) return false;
+  if (pendingDiscard) return pendingDiscard.playerId === actorId;
   if (pendingDefense) return pendingDefense.defenderId === actorId;
   return game.active === actorId;
 }
@@ -417,6 +424,9 @@ function onlineWaitingDetail(actorId = onlineLocalPlayerId()) {
   if (!isOnlineMode()) return "";
   if (!game) return "在线房间还没同步完成。";
   if (!onlineSession.conn?.open) return isOnlineHost() ? "等朋友打开邀请链接。" : "正在连接房主。";
+  if (pendingDiscard) {
+    return pendingDiscard.playerId === actorId ? "轮到你从满手里弃 1 张。" : `等 ${game.players[pendingDiscard.playerId]?.name || "对方"} 弃 1 张满手牌。`;
+  }
   if (pendingDefense) {
     return pendingDefense.defenderId === actorId ? "轮到你处理防守。" : `等 ${game.players[pendingDefense.defenderId]?.name || "对方"} 处理防守。`;
   }
@@ -581,6 +591,7 @@ function onlineBroadcastState(reason = "state") {
     rev: onlineSession.rev,
     game: onlineClone(game),
     pendingDefense: onlineClone(pendingDefense),
+    pendingDiscard: onlineClone(pendingDiscard),
     aiPersona,
   });
 }
@@ -595,6 +606,7 @@ function onlineApplyRemoteState(message) {
   if (!message?.game) return;
   game = message.game;
   pendingDefense = message.pendingDefense || null;
+  pendingDiscard = message.pendingDiscard || null;
   aiPersona = message.aiPersona || aiPersona;
   vsAI = false;
   aiThinking = false;
@@ -770,6 +782,8 @@ function onlineApplyHostRequest(request) {
     if (request.kind === "slotClick") {
       const player = game.players[request.targetPlayerId];
       if (player) handleSlotClick(player, request.lane, request.slotIndex);
+    } else if (request.kind === "discard") {
+      resolveDiscardChoice(request.uid, actorId);
     } else if (request.kind === "button") {
       runActionButton(request.action, { sync: false });
     } else if (request.kind === "hint") {
@@ -1029,6 +1043,12 @@ function createGame() {
   selected = null;
   aiThinking = false;
   pendingDefense = null;
+  pendingDiscard = null;
+  combatFlash = null;
+  if (combatFlashTimer) {
+    clearTimeout(combatFlashTimer);
+    combatFlashTimer = null;
+  }
   announcerState = null;
   activeStageTab = "quest";
   activeIntelTab = "report";
@@ -1040,11 +1060,11 @@ function createGame() {
   playbookPeekScope = "";
   endTurnConfirmScope = "";
   const opponentIntro = vsAI && !online ? `AI 人格是“${currentAIPersona().label}”。` : "这是双人在线对局。";
-  addLog(`新的一局开始。${game.players[0].name}先手，初始 5 食物；${game.players[1].name} 初始 2 食物。${opponentIntro}${game.players[0].name}这把像“${openingCueLabel(game.players[0])}”，${game.players[1].name} 像“${openingCueLabel(game.players[1])}”。本回合节目卡是《${game.players[0].turnDisaster?.["卡名"] || "暂无"}》，骚操作任务是《${game.players[0].turnQuest?.title || "暂无"}》。`, {
+  addLog(`新的一局开始。${game.players[0].name}先手，初始 5 食物；${game.players[1].name} 初始 2 食物。${opponentIntro}${game.players[0].name}这把像“${openingCueLabel(game.players[0])}”，${game.players[1].name} 像“${openingCueLabel(game.players[1])}”。本回合环境牌是暗牌，花 ${DISASTER_DRAW_COST} 食物抽到后自动发动；骚操作任务是《${game.players[0].turnQuest?.title || "暂无"}》。`, {
     action: "match_start",
     actor: "系统",
   });
-  addLog("规则速记：攻击动物花攻击力食物；攻击玩家花攻击力 -1 食物（最低 1），如果对方场上有动物再 +1；每回合可免费换线 1 次；普通压制会留下压伤，同一动物第 4 次被压制会退场；动物格挡花防御力食物；玩家每回合最多护场 1 次来替动物承受打击；水生位每只动物在回合开始 +1 食物，最多 +3。", {
+  addLog("规则速记：攻击动物花攻击力食物；攻击玩家花攻击力 -1 食物（最低 1），如果对方场上有动物再 +1；水线生物不能直接攻击玩家，只能咬生物或参与护攻；每回合可免费换线 1 次；普通压制会留下压伤，同一动物第 4 次被压制会退场；动物格挡花防御力食物；玩家每回合最多护场 1 次来替动物承受打击；水生位每只动物在回合开始 +1 食物，最多 +3。", {
     action: "rule_tip",
     actor: "系统",
   });
@@ -1090,7 +1110,7 @@ function aiActionReadForEvent(event, message = "") {
     const own = extra.ownVictims?.length || 0;
     const enemy = extra.enemyVictims?.length || 0;
     return {
-      label: enemy > own ? "炸赚交换" : "抢节目卡",
+      label: enemy > own ? "炸赚交换" : "抢环境牌",
       detail: enemy > own
         ? `它愿意赔掉己方 ${own} 个，是因为对面会倒 ${enemy} 个；这步主要在清线和抢节目效果。`
         : `它这手不图体面，先把${laneLabel(extra.lane)}线搅乱，再看后面有没有便宜可捡。`,
@@ -1479,7 +1499,7 @@ function nudgeDeckTabsFromEvent(event = null) {
     ) activeStageTab = "showtime";
   }
   if (!intelTabPinned) {
-    if (action === "disaster_cast" || action === "end_turn") activeIntelTab = "disaster";
+    if (action === "disaster_cast" || action === "disaster_fizzle" || action === "end_turn") activeIntelTab = "disaster";
     else if (action === "draw_private" || String(action).startsWith("draw_public_")) activeIntelTab = "pool";
     else activeIntelTab = "report";
   }
@@ -1777,6 +1797,12 @@ function canHumanResolveDefense() {
   return !!pendingDefense && (!vsAI || pendingDefense.defenderId === 0);
 }
 
+function canHumanResolveDiscard() {
+  if (!pendingDiscard) return false;
+  if (isOnlineMode()) return pendingDiscard.playerId === onlineInputActorId();
+  return !vsAI || pendingDiscard.playerId === 0;
+}
+
 function currentSelectedHand(player) {
   const loc = currentSelectedLocation();
   if (!loc || loc.type !== "hand" || loc.player.id !== player.id) return null;
@@ -1799,6 +1825,22 @@ function faceAttackCost(attacker, defender) {
 
 function attackReadyError(player, card, cost, label = "攻击") {
   return attackReadyErrorWithFood(player, card, cost, label, player.food);
+}
+
+function faceAttackRuleError(card) {
+  if (card?.lane === "water") return "水线生物只能攻击生物或参与护攻，不能直接攻击玩家。";
+  return "";
+}
+
+function faceAttackReadyErrorWithFood(player, card, defender, availableFood = player.food) {
+  const cost = attackSpendCost(player, card, defender);
+  const readiness = attackReadyErrorWithFood(player, card, cost, "打玩家", availableFood);
+  if (readiness) return readiness;
+  return faceAttackRuleError(card);
+}
+
+function faceAttackReadyError(player, card, defender) {
+  return faceAttackReadyErrorWithFood(player, card, defender, player.food);
 }
 
 function creatureAttackTargetError(player, attacker, targetLoc) {
@@ -2014,10 +2056,7 @@ function disasterKillCount(disaster) {
 }
 
 function disasterCost(disaster) {
-  const count = disasterKillCount(disaster);
-  if (count === Infinity) return 4;
-  if (count >= 2) return 3;
-  return 2;
+  return DISASTER_DRAW_COST;
 }
 
 function disasterPreview(disaster) {
@@ -2040,8 +2079,7 @@ function drawRandomDisaster(excludeName = "") {
 }
 
 function rollTurnDisaster(player) {
-  const previous = player.turnDisaster?.["卡名"] || "";
-  player.turnDisaster = drawRandomDisaster(previous);
+  player.turnDisaster = null;
   player.turnDisasterUsed = false;
   return player.turnDisaster;
 }
@@ -2150,11 +2188,10 @@ function summarizeAIPersonaTurn(player = game?.players?.[1] || null) {
   const persona = currentAIPersona();
   if (!player || !game) return persona.blurb;
   const hints = [];
-  const disaster = currentTurnDisaster(player);
-  const plan = disasterVictimPlan(player, disaster);
+  const disasterBeat = aiDisasterIntentScore(player, persona, { preview: true });
 
-  if (disaster && !disasterReadyError(player, disaster, plan) && persona.disasterBias > 0.35 && disasterSwing(plan) > 0.8) {
-    hints.push(`盯着《${disaster["卡名"]}》找节目效果`);
+  if (disasterBeat.ready && persona.disasterBias > 0.35 && disasterBeat.score > disasterBeat.threshold) {
+    hints.push("盯着暗置环境牌找节目效果");
   }
   if (boardCards(player).some((loc) => !activeSkillReadyError(player, loc.card)) && persona.skillBias > 0.25) {
     hints.push("想先开一手特技");
@@ -2182,30 +2219,46 @@ function turnEventsForActor(player, turn = game?.turn ?? 0) {
 }
 
 function aiDisasterIntentScore(player, persona = currentAIPersona(), options = {}) {
-  const disaster = currentTurnDisaster(player);
-  const plan = disasterVictimPlan(player, disaster);
-  const error = disasterReadyError(player, disaster, plan);
+  const error = disasterReadyError(player, null, null);
   if (error) {
     return {
       ready: false,
       score: -Infinity,
       threshold: 2.75 - (persona?.disasterBias || 0) * 0.7,
-      disaster,
-      plan,
+      disaster: null,
+      plan: null,
     };
   }
-  const score = plan.enemyLoss - plan.ownLoss - disasterCost(disaster) * 0.55
-    + plan.enemyVictims.length * 0.7
-    + (plan.enemyVictims.some((loc) => loc.card.tauntTurns > 0) ? 1.1 : 0)
-    + (plan.enemyVictims.some((loc) => loc.card.skill === "天空攻击指挥官" || loc.card.skill === "海洋防御指挥官") ? 1.2 : 0)
+  const candidates = allDisasters
+    .map((disaster) => ({ disaster, plan: disasterVictimPlan(player, disaster) }))
+    .filter((item) => item.plan?.ownVictims?.length && item.plan?.enemyVictims?.length);
+  if (!candidates.length) {
+    return {
+      ready: false,
+      score: -Infinity,
+      threshold: 2.75 - (persona?.disasterBias || 0) * 0.7,
+      disaster: null,
+      plan: null,
+    };
+  }
+  const expected = candidates.reduce((sum, item) => {
+    const plan = item.plan;
+    return sum
+      + plan.enemyLoss - plan.ownLoss
+      + plan.enemyVictims.length * 0.7
+      + (plan.enemyVictims.some((loc) => loc.card.tauntTurns > 0) ? 1.1 : 0)
+      + (plan.enemyVictims.some((loc) => loc.card.skill === "天空攻击指挥官" || loc.card.skill === "海洋防御指挥官") ? 1.2 : 0);
+  }, 0) / candidates.length;
+  const best = [...candidates].sort((a, b) => disasterSwing(b.plan) - disasterSwing(a.plan))[0] || candidates[0];
+  const score = expected - disasterCost(null) * 0.55
     + (persona?.disasterBias || 0) * 1.25
     + (options.preview ? 0 : personaSwingFor(persona || currentAIPersona(), 0.28));
   return {
     ready: true,
     score,
     threshold: 2.75 - (persona?.disasterBias || 0) * 0.7,
-    disaster,
-    plan,
+    disaster: best.disaster,
+    plan: best.plan,
   };
 }
 
@@ -2284,8 +2337,8 @@ function buildAIDirectorBeat(player = game?.players?.[1] || null) {
   if (disasterBeat.ready && disasterBeat.score >= disasterBeat.threshold) {
     tone = "hot";
     badge = "想炸场";
-    title = `《${disasterBeat.disaster?.["卡名"] || "节目卡"}》像要上镜`;
-    detail = `它这拍更像先开节目卡。对面现在有 ${disasterBeat.plan.enemyVictims.length} 个目标正在被它盯着，节目效果会比平时更足。`;
+    title = "暗置环境牌像要上镜";
+    detail = `它这拍更像先抽环境牌。对面现在有 ${disasterBeat.plan.enemyVictims.length} 个目标可能被环境命中，节目效果会比平时更足。`;
     phase = 2;
     chips.push({ label: `可炸 ${disasterBeat.plan.enemyVictims.length}`, tone: "attack" });
   } else if (topSkill && persona.skillBias > 0.18) {
@@ -2529,9 +2582,9 @@ function buildAIPreviewSuggestion(player = activePlayer()) {
       key: suggestionKey("disaster", disasterBeat.disaster?.uid || disasterBeat.disaster?.["卡名"] || "preview"),
       kind: "disaster",
       score: disasterBeat.score,
-      label: `放《${disasterBeat.disaster?.["卡名"] || "节目卡"}》`,
+      label: "抽环境牌",
       note: "它这拍更像先炸场。",
-      title: `花 ${disasterCost(disasterBeat.disaster)} 食物发动节目卡。`,
+      title: `花 ${disasterCost(null)} 食物抽暗置环境牌，抽到后自动发动。`,
     };
   }
 
@@ -2663,7 +2716,7 @@ function buildAIPersonaTell(player = activePlayer(), options = {}) {
     ],
     disaster: [
       "这类按钮一亮，它通常就不打算再体面了。",
-      "节目卡一旦真按下去，后面就很少会安静。",
+      "环境牌一旦真抽出来，后面就很少会安静。",
     ],
     face: [
       "这口要是真咬出去，气氛通常会立刻变坏。",
@@ -2762,7 +2815,7 @@ function buildAIPersonaTell(player = activePlayer(), options = {}) {
         "这种人格只要能整活，就不太在乎别人受不受得了。",
       ],
       disaster: [
-        "它要是真按节目卡，多半还会顺手给自己配个谢幕动作。",
+        "它要是真抽环境牌，多半还会顺手给自己配个谢幕动作。",
       ],
     },
   };
@@ -2833,8 +2886,8 @@ function buildAIPreviewState(player = activePlayer(), suggestion = buildAIPrevie
       suggestion,
       tone: "hot",
       badge: "像炸场",
-      title: `《${disaster?.["卡名"] || "节目卡"}》像要先开`,
-      detail: "盯中间节目卡区；真按下去以后，棋盘和日志会一起大换气。",
+      title: "暗置环境牌像要先开",
+      detail: "盯中间环境牌区；真按下去以后，棋盘和日志会一起大换气。",
       chips,
     });
   }
@@ -2959,8 +3012,8 @@ function buildAIPreviewRouteSteps(player = activePlayer(), watch = buildAIPrevie
   }
   if (suggestion.kind === "disaster") {
     return [
-      { kicker: "就现在", title: `它更像先按《${currentTurnDisaster(player)?.["卡名"] || "节目卡"}》`, detail: "这下多半是先冲着节目效果去的。", tone: "warning", active: true },
-      { kicker: "看这里", title: "盯中间节目卡区", detail: "真正发动时，棋盘和日志会一起改口。", tone: "ai" },
+      { kicker: "就现在", title: "它更像先抽环境牌", detail: "这下多半是先冲着节目效果去的。", tone: "warning", active: true },
+      { kicker: "看这里", title: "盯中间环境牌区", detail: "真正发动时，棋盘和日志会一起改口。", tone: "ai" },
       { kicker: "然后", title: "炸完立刻回看棋盘", detail: "台上的倒下名单和后续空档会马上变清楚。", tone: "support" },
     ];
   }
@@ -3111,7 +3164,7 @@ function announcerFromEvent(message, event) {
     return {
       tone: "hot",
       label: "节目效果",
-      title: `《${target || "节目卡"}》炸场`,
+      title: `《${target || "环境牌"}》炸场`,
       detail: message,
     };
   }
@@ -3333,8 +3386,7 @@ function legalTargetsForCard(player, card, defender, availableFood = player.food
 }
 
 function canFaceAttackNow(player, card, defender, availableFood = player.food) {
-  const cost = attackSpendCost(player, card, defender);
-  if (attackReadyErrorWithFood(player, card, cost, "打玩家", availableFood)) return false;
+  if (faceAttackReadyErrorWithFood(player, card, defender, availableFood)) return false;
   return availableTaunts(defender, card).length === 0;
 }
 
@@ -3367,7 +3419,7 @@ function eligibleQuestPool(player) {
   const ownBoard = boardCards(player);
   return TURN_QUESTS.filter((quest) => {
     if (quest.id === "party_disaster") {
-      return disasterReadyError(player, currentTurnDisaster(player), disasterVictimPlan(player, currentTurnDisaster(player))) === "";
+      return !!findBestDisasterSuggestion(player);
     }
     if (quest.id === "skill_show") {
       return ownBoard.some((loc) => !activeSkillReadyError(player, loc.card));
@@ -3451,7 +3503,7 @@ function processTurnQuestEvent(event) {
   }
 
   if (quest.id === "party_disaster" && event.action === "disaster_cast") {
-    completeTurnQuest(player, quest, `节目卡《${event.target || "未知节目"}》成功登场`);
+    completeTurnQuest(player, quest, `环境牌《${event.target || "未知环境"}》成功登场`);
     return;
   }
   if (quest.id === "skill_show" && typeof event.action === "string" && event.action.startsWith("skill")) {
@@ -3715,7 +3767,7 @@ function attackSuggestionFromSource(player, sourceLoc, options = {}) {
   if (!sourceLoc?.card) return null;
   const enemy = game.players[player.id === 0 ? 1 : 0];
   const faceCost = faceAttackCost(sourceLoc.card, enemy);
-  const faceReady = !options.noFace && !attackReadyError(player, sourceLoc.card, faceCost, "打玩家") && !availableTaunts(enemy, sourceLoc.card).length;
+  const faceReady = !options.noFace && !faceAttackReadyError(player, sourceLoc.card, enemy) && !availableTaunts(enemy, sourceLoc.card).length;
   const attackValue = effectiveAttack(player, sourceLoc.card);
   let best = null;
 
@@ -3850,20 +3902,23 @@ function findBestSkillSuggestion(player) {
 }
 
 function findBestDisasterSuggestion(player) {
-  const disaster = currentTurnDisaster(player);
-  const plan = disasterVictimPlan(player, disaster);
-  const error = disasterReadyError(player, disaster, plan);
+  const error = disasterReadyError(player, null, null);
   if (error) return null;
-  const swing = disasterSwing(plan);
-  const value = swing - Math.max(0, disasterCost(disaster) - 1) * 0.6;
-  if (value < 1.2) return null;
+  const candidates = allDisasters
+    .map((disaster) => ({ disaster, plan: disasterVictimPlan(player, disaster) }))
+    .filter((item) => item.plan?.ownVictims?.length && item.plan?.enemyVictims?.length);
+  if (!candidates.length) return null;
+  const best = [...candidates].sort((a, b) => disasterSwing(b.plan) - disasterSwing(a.plan))[0] || candidates[0];
+  const expected = candidates.reduce((sum, item) => sum + disasterSwing(item.plan), 0) / candidates.length;
+  const value = expected - Math.max(0, disasterCost(null) - 1) * 0.6;
+  if (value < 1) return null;
   return {
-    key: suggestionKey("disaster", disaster?.uid || disaster?.["卡名"]),
+    key: suggestionKey("disaster", "hidden", String(player.turnDisasterUsed)),
     kind: "disaster",
     score: value,
-    label: `放《${disaster["卡名"]}》`,
-    note: `这张节目卡现在大多是你更赚，通常能顺手搞崩对面一排。`,
-    title: `花 ${disasterCost(disaster)} 食物发动《${disaster["卡名"]}》。`,
+    label: "抽环境牌",
+    note: `当前场面有环境牌命中窗口，最好情况会影响${disasterLaneLabel(best.disaster)}空间。`,
+    title: `花 ${disasterCost(null)} 食物抽 1 张暗置环境牌，抽到后自动发动。`,
   };
 }
 
@@ -4227,6 +4282,7 @@ function uniqueSuggestions(items) {
 
 function buildPlaybookSuggestions() {
   if (!game) return [];
+  if (pendingDiscard) return [];
   if (pendingDefense) return isOnlineMode() && !onlineCanControlCurrentDecision() ? [] : bestDefenseSuggestion();
   if (isOnlineMode() && !onlineCanControlCurrentDecision()) return [];
   if (vsAI && game.active === 1) return [];
@@ -4438,7 +4494,7 @@ function guidePrimaryLabel(suggestion) {
   if (!suggestion) return "这回合先自己来";
   if (suggestion.kind === "summon") return `上 ${cardNameFromUid(suggestion.cardUid, "这只")}`;
   if (suggestion.kind === "draw_private") return suggestion.note?.includes("翻口袋") ? "先翻口袋" : "补 1 张牌";
-  if (suggestion.kind === "disaster") return `放《${currentTurnDisaster(activePlayer())?.["卡名"] || "节目卡"}》`;
+  if (suggestion.kind === "disaster") return "抽环境牌";
   if (suggestion.kind === "skill") return `开 ${cardNameFromUid(suggestion.cardUid, "这只")} 的绝活`;
   if (suggestion.kind === "attack_face") return `${cardNameFromUid(suggestion.cardUid, "它")} 冲脸`;
   if (suggestion.kind === "attack_creature") return `打 ${cardNameFromUid(suggestion.targetUid, "目标")}`;
@@ -4589,7 +4645,7 @@ function previewSuggestionEvents(player, suggestion) {
     return [{
       action: "disaster_cast",
       actor: player.name,
-      target: disaster?.["卡名"] || "节目卡",
+      target: disaster?.["卡名"] || "环境牌",
       extra: {
         ownVictims: plan?.ownVictims || [],
         enemyVictims: plan?.enemyVictims || [],
@@ -4847,7 +4903,7 @@ function attackOutcomeChipFromPreview(preview, toneOverride = "") {
 
 function drawOutcomePreview(player) {
   const handCount = player?.hand?.length || 0;
-  if (handCount >= 6) return { label: "满手会弃新牌", tone: "warning" };
+  if (handCount >= MAX_HAND_SIZE) return { label: "抽后要弃 1", tone: "warning" };
   if (handCount === 5) return { label: "抽后满手", tone: "support" };
   return { label: "手牌 +1", tone: "support" };
 }
@@ -5059,7 +5115,7 @@ function actionButtonDetailState(action, {
     base = drawOutcomePreview(player);
   }
   if (action === "disaster") {
-    if (!disasterPlan) return null;
+    if (!disasterPlan) return { label: "随机环境", tone: "trick" };
     if (disasterPlan.enemyVictims.length && disasterPlan.ownVictims.length) base = { label: `炸 ${disasterPlan.enemyVictims.length} 敌 · 伤 ${disasterPlan.ownVictims.length} 我`, tone: "trick" };
     else if (disasterPlan.enemyVictims.length) base = { label: `炸 ${disasterPlan.enemyVictims.length} 敌`, tone: "trick" };
     else return null;
@@ -5131,7 +5187,7 @@ function compactDisabledActionReason(title = "") {
     const need = text.match(/需要\s*(\d+) 食物/);
     return need ? `食物不够 · 要 ${need[1]}` : "食物不够";
   }
-  if (/这回合还没有节目卡/.test(text)) return "本回合没节目卡";
+  if (/这回合已经抽过环境牌|这回合已经抽过环境/.test(text)) return "本回合已抽环境";
   return text.length > 14 ? `${text.slice(0, 14)}...` : text;
 }
 
@@ -5336,6 +5392,10 @@ function friendlyAttackReadyFeedback(player, card, cost, label = "攻击") {
       player,
       fallback: "先补点食物再回来出手",
     });
+  }
+  if (label === "打玩家") {
+    const ruleError = faceAttackRuleError(card);
+    if (ruleError) return withFriendlyCue(ruleError, { player });
   }
   return attackReadyErrorWithFood(player, card, cost, label, player.food);
 }
@@ -5727,7 +5787,7 @@ function buildActionBandCueStates(player = activePlayer()) {
       : actionCueMessageState({
           badge: "观战",
           title: "整活组现在只是字幕机",
-          note: "如果它准备开绝活、换线或放节目卡，这里会先说人话。",
+          note: "如果它准备开绝活、换线或抽环境牌，这里会先说人话。",
           tone: "trick",
           chips: watch.chips,
         });
@@ -5852,7 +5912,7 @@ function buildActionBandCueStates(player = activePlayer()) {
     tactics = actionCueMessageState({
       badge: "先点它",
       title: "先选一只己方生物",
-      note: "大多数整活都得先锁定台上的一只，节目卡除外。",
+      note: "大多数整活都得先锁定台上的一只，环境牌除外。",
       tone: "support",
     });
   } else {
@@ -6111,9 +6171,9 @@ function buildGuideFocusState(player, suggestion) {
       return {
         tone: "hot",
         label: "镜头先给节目效果",
-        title: `《${disaster?.["卡名"] || "节目卡"}》现在值得一炸`,
+        title: "环境牌现在值得赌一炸",
         detail: suggestion.note || "这手不只是热闹，多半还能顺手赚场面。",
-        chips: [`发动 ${disaster?.["卡名"] || "节目卡"}`, "先看中间说明", "炸完再接下一手"],
+        chips: ["抽环境牌", "暗抽自动发动", "炸完再接下一手"],
       };
     }
     return {
@@ -6516,11 +6576,11 @@ function intelTabStatus(player = activePlayer()) {
   const latest = game.history[game.history.length - 1] || null;
   const disaster = player ? currentTurnDisaster(player) : null;
   const poolCounts = `${game.publicPiles.A.length}/${game.publicPiles.B.length}/${game.publicPiles.C.length}`;
-  let disasterMeta = "待翻";
+  let disasterMeta = "待抽";
   let disasterLive = false;
-  if (disaster && player) {
+  if (player) {
     const ready = disasterReadyError(player, disaster, disasterVictimPlan(player, disaster)) === "";
-    disasterMeta = ready ? "可开" : `-${disasterCost(player, disaster)}`;
+    disasterMeta = player.turnDisasterUsed ? "已抽" : (ready ? "可抽" : `-${disasterCost(null)}`);
     disasterLive = ready;
   }
   return {
@@ -6577,6 +6637,7 @@ function isInteractiveHotkeyTarget(target) {
 
 function runPrimaryPlaybookShortcut() {
   if (!game || game.winner !== null) return false;
+  if (pendingDiscard) return false;
   if (aiThinking || (vsAI && game.active === 1 && !pendingDefense)) return false;
   if (isOnlineMode() && !onlineCanControlCurrentDecision()) return false;
   const suggestion = currentPrimarySuggestion();
@@ -6778,7 +6839,7 @@ function currentRouteFocus() {
 function showtimeChipForAction(action) {
   if (action === "summon") return { label: "上场", tone: "setup" };
   if (action === "move") return { label: "换线", tone: "trick" };
-  if (action === "disaster_cast") return { label: "节目卡", tone: "trick" };
+  if (action === "disaster_cast") return { label: "环境牌", tone: "trick" };
   if (action === "recover") return { label: "复工", tone: "support" };
   if (action === "sacrifice") return { label: "开饭", tone: "support" };
   if (action === "quest_complete") return { label: "领奖", tone: "reward" };
@@ -6956,7 +7017,7 @@ function showtimeTitleFromLabels(labels) {
   const unique = [...new Set(labels)];
   const has = (label) => unique.includes(label);
   if (!labels.length) return "还没开演";
-  if (has("节目卡") && has("击杀")) return "天灾封神现场";
+  if (has("环境牌") && has("击杀")) return "天灾封神现场";
   if (has("换线") && has("绝活") && has("击杀")) return "老六绕后秀";
   if (has("上场") && has("冲脸")) return "刚落地就开冲";
   if (unique.length >= 4) return "全桌动物音乐节";
@@ -7000,7 +7061,7 @@ function showtimeReplayTitle(event) {
   const extra = event?.extra || {};
   if (action === "summon") return `《${event.target || extra.cardName || "这只动物"}》正式进组`;
   if (action === "move") return `《${extra.cardName || event.target || "这只动物"}》开始换线搞事`;
-  if (action === "disaster_cast") return `《${event.target || "节目卡"}》把场子炸热了`;
+  if (action === "disaster_cast") return `《${event.target || "环境牌"}》把场子炸热了`;
   if (action === "recover") return `《${event.target || "这只动物"}》重新上岗`;
   if (action === "sacrifice") return `《${event.target || "这只动物"}》被端上桌了`;
   if (action === "attack_face") return `${event.target || "对手"} 被突然冲脸`;
@@ -7115,7 +7176,7 @@ function buildShowtimeSummary(player = activePlayer()) {
   } else if (latestReward) {
     tip = `刚才刚掉了“${latestReward.label}”。${latestReward.flavor || "这回合还有空间继续闹。"} `;
   } else if (!labels.length && suggestion?.kind === "summon") {
-    tip = "这回合还没开演；上场、技能、击杀和节目卡都会把这里点亮。";
+    tip = "这回合还没开演；上场、技能、击杀和环境牌都会把这里点亮。";
   } else if (nextThreshold) {
     tip = `再来 ${nextThreshold - current} 点热度，就会掉“${hypeRewardForTier(player, nextThreshold).label}”。`;
   }
@@ -7289,6 +7350,28 @@ function markCardDamaged(card) {
   }, 760);
 }
 
+function markCombatFlash({ attackerLoc = null, targetLoc = null, targetPlayerId = null, damage = 0, kind = "attack" } = {}) {
+  if (combatFlashTimer) {
+    clearTimeout(combatFlashTimer);
+    combatFlashTimer = null;
+  }
+  combatFlash = {
+    kind,
+    attackerUid: attackerLoc?.card?.uid || null,
+    attackerSlotKey: attackerLoc ? slotKey(attackerLoc.player.id, attackerLoc.lane, attackerLoc.slotIndex) : "",
+    targetUid: targetLoc?.card?.uid || null,
+    targetSlotKey: targetLoc ? slotKey(targetLoc.player.id, targetLoc.lane, targetLoc.slotIndex) : "",
+    targetPlayerId: Number.isFinite(targetPlayerId) ? targetPlayerId : null,
+    damage: Math.max(0, Number(damage) || 0),
+    stamp: Date.now(),
+  };
+  combatFlashTimer = setTimeout(() => {
+    combatFlash = null;
+    combatFlashTimer = null;
+    if (game) render();
+  }, COMBAT_FLASH_MS);
+}
+
 function canUsePlayerCreatureGuard(attackerLoc, targetLoc) {
   if (!attackerLoc?.card || !targetLoc?.card) return false;
   const defender = targetLoc.player;
@@ -7362,13 +7445,9 @@ function disasterVictimPlan(player, disaster) {
 }
 
 function disasterReadyError(player, disaster, plan = disasterVictimPlan(player, disaster)) {
-  if (!disaster) return "这回合还没翻到节目卡。";
-  if (player.turnDisasterUsed) return `《${disaster["卡名"]}》这回合已经演完了。`;
+  if (player.turnDisasterUsed) return player.turnDisaster ? `《${player.turnDisaster["卡名"]}》这回合已经演完了。` : "这回合已经抽过环境牌。";
   const cost = disasterCost(disaster);
-  if (player.food < cost) return `${player.name} 食物不足，《${disaster["卡名"]}》需要 ${cost} 食物。`;
-  if (!plan || !plan.ownVictims.length || !plan.enemyVictims.length) {
-    return `《${disaster["卡名"]}》需要 ${disasterLaneLabel(disaster)}空间双方都有人，才有节目效果。`;
-  }
+  if (player.food < cost) return `${player.name} 食物不足，抽环境牌需要 ${cost} 食物。`;
   return "";
 }
 
@@ -7390,24 +7469,50 @@ function removeCreature(loc, cause = "remove") {
 }
 
 function useTurnDisaster(player = activePlayer(), actorLabel = null) {
-  const disaster = currentTurnDisaster(player);
-  const plan = disasterVictimPlan(player, disaster);
-  const error = disasterReadyError(player, disaster, plan);
+  const previous = player.turnDisaster?.["卡名"] || "";
+  const error = disasterReadyError(player, null, null);
   if (error) {
     if (player.id === game.active) addLog(error);
     return false;
   }
-  const cost = disasterCost(disaster);
-  if (!spendFood(player, cost, { reason: "disaster", disasterName: disaster?.["卡名"] || "节目卡" })) return false;
+  const cost = disasterCost(null);
+  if (!spendFood(player, cost, { reason: "disaster", disasterName: "环境牌" })) return false;
 
   const actorName = actorLabel || player.name;
+  const disaster = drawRandomDisaster(previous);
+  player.turnDisaster = disaster;
+  player.turnDisasterUsed = true;
+  if (!disaster) {
+    addLog(`${actorName} 抽环境牌，但牌堆暂时没有可用事件。`, {
+      action: "disaster_fizzle",
+      actor: player.name,
+      target: "环境牌",
+      cost,
+    });
+    return true;
+  }
+  const plan = disasterVictimPlan(player, disaster);
+  if (!plan || !plan.ownVictims.length || !plan.enemyVictims.length) {
+    addLog(`${actorName} 抽到环境牌《${disaster["卡名"]}》，${disasterLaneLabel(disaster)}空间没有双方同时站人，这张牌自动发动但没有命中目标。`, {
+      action: "disaster_fizzle",
+      actor: player.name,
+      target: disaster["卡名"],
+      cost,
+      extra: {
+        lane: plan?.lane || disasterLaneKey(disaster),
+        ownVictims: [],
+        enemyVictims: [],
+      },
+    });
+    checkWinner();
+    return true;
+  }
   const ownHits = plan.ownVictims.map((loc) => removeCreature(loc, "disaster")).filter(Boolean);
   const enemyHits = plan.enemyVictims.map((loc) => removeCreature(loc, "disaster")).filter(Boolean);
-  player.turnDisasterUsed = true;
 
   const ownText = ownHits.map((item) => item.card).join("、");
   const enemyText = enemyHits.map((item) => item.card).join("、");
-  addLog(`${actorName} 发动节目卡《${disaster["卡名"]}》，${disasterLaneLabel(disaster)}空间一阵鸡飞狗跳。己方倒下：${ownText}；对面倒下：${enemyText}。`, {
+  addLog(`${actorName} 抽到环境牌《${disaster["卡名"]}》并自动发动，${disasterLaneLabel(disaster)}空间一阵鸡飞狗跳。己方倒下：${ownText}；对面倒下：${enemyText}。`, {
     action: "disaster_cast",
     actor: player.name,
     target: disaster["卡名"],
@@ -7619,16 +7724,82 @@ function drawFromPublic(level) {
   render();
 }
 
-function enforceHandLimit(player) {
-  while (player.hand.length > 6) {
-    const discarded = player.hand.pop();
-    player.grave.push(discarded);
-    addLog(`${player.name} 手牌超过上限，弃掉 ${discarded.name}。`, {
-      action: "discard_overflow",
-      actor: player.name,
-      target: discarded.name,
-    });
+function shouldAutoResolveDiscard(player) {
+  return !!(vsAI && !isOnlineMode() && player?.id === 1);
+}
+
+function autoDiscardIndex(player) {
+  if (!player?.hand?.length) return -1;
+  return player.hand
+    .map((card, index) => ({
+      index,
+      score: cardValue(card) + Math.max(0, summonCost(card) - player.food) * 0.25,
+    }))
+    .sort((a, b) => a.score - b.score || a.index - b.index)[0]?.index ?? -1;
+}
+
+function discardHandCard(player, handIndex, action = "discard_choice") {
+  if (!player || handIndex < 0 || handIndex >= player.hand.length) return null;
+  const [discarded] = player.hand.splice(handIndex, 1);
+  player.grave.push(discarded);
+  addLog(`${player.name} 手牌满了，选择弃掉 ${discarded.name}。`, {
+    action,
+    actor: player.name,
+    target: discarded.name,
+  });
+  return discarded;
+}
+
+function beginDiscardChoice(player, reason = "手牌超过上限") {
+  if (!player || player.hand.length <= MAX_HAND_SIZE) {
+    if (pendingDiscard?.playerId === player?.id) pendingDiscard = null;
+    return false;
   }
+  if (shouldAutoResolveDiscard(player)) {
+    while (player.hand.length > MAX_HAND_SIZE) {
+      const index = autoDiscardIndex(player);
+      if (index < 0) break;
+      discardHandCard(player, index, "discard_overflow");
+    }
+    return false;
+  }
+  pendingDiscard = {
+    playerId: player.id,
+    reason,
+    handSize: player.hand.length,
+  };
+  selected = null;
+  addLog(`${player.name} 手牌超过 ${MAX_HAND_SIZE} 张，请选择 1 张弃掉。`, {
+    action: "discard_prompt",
+    actor: player.name,
+    target: "手牌上限",
+  });
+  return true;
+}
+
+function resolveDiscardChoice(cardUid, actorId = pendingDiscard?.playerId) {
+  if (!pendingDiscard) return false;
+  const player = game.players[pendingDiscard.playerId];
+  if (!player || actorId !== player.id) return false;
+  const handIndex = player.hand.findIndex((card) => card.uid === cardUid);
+  if (handIndex < 0) {
+    addLog("这张牌已经不在手里了，重新选一张要弃的牌。");
+    render();
+    return false;
+  }
+  discardHandCard(player, handIndex, "discard_choice");
+  if (player.hand.length > MAX_HAND_SIZE) {
+    beginDiscardChoice(player, pendingDiscard.reason);
+  } else {
+    pendingDiscard = null;
+  }
+  selected = null;
+  render();
+  return true;
+}
+
+function enforceHandLimit(player, reason = "手牌超过上限") {
+  return beginDiscardChoice(player, reason);
 }
 
 function spendFood(player, amount, context = {}) {
@@ -8126,6 +8297,7 @@ function queueCreatureDefense(attackerLoc, targetLoc, attackValue, attackCost) {
 function resolveFaceAttack(attackerLoc, defender, attackCost, attackValue) {
   if (!spendFood(attackerLoc.player, attackCost)) return false;
   defender.hp -= attackValue;
+  markCombatFlash({ attackerLoc, targetPlayerId: defender.id, damage: attackValue, kind: "face" });
   finishAttackCommit(attackerLoc.card);
   addLog(`${attackerLoc.player.name} 的 ${attackerLoc.card.name} 攻击玩家，${defender.name} 生命 -${attackValue}。${faceAttackTax(defender) ? "（对方场上有动物，攻击玩家额外 +1 食物）" : ""}`, {
     action: "attack_face",
@@ -8175,6 +8347,7 @@ function resolveFaceGuard(attackerLoc, defender, blockerLoc, attackCost, attackV
     action = "attack_face_guard_unstoppable";
   }
 
+  markCombatFlash({ attackerLoc, targetLoc: blockerLoc, targetPlayerId: leak > 0 ? defender.id : null, damage: leak || attackValue, kind: "guard" });
   finishAttackCommit(attackerLoc.card);
   addLog(`${attackerLoc.player.name} 的 ${attackerLoc.card.name} 攻击玩家，被 ${defender.name} 的 ${blockerLoc.card.name} 挡下。${result}`, {
     action,
@@ -8199,6 +8372,7 @@ function resolveCreaturePlayerGuard(attackerLoc, targetLoc, attackCost, attackVa
   const defender = targetLoc.player;
   defender.hp -= attackValue;
   defender.turnProtects = (defender.turnProtects || 0) + 1;
+  markCombatFlash({ attackerLoc, targetLoc, targetPlayerId: defender.id, damage: attackValue, kind: "protect" });
   finishAttackCommit(attackerLoc.card);
   addLog(`${attackerLoc.player.name} 的 ${attackerLoc.card.name} 攻击 ${targetLoc.card.name}，但 ${defender.name} 选择自己扛下这口，生命 -${attackValue}。${targetLoc.card.name} 毫发无伤。本回合护场次数已用完。`, {
     action: "attack_creature_player_guard",
@@ -8260,7 +8434,7 @@ function beginPlayerAttack(sourceLoc, options = {}) {
   const defender = game.players[attackerOwner.id === 0 ? 1 : 0];
   const attacker = sourceLoc.card;
   const totalCost = faceAttackCost(attacker, defender);
-  if (attackReadyError(attackerOwner, attacker, totalCost, "打玩家")) return false;
+  if (faceAttackReadyError(attackerOwner, attacker, defender)) return false;
   const taunts = availableTaunts(defender, attacker);
   if (taunts.length) return false;
   const attackValue = effectiveAttack(attackerOwner, attacker);
@@ -8324,7 +8498,12 @@ function attackPlayer() {
   if (!loc) return;
   const attacker = loc.card;
   const totalCost = faceAttackCost(attacker, defender);
-  if (!canAttack(attackerOwner, attacker, totalCost, "打玩家")) return;
+  const faceError = faceAttackReadyError(attackerOwner, attacker, defender);
+  if (faceError) {
+    addLog(friendlyAttackReadyFeedback(attackerOwner, attacker, totalCost, "打玩家"));
+    render();
+    return;
+  }
   const taunts = availableTaunts(defender, attacker);
   if (taunts.length) {
     addLog(withFriendlyCue(`想冲脸得先把拦路的《${taunts[0].card.name}》处理掉。`, { player: attackerOwner }));
@@ -8422,6 +8601,7 @@ function resolveDirectCreatureAttack(sourceLoc, targetLoc) {
   if (attackReadyError(attackerOwner, attacker, attackCost, "攻击")) return false;
   if (attackValue * 2 <= defenseValue && !attacker.venomStrike) return false;
   attackerOwner.food -= attackCost;
+  markCombatFlash({ attackerLoc: sourceLoc, targetLoc, damage: attackValue, kind: "creature" });
   let action = "attack_creature";
   if (attackValue > defenseValue) {
     markCardDamaged(defender);
@@ -8617,7 +8797,7 @@ function aiAttack(player) {
   if (!sources.length) return false;
 
   const lethal = sources
-    .filter((loc) => faceAttackCost(loc.card, enemy) <= player.food && effectiveAttack(player, loc.card) >= enemy.hp)
+    .filter((loc) => canFaceAttackNow(player, loc.card, enemy) && effectiveAttack(player, loc.card) >= enemy.hp)
     .sort((a, b) => effectiveAttack(player, a.card) - effectiveAttack(player, b.card))[0];
   if (lethal && resolveDirectPlayerAttack(lethal, { defenderAutoPersonaId: defenderPersonaId })) return true;
 
@@ -8625,7 +8805,7 @@ function aiAttack(player) {
   for (const source of sources) {
     const faceCost = faceAttackCost(source.card, enemy);
     const shouldScoreFaceAttack = vsAI && player.id === 1;
-    if (shouldScoreFaceAttack && faceCost <= player.food && !availableTaunts(enemy, source.card).length) {
+    if (shouldScoreFaceAttack && canFaceAttackNow(player, source.card, enemy)) {
       const attackValue = effectiveAttack(player, source.card);
       const enemyBoardCount = boardCards(enemy).length;
       const pressureBonus = Math.max(0, 10 - enemy.hp) * 0.42;
@@ -8660,7 +8840,7 @@ function aiAttack(player) {
   }
 
   const bestFace = sources
-    .filter((loc) => faceAttackCost(loc.card, enemy) <= player.food)
+    .filter((loc) => canFaceAttackNow(player, loc.card, enemy))
     .sort((a, b) => effectiveAttack(player, b.card) - effectiveAttack(player, a.card))[0];
   if (bestFace && (enemy.hp <= 7 + persona.faceBias * 2 || boardCards(enemy).length === 0 || (persona.faceBias > 0.8 && Math.random() < 0.22))) {
     return resolveDirectPlayerAttack(bestFace, { defenderAutoPersonaId: defenderPersonaId });
@@ -8864,6 +9044,11 @@ function runAutoTurnSync(personaByPlayerId = null, options = {}) {
 
 function endTurn(options = {}) {
   if (game.winner !== null) return;
+  if (pendingDiscard) {
+    addLog("手牌超过上限，先弃 1 张再结束回合。");
+    render();
+    return;
+  }
   endTurnConfirmScope = "";
   const outgoing = activePlayer();
   outgoing.turnsTaken = (outgoing.turnsTaken || 0) + 1;
@@ -8904,14 +9089,14 @@ function endTurn(options = {}) {
   rollTurnQuest(incoming);
   resetTurnHype(incoming);
   selected = null;
-  addLog(`${outgoing.name} 回合结束。${incoming.name} 获得 ${gain} 食物（基础 3 + 水生 ${cappedWaterBonus}）。本回合节目卡翻到《${incoming.turnDisaster?.["卡名"] || "暂无"}》，骚操作任务是《${incoming.turnQuest?.title || "先发育"}》。`, {
+  addLog(`${outgoing.name} 回合结束。${incoming.name} 获得 ${gain} 食物（基础 3 + 水生 ${cappedWaterBonus}）。本回合环境牌重新暗置，抽到后自动发动；骚操作任务是《${incoming.turnQuest?.title || "先发育"}》。`, {
     action: "end_turn",
     actor: outgoing.name,
     target: incoming.name,
     cost: 0,
     extra: {
       waterBonus,
-      disaster: incoming.turnDisaster?.["卡名"] || null,
+      disaster: null,
       quest: incoming.turnQuest?.id || null,
     },
   });
@@ -9034,6 +9219,8 @@ function renderBoard(container, player) {
       if (pendingDefense?.selectedBlockerUid && pendingDefense.selectedBlockerUid === card?.uid) button.classList.add("selected");
       if (card?.state) button.classList.add(`state-${card.state}`);
       if (card?.uid && damageFlashUids.has(card.uid)) button.classList.add("damage-flash");
+      if ((card?.uid && combatFlash?.attackerUid === card.uid) || (combatFlash?.attackerSlotKey && combatFlash.attackerSlotKey === slotMarkerKey)) button.classList.add("combat-attacker");
+      if ((card?.uid && combatFlash?.targetUid === card.uid) || (combatFlash?.targetSlotKey && combatFlash.targetSlotKey === slotMarkerKey)) button.classList.add("combat-target");
       if (guardedTargetUid && guardedTargetUid === card?.uid) button.classList.add("guardtarget");
       if (!card && activeHand && player.id === active.id && canSummonHere(player, activeHand.card, lane.key, index)) button.classList.add("summonable");
       if (!card && movableSlots?.has(`${lane.key}:${index}`) && player.id === active.id) button.classList.add("movable");
@@ -9092,6 +9279,7 @@ function renderHand() {
   const player = isOnlineMode() ? game.players[onlineLocalPlayerId()] : activePlayer();
   const focus = currentRouteFocus();
   const directSpotlight = currentDirectInteractionSpotlight(player, focus);
+  const discardMode = pendingDiscard?.playerId === player.id;
   const canUseHand = !isOnlineMode() || onlineCanControlCurrentDecision(player.id);
   els.handTitle.textContent = isOnlineMode() ? `你的手牌 · ${player.name}` : (vsAI ? "你的手牌" : `${player.name}手牌`);
   els.hand.innerHTML = "";
@@ -9106,25 +9294,40 @@ function renderHand() {
     const button = document.createElement("button");
     button.className = "card";
     if (selected?.type === "hand" && selected.uid === card.uid) button.classList.add("selected");
+    if (discardMode) button.classList.add("is-discard-choice");
     if (focus.handUids.has(card.uid)) button.classList.add("route-source");
     button.classList.toggle("is-direct-cta-spotlight", directSpotlight?.kind === "hand" && directSpotlight.handUid === card.uid);
     button.classList.toggle("is-direct-cta-muted", directSpotlight?.kind === "hand" && directSpotlight.handUid !== card.uid);
     applyRouteMarker(button, focus.handMarkers.get(card.uid) || null);
     const summonStatus = handSummonStatus(player, card);
-    button.classList.toggle("is-hand-playable", summonStatus.tone === "ready");
-    button.classList.toggle("is-hand-blocked", summonStatus.tone === "blocked");
+    button.classList.toggle("is-hand-playable", !discardMode && summonStatus.tone === "ready");
+    button.classList.toggle("is-hand-blocked", !discardMode && summonStatus.tone === "blocked");
     const skillText = skillInfo(card.skill)?.["触发方式"] === "主动" ? ` · 技能费 ${skillCost(card)}` : "";
     button.innerHTML = `
       ${cardMarkup(card, true)}
-      <span class="hand-summon-chip tone-${escapeHtml(summonStatus.tone)}">${escapeHtml(summonStatus.label)}</span>
-      <span class="state">上场费 ${summonCost(card)}${skillText}</span>
+      <span class="hand-summon-chip tone-${escapeHtml(discardMode ? "discard" : summonStatus.tone)}">${escapeHtml(discardMode ? "弃这张" : summonStatus.label)}</span>
+      <span class="state">${discardMode ? "满手弃牌" : `上场费 ${summonCost(card)}${skillText}`}</span>
     `;
     button.title = [
       `${card.name}｜攻 ${Number(card.atk) || 0} / 防 ${Number(card.def) || 0}｜上场费 ${summonCost(card)}`,
-      summonStatus.title,
+      discardMode ? "手牌超过上限。点这张会把它弃掉，然后继续本回合。" : summonStatus.title,
       card.skill ? `${card.skill}：${skillPreview(card.skill)}` : `${card.name} 没有主动特技。`,
     ].filter(Boolean).join("｜");
     button.addEventListener("click", () => {
+      if (discardMode) {
+        if (!canUseHand) {
+          addLog(onlineWaitingDetail(player.id));
+          render();
+          return;
+        }
+        if (isOnlineMode() && !isOnlineHost()) {
+          onlineMaybeSendAction({ kind: "discard", uid: card.uid });
+          return;
+        }
+        resolveDiscardChoice(card.uid, player.id);
+        onlineAfterHostAction("discard");
+        return;
+      }
       if (!canUseHand) {
         addLog(onlineWaitingDetail(player.id));
         render();
@@ -9140,6 +9343,11 @@ function renderHand() {
 function handleSlotClick(player, lane, slotIndex) {
   if (isOnlineMode() && !isOnlineHost()) {
     const actorId = onlineLocalPlayerId();
+    if (pendingDiscard) {
+      addLog(onlineWaitingDetail(actorId));
+      render();
+      return;
+    }
     const card = player.board[lane][slotIndex];
     const selectedHand = currentSelectedHand(game.players[actorId]);
     const selectedBoard = currentSelectedBoard(game.players[actorId]);
@@ -9162,6 +9370,11 @@ function handleSlotClick(player, lane, slotIndex) {
     } else {
       selected = null;
     }
+    render();
+    return;
+  }
+  if (pendingDiscard) {
+    addLog(pendingDiscard.playerId === player.id ? "先从手牌里选 1 张弃掉，才能继续操作场面。" : "对方正在处理满手弃牌，先等这一步结完。");
     render();
     return;
   }
@@ -9260,6 +9473,8 @@ function renderPanels() {
   els.p2Panel.classList.toggle("active", game.active === 1);
   els.p1Panel.classList.toggle("reacting", pendingDefense?.defenderId === 0);
   els.p2Panel.classList.toggle("reacting", pendingDefense?.defenderId === 1);
+  els.p1Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === 0);
+  els.p2Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === 1);
   els.p1Status.textContent = `生命 ${p1.hp} · 食物 ${p1.food} · 技能 ${p1.turnSkills || 0}/1 · 移动 ${p1.turnMoves || 0}/1 · 献祭 ${p1.turnSacrifices}/1 · 复工 ${p1.turnRecovers}/1 · 护场 ${p1.turnProtects || 0}/1${roarActive(p1) ? " · 被虎啸" : ""}`;
   els.p2Status.textContent = `生命 ${p2.hp} · 食物 ${p2.food} · 技能 ${p2.turnSkills || 0}/1 · 移动 ${p2.turnMoves || 0}/1 · 献祭 ${p2.turnSacrifices}/1 · 复工 ${p2.turnRecovers}/1 · 护场 ${p2.turnProtects || 0}/1${roarActive(p2) ? " · 被虎啸" : ""}`;
   els.p1Deck.textContent = `私有 ${p1.deck.length}`;
@@ -9289,9 +9504,9 @@ function renderPanels() {
     els.aiPersonaBtn.title = isOnlineMode() ? "在线双人模式下不会启用 AI 人格。" : (vsAI ? persona.blurb : "双人模式下不会启用 AI 人格。");
   }
   document.querySelectorAll("[data-action]").forEach((button) => {
-    button.disabled = game.winner !== null || aiThinking || (vsAI && game.active === 1);
+    button.disabled = game.winner !== null || aiThinking || !!pendingDiscard || (vsAI && game.active === 1);
   });
-  document.querySelector("#endTurnBtn").disabled = game.winner !== null || aiThinking || (vsAI && game.active === 1);
+  document.querySelector("#endTurnBtn").disabled = game.winner !== null || aiThinking || !!pendingDiscard || (vsAI && game.active === 1);
 }
 
 function publicDrawCost(level) {
@@ -9331,7 +9546,7 @@ function countActionableAttackers(player) {
   const enemy = game.players[player.id === 0 ? 1 : 0];
   return boardCards(player).filter((loc) => {
     const faceCost = faceAttackCost(loc.card, enemy);
-    const faceReady = !attackReadyError(player, loc.card, faceCost, "打玩家") && !availableTaunts(enemy, loc.card).length;
+    const faceReady = !faceAttackReadyError(player, loc.card, enemy) && !availableTaunts(enemy, loc.card).length;
     return faceReady || legalCreatureTargets(loc, enemy).length > 0;
   });
 }
@@ -9346,7 +9561,7 @@ function opponentFaceThreatSummary(player = activePlayer()) {
     .map((loc) => {
       const card = loc.card;
       const cost = attackSpendCost(enemy, card, player);
-      if (attackReadyErrorWithFood(enemy, card, cost, "打玩家", nextFood)) return null;
+      if (faceAttackReadyErrorWithFood(enemy, card, player, nextFood)) return null;
       if (availableTaunts(player, card).length) return null;
       const damage = effectiveAttack(enemy, card);
       if (damage <= 0) return null;
@@ -9387,6 +9602,16 @@ function buildTurnHintState(player = activePlayer()) {
       title: "本局结束",
       detail: "战报已经记下来了，可以新开一局继续测。",
       chips: [`第 ${game.turn} 回合`, `${game.history.length} 步`],
+    };
+  }
+  if (pendingDiscard) {
+    const discardPlayer = game.players[pendingDiscard.playerId] || player;
+    const isMine = discardPlayer?.id === (isOnlineMode() ? onlineLocalPlayerId() : player?.id);
+    return {
+      tone: "warning",
+      title: "手牌满了，先弃 1 张",
+      detail: isMine ? "直接点下面任意一张手牌，把它丢进弃牌区。" : `等 ${discardPlayer?.name || "对方"} 从满手里弃 1 张。`,
+      chips: [`上限 ${MAX_HAND_SIZE}`, `当前 ${discardPlayer?.hand?.length || 0}`],
     };
   }
   if (isOnlineMode() && !onlineCanControlCurrentDecision()) {
@@ -9771,7 +9996,7 @@ function buildSelectedBoardHintActions(player, loc) {
   const enemy = opponentPlayer();
   const actions = [];
   const faceCost = faceAttackCost(loc.card, enemy);
-  const faceReady = attackReadyError(player, loc.card, faceCost, "打玩家") === "" && availableTaunts(enemy, loc.card).length === 0;
+  const faceReady = faceAttackReadyError(player, loc.card, enemy) === "" && availableTaunts(enemy, loc.card).length === 0;
   const skillError = activeSkillReadyError(player, loc.card);
   const moveError = moveReadyError(player, loc);
   const recoverError = recoverReadyError(player, loc);
@@ -10053,12 +10278,12 @@ function manualPlanFromSuggestion(suggestion) {
   }
   if (suggestion.kind === "disaster") {
     return {
-      lead: "节目效果正在赚钱",
-      body: suggestion.note || "这张节目卡现在通常是你更赚。",
+      lead: "环境牌值得赌一手",
+      body: suggestion.note || "这张暗置环境牌现在值得赌一手。",
       compact: true,
       steps: [
-        hintStep("看一眼中间的节目卡", "先确认这一炸大概会带走谁。", "current"),
-        hintStep("点“发动节目效果”", "这步会直接结算双方对应空间的倒下名单。"),
+        hintStep("抽暗置环境", "抽之前不知道是哪张，付费后会自动发动。", "current"),
+        hintStep("看自动结算", "命中时会直接结算双方对应空间的倒下名单。"),
       ],
       aside: "炸完之后局面会立刻刷新，通常还能顺手追一手。",
     };
@@ -10170,7 +10395,7 @@ function manualPlanFromSuggestion(suggestion) {
       body: suggestion.note || "现在没有特别赚的动作，别硬点。",
       compact: true,
       steps: [
-        hintStep("确认你真的不想再动", "手牌、技能、节目卡都可以再看一眼。", "current"),
+        hintStep("确认你真的不想再动", "手牌、技能、环境牌都可以再看一眼。", "current"),
         hintStep("点“结束回合”", "把资源留给下一轮通常更舒服。"),
       ],
     };
@@ -10179,6 +10404,17 @@ function manualPlanFromSuggestion(suggestion) {
 }
 
 function renderHint() {
+  if (pendingDiscard) {
+    const player = game.players[pendingDiscard.playerId];
+    renderHintCard({
+      lead: "手牌满了",
+      body: `${player?.name || "玩家"} 手牌超过 ${MAX_HAND_SIZE} 张。现在直接点下面一张手牌弃掉，之后继续当前回合。`,
+      aside: "这次不会自动丢新牌，你可以自己决定保留哪张。",
+      compact: true,
+      mode: "decision",
+    });
+    return;
+  }
   if (pendingDefense?.kind === "face") {
     const defender = defendingPlayer();
     const attackerLoc = attackerFromPendingDefense();
@@ -10238,7 +10474,7 @@ function renderHint() {
             ],
         aside: watch.suggestion
           ? "桌上的“它先 / 它去 / 它打”黄标，就是这回合最值得盯的几处。"
-          : "如果它在准备节目卡、换线或冲脸，中间播报条会先替你说人话。",
+          : "如果它在准备环境牌、换线或冲脸，中间播报条会先替你说人话。",
       });
       return;
     }
@@ -10311,7 +10547,7 @@ function renderHint() {
       return;
     }
     if (!activeSkillReadyError(activePlayer(), loc.card)) {
-      const faceReady = attackReadyError(activePlayer(), loc.card, faceCost, "打玩家") === "" && availableTaunts(opponentPlayer(), loc.card).length === 0;
+      const faceReady = faceAttackReadyError(activePlayer(), loc.card, opponentPlayer()) === "" && availableTaunts(opponentPlayer(), loc.card).length === 0;
       renderHintCard({
         lead: "这只现在能整活",
         body: legalTargets.length
@@ -10420,16 +10656,17 @@ function getTurnGuide() {
   const selectedLoc = currentSelectedLocation();
   const disaster = currentTurnDisaster(player);
   const disasterPlan = disasterVictimPlan(player, disaster);
+  const disasterSuggestion = findBestDisasterSuggestion(player);
   const summonable = player.hand.some((card) => emptySlotsFor(player, card).length > 0);
   const movableBoard = ownBoard.some((loc) => moveReadyError(player, loc) === "");
-  const readyToFace = ownBoard.some((loc) => attackReadyError(player, loc.card, faceAttackCost(loc.card, opponentPlayer()), "打玩家") === "");
+  const readyToFace = ownBoard.some((loc) => faceAttackReadyError(player, loc.card, opponentPlayer()) === "");
   const readyToTrade = ownBoard.some((loc) => attackReadyError(player, loc.card, attackSpendCost(player, loc.card), "攻击") === "");
 
   if (!selectedLoc) {
-    if (disasterReadyError(player, disaster, disasterPlan) === "" && disasterSwing(disasterPlan) > 2.2) {
+    if (disasterSuggestion) {
       return {
-        mood: "节目效果突然很赚",
-        note: `《${disaster["卡名"]}》现在能顺手炸掉对面更值钱的那一排，点中间的“发动节目效果”。`,
+        mood: "环境牌突然值得赌",
+        note: "当前场面有环境命中窗口，点中间“抽环境”会付费抽暗牌并自动发动。",
         phase: 2,
       };
     }
@@ -10913,7 +11150,7 @@ function buildCoachAside(current) {
   }
   if (suggestion?.kind === "disaster") {
     return flavorPick([
-      "节目卡这种东西，通常是按下去以后才显得自己很有想法。",
+      "环境牌这种东西，通常是抽出来以后才显得自己很有想法。",
       "主持人友情提示：这一炸多半不亏，亏的是气氛。",
     ], 10);
   }
@@ -10991,7 +11228,7 @@ function followUpActionLabel(suggestion, player = activePlayer()) {
   if (suggestion.kind === "draw_public_A") return "摸 A 池";
   if (suggestion.kind === "draw_public_B") return "摸 B 池";
   if (suggestion.kind === "draw_public_C") return "摸 C 池";
-  if (suggestion.kind === "disaster") return `放《${disaster?.["卡名"] || "节目卡"}》`;
+  if (suggestion.kind === "disaster") return "抽环境牌";
   if (suggestion.kind === "skill") return `让《${actor}》开 ${skill}`;
   if (suggestion.kind === "attack_face") return `让《${actor}》冲脸`;
   if (suggestion.kind === "attack_creature") return `让《${actor}》打《${target}》`;
@@ -11018,7 +11255,7 @@ function endTurnNextActionLabel(suggestion, player = activePlayer()) {
   if (suggestion.kind === "draw_public_A") return "摸 A 池";
   if (suggestion.kind === "draw_public_B") return "摸 B 池";
   if (suggestion.kind === "draw_public_C") return "摸 C 池";
-  if (suggestion.kind === "disaster") return `放《${disaster?.["卡名"] || "节目卡"}》`;
+  if (suggestion.kind === "disaster") return "抽环境牌";
   if (suggestion.kind === "skill") return `《${actor}》开绝活`;
   if (suggestion.kind === "attack_face") return `《${actor}》冲脸`;
   if (suggestion.kind === "attack_creature") return `《${actor}》打《${target}》`;
@@ -11195,6 +11432,11 @@ function remainingMajorActionSummary(player = activePlayer()) {
 
 function handleEndTurnClick() {
   if (!game || game.winner !== null || aiThinking || canHumanResolveDefense() || (vsAI && game.active === 1)) return;
+  if (pendingDiscard) {
+    addLog(pendingDiscard.playerId === onlineInputActorId() ? "先处理满手弃牌，再结束回合。" : onlineWaitingDetail());
+    render();
+    return;
+  }
   if (isOnlineMode() && !onlineCanControlCurrentDecision()) {
     addLog(onlineWaitingDetail());
     render();
@@ -11222,6 +11464,16 @@ function buildEndTurnButtonState() {
     stateClass: "is-neutral",
   };
   if (!game) return { ...base, label: "结束回合", variant: "primary" };
+  if (pendingDiscard) {
+    return {
+      ...base,
+      label: "先弃 1 张",
+      title: "手牌超过上限，必须先选择一张弃掉。",
+      detail: { label: "满手弃牌中", tone: "warning" },
+      variant: "secondary",
+      stateClass: "is-blocked",
+    };
+  }
   if (pendingDefense) {
     return {
       ...base,
@@ -11398,7 +11650,7 @@ function buildLiveReactionFromEvent(event) {
         "场边闲话：开局看着平静，往往只是因为离谱还没轮到自己出场。",
         "节目组判词：先看手牌和亮格，第一拍别把自己想累了。",
       ], `${seed}:chant`),
-      chips: [`节目卡 ${game.players[0].turnDisaster?.["卡名"] || "待翻"}`],
+      chips: [`环境暗牌 -${DISASTER_DRAW_COST}`],
       followUp,
     };
   }
@@ -11530,7 +11782,7 @@ function buildLiveReactionFromEvent(event) {
         "主持人把麦克风先拿远了",
         "后排已经开始找掩体了",
       ], seed),
-      copy: `《${event.target || "节目卡"}》刚把${laneName}搅得鸡飞狗跳。`,
+      copy: `《${event.target || "环境牌"}》刚把${laneName}搅得鸡飞狗跳。`,
       chant: stablePickByKey([
         "节目组判词：自然灾害不讲武德，但很讲节目效果。",
         "场边闲话：这种按钮一按下去，朋友关系都会短暂紧张一下。",
@@ -11805,10 +12057,10 @@ function buildActionStingerFromEvent(event) {
     return {
       tone: "trick",
       badge: "炸场瞬间",
-      title: `《${event.target || "节目卡"}》开演`,
+      title: `《${event.target || "环境牌"}》开演`,
       copy: stablePickByKey([
         "灯光组已经疯了，这一下本来就不是冲着体面来的。",
-        "节目卡一按下去，空气一般会立刻复杂起来。",
+        "环境牌一抽出来，空气一般会立刻复杂起来。",
       ], seed),
       chips,
       followUp,
@@ -11946,7 +12198,7 @@ function buildMomentumRouteItem(event) {
   const tone = reactionToneForAction(action);
   if (action === "summon") return { tone: "support", badge: "上场", title: event.target || extra.cardName || "这只动物" };
   if (action === "move") return { tone: "trick", badge: "换线", title: laneLabel(extra.to || "") ? `去${laneLabel(extra.to || "")}` : event.target || extra.cardName || "挪位" };
-  if (action === "disaster_cast") return { tone: "trick", badge: "节目卡", title: event.target || "炸场" };
+  if (action === "disaster_cast") return { tone: "trick", badge: "环境牌", title: event.target || "炸场" };
   if (action === "recover") return { tone: "support", badge: "复工", title: event.target || "返场" };
   if (action === "sacrifice") return { tone: "support", badge: "开饭", title: event.target || "当口粮" };
   if (action === "quest_complete") return { tone: "reward", badge: "领奖", title: compactRewardLabel(extra, "quest") };
@@ -12111,11 +12363,11 @@ function buildMomentumSettlementItems(player = activePlayer(), summary = buildSh
         tone: "trick",
         badge: "炸场对账",
         title: stablePickByKey([
-          `《${event.target || "节目卡"}》炸穿 ${lane}`,
-          `《${event.target || "节目卡"}》把 ${lane} 闹起来了`,
+          `《${event.target || "环境牌"}》炸穿 ${lane}`,
+          `《${event.target || "环境牌"}》把 ${lane} 闹起来了`,
         ], seed),
         detail: stablePickByKey([
-          "节目卡一响，场面就开始自己长故事。",
+          "环境牌一响，场面就开始自己长故事。",
           "这一下不是补刀，是整排一起开始出节目效果。",
         ], seed),
       };
@@ -12220,7 +12472,7 @@ function buildMomentumStrip(player = activePlayer()) {
   } else if (moment?.near) {
     badge = "快到掉落线";
     title = `差 ${moment.remaining} 点热度就开闹`;
-    copy = `技能、击杀、节目卡和连招都能补这口。现在停手会显得很没节目精神。`;
+    copy = `技能、击杀、环境牌和连招都能补这口。现在停手会显得很没节目精神。`;
   }
 
   const chips = [];
@@ -12417,8 +12669,8 @@ function buildMomentStickerFromEvent(event) {
     return {
       key: `disaster:${event.step}:${event.target}`,
       tone,
-      label: "节目卡",
-      title: event.target || "节目卡",
+      label: "环境牌",
+      title: event.target || "环境牌",
       note: laneLabel(extra.lane || "") || "炸场成功",
     };
   }
@@ -12764,15 +13016,21 @@ function renderDisasterPanel() {
   if (!els.disasterCard || !els.disasterMeta || !els.disasterTip) return;
 
   if (!disaster) {
-    els.disasterMeta.textContent = "这回合暂无节目";
+    const readyError = disasterReadyError(player, null, null);
+    els.disasterMeta.textContent = player.turnDisasterUsed ? "这回合已抽过环境" : `${player.name} 的暗置环境牌`;
     els.disasterCard.innerHTML = `
       <div class="disaster-head">
-        <strong class="disaster-name">节目组还没到场</strong>
-        <span class="disaster-cost">-</span>
+        <strong class="disaster-name">暗置环境牌</strong>
+        <span class="disaster-cost">-${disasterCost(null)}</span>
       </div>
-      <p class="disaster-effect">下一回合会随机翻一张新的节目卡。</p>
+      <div class="disaster-tags">
+        <span class="lane-chip neutral">随机</span>
+        <span class="lane-chip neutral">抽到自动发动</span>
+        <span class="lane-chip neutral">${player.turnDisasterUsed ? "本回合已抽" : "本回合可抽"}</span>
+      </div>
+      <p class="disaster-effect">先付费抽 1 张环境牌。抽到后立即按牌面空间自动结算，可能命中，也可能空响。</p>
     `;
-    els.disasterTip.textContent = "节目卡是试玩版的轻量自然灾害系统，每回合随机一张。";
+    els.disasterTip.textContent = readyError || `固定花费 ${disasterCost(null)} 食物；抽之前不会知道是哪一张。`;
     return;
   }
 
@@ -12781,7 +13039,7 @@ function renderDisasterPanel() {
   const laneClass = `lane-${lane}`;
   const ownVictims = plan?.ownVictims?.map((loc) => loc.card.name).join("、") || "暂无";
   const enemyVictims = plan?.enemyVictims?.map((loc) => loc.card.name).join("、") || "暂无";
-  els.disasterMeta.textContent = `${player.name} 的回合节目卡`;
+  els.disasterMeta.textContent = `${player.name} 本回合抽到的环境牌`;
   els.disasterCard.innerHTML = `
     <div class="disaster-head">
       <strong class="disaster-name">${disaster["卡名"]}</strong>
@@ -12790,15 +13048,11 @@ function renderDisasterPanel() {
     <div class="disaster-tags">
       <span class="lane-chip ${laneClass}">${disasterLaneLabel(disaster)}</span>
       <span class="lane-chip neutral">${count === Infinity ? "全灭" : `各倒 ${count}`}</span>
-      <span class="lane-chip neutral">${player.turnDisasterUsed ? "本回合已演完" : "本回合可用"}</span>
+      <span class="lane-chip neutral">${player.turnDisasterUsed ? "已自动发动" : "未发动"}</span>
     </div>
     <p class="disaster-effect">${disasterPreview(disaster)}</p>
   `;
-  els.disasterTip.textContent = readyError
-    ? readyError
-    : swing > 0
-      ? `预计你这边倒：${ownVictims}；对面倒：${enemyVictims}。这波一般是你更赚。`
-      : `预计你这边倒：${ownVictims}；对面倒：${enemyVictims}。这张更像纯搞事，慎按。`;
+  els.disasterTip.textContent = `本回合抽到的是《${disaster["卡名"]}》。己方倒：${ownVictims}；对面倒：${enemyVictims}。`;
 }
 
 function renderQuestPanel() {
@@ -12897,7 +13151,7 @@ function renderHypePanel() {
     const remaining = nextThreshold - current;
     els.hypeAlert.textContent = "热场中";
     els.hypeTip.innerHTML = `
-      <div class="hype-tip-copy">技能、击杀、节目卡和连招会涨热度。再来 ${remaining} 点，就能触发“${reward.label}”。</div>
+      <div class="hype-tip-copy">技能、击杀、环境牌和连招会涨热度。再来 ${remaining} 点，就能触发“${reward.label}”。</div>
       ${rewardRailMarkup}
     `;
     return;
@@ -13045,8 +13299,8 @@ function renderPlaybookPanel() {
       els.playbookMeta.textContent = "可以先把场面支起来";
       els.playbookTip.textContent = `先把《${cardNameFromUid(first.cardUid, "这只动物")}》落下，后面的打法会顺很多。桌面端按空格也能直接走第一手。`;
     } else if (first.kind === "disaster") {
-      els.playbookMeta.textContent = "节目卡现在有窗口";
-      els.playbookTip.textContent = "这把的节目效果看起来不只是热闹，多半还能顺手赚钱。";
+      els.playbookMeta.textContent = "环境牌现在有窗口";
+      els.playbookTip.textContent = "这把的环境暗抽看起来不只是热闹，多半还能顺手赚钱。";
     } else if (first.kind === "skill") {
       els.playbookMeta.textContent = "特技现在有窗口";
       els.playbookTip.textContent = "先把特技甩出来，很多时候热度和任务会一起亮。";
@@ -13255,7 +13509,7 @@ function renderActionDock() {
     if (["disaster", "skill", "move", "move_attack_face", "move_attack_creature", "recover", "sacrifice"].includes(suggestion?.kind)) {
       els.tacticsMeta.textContent = watch.detail || "这回合它更像先整活。";
     } else {
-      els.tacticsMeta.textContent = "它如果准备开绝活、换线或放节目卡，这组会先替你翻译成人话。";
+      els.tacticsMeta.textContent = "它如果准备开绝活、换线或抽环境牌，这组会先替你翻译成人话。";
     }
     if (["attack_face", "attack_creature", "move_attack_face", "move_attack_creature"].includes(suggestion?.kind)) {
       els.pressureMeta.textContent = watch.detail || "这回合它更像先往这边下口。";
@@ -13267,7 +13521,7 @@ function renderActionDock() {
 
   els.defenseMeta.textContent = "只有被打到脸或需要保护动物时，这组才会亮。";
   els.resourceMeta.textContent = player.hand.length >= 6
-    ? "手牌已满，再抽会把刚摸到的新牌挤进弃牌。先上场、开技或当食物腾位置。"
+    ? "手牌已满，再抽会先拿进手里，然后由你选择弃掉 1 张。"
     : player.hand.length === 5
       ? "再补一张就满手，继续连抽前最好先想好谁要上桌。"
       : player.hand.length <= 2
@@ -13303,7 +13557,7 @@ function renderActionDock() {
   }
 
   if (!selectedBoard) {
-    els.tacticsMeta.textContent = "大多需要先点一只己方生物；节目卡除外。";
+    els.tacticsMeta.textContent = "大多需要先点一只己方生物；环境牌除外。";
     els.pressureMeta.textContent = "先选一只己方生物，右边能打的目标才会亮。";
     return;
   }
@@ -13321,7 +13575,7 @@ function renderActionDock() {
   const faceBlockers = availableTaunts(enemy, selectedBoard.card);
   const faceBlockedReason = faceBlockers.length
     ? `对面有嘲讽，得先处理 ${faceBlockers[0].card.name}。`
-    : attackReadyError(player, selectedBoard.card, faceCost, "打玩家");
+    : faceAttackReadyError(player, selectedBoard.card, enemy);
   const faceBlockedShort = compactDisabledActionReason(faceBlockedReason);
   const faceExcitementTail = focusedSuggestion?.kind === "attack_face" && focusedCue ? ` 直接压出去多半${excitementCueSentence(focusedCue)}。` : "";
 
@@ -13363,7 +13617,7 @@ function renderActionButtons() {
   const faceDefenseShortcut = pendingDefense?.kind === "face" ? faceDefenseShortcutState() : null;
   const moveMode = selected?.type === "board" && selected?.uid === selectedBoard?.card?.uid && selected?.mode === "move";
   const onlineLocked = isOnlineMode() && !onlineCanControlCurrentDecision();
-  const locked = !reactionMode && (game.winner !== null || aiThinking || (vsAI && game.active === 1) || onlineLocked);
+  const locked = !reactionMode && (game.winner !== null || aiThinking || !!pendingDiscard || (vsAI && game.active === 1) || onlineLocked);
   const focus = currentRouteFocus();
   const actionSpotlight = currentActionButtonSpotlight(player, focus);
 
@@ -13417,7 +13671,7 @@ function renderActionButtons() {
         title = disabled
           ? (player.deck.length === 0 ? "私有卡组已经空了。" : "需要至少 1 食物。")
           : player.hand.length >= 6
-            ? "手牌已满，抽到的新牌会立刻进弃牌。"
+            ? "手牌已满，抽完会由你选择弃掉 1 张。"
             : player.hand.length === 5
               ? "从私有卡组补 1 张牌，抽完刚好满手。"
               : "从你的私有卡组补 1 张牌。";
@@ -13429,7 +13683,7 @@ function renderActionButtons() {
         title = disabled
           ? (game.publicPiles.A.length === 0 ? "A 类公共牌抽空了。" : "需要 3 食物。")
           : player.hand.length >= 6
-            ? `手牌已满，抽到《${topCard?.name || "A 牌"}》会立刻进弃牌。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
+            ? `手牌已满，抽到《${topCard?.name || "A 牌"}》后需要选择弃掉 1 张。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
             : player.hand.length === 5
               ? `高费强卡，抽到《${topCard?.name || "A 牌"}》后刚好满手。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
               : `公共 A 池顶牌是《${topCard?.name || "A 牌"}》。${topCard ? `${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}。` : ""}爆发更猛。`;
@@ -13441,7 +13695,7 @@ function renderActionButtons() {
         title = disabled
           ? (game.publicPiles.B.length === 0 ? "B 类公共牌抽空了。" : "需要 2 食物。")
           : player.hand.length >= 6
-            ? `手牌已满，抽到《${topCard?.name || "B 牌"}》会立刻进弃牌。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
+            ? `手牌已满，抽到《${topCard?.name || "B 牌"}》后需要选择弃掉 1 张。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
             : player.hand.length === 5
               ? `中坚牌，抽到《${topCard?.name || "B 牌"}》后刚好满手。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
               : `公共 B 池顶牌是《${topCard?.name || "B 牌"}》。${topCard ? `${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}。` : ""}通常比较稳。`;
@@ -13453,15 +13707,16 @@ function renderActionButtons() {
         title = disabled
           ? (game.publicPiles.C.length === 0 ? "C 类公共牌抽空了。" : "需要 2 食物。")
           : player.hand.length >= 6
-            ? `手牌已满，抽到《${topCard?.name || "C 牌"}》会立刻进弃牌。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
+            ? `手牌已满，抽到《${topCard?.name || "C 牌"}》后需要选择弃掉 1 张。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
             : player.hand.length === 5
               ? `补位小牌，抽到《${topCard?.name || "C 牌"}》后刚好满手。${topCard ? ` ${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}` : ""}`
               : `公共 C 池顶牌是《${topCard?.name || "C 牌"}》。${topCard ? `${spaceOf(topCard)} · ${topCard.atk}/${topCard.def}。` : ""}适合补位。`;
       }
       if (action === "disaster") {
-        disabled = !!disasterReadyError(player, disaster, disasterPlan);
-        label = disaster ? `发动 ${disaster["卡名"]} -${disasterCost(disaster)}` : "发动事件";
-        title = disaster ? (disabled ? disasterReadyError(player, disaster, disasterPlan) : disasterPreview(disaster)) : "这回合还没有节目卡。";
+        const disasterError = disasterReadyError(player, disaster, disasterPlan);
+        disabled = !!disasterError;
+        label = player.turnDisasterUsed && disaster ? `已抽 ${disaster["卡名"]}` : `抽环境 -${disasterCost(null)}`;
+        title = disabled ? disasterError : `花 ${disasterCost(null)} 食物抽 1 张暗置环境牌，抽到后自动发动。`;
       }
       if (action === "skill") {
         const skillName = selectedBoard?.card?.skill;
@@ -13504,14 +13759,15 @@ function renderActionButtons() {
       if (action === "attackPlayer") {
         const attackCost = selectedBoard ? faceAttackCost(selectedBoard.card, enemy) : 0;
         const tax = selectedBoard ? faceAttackTax(enemy) : 0;
-        disabled = !selectedBoard || attackReadyError(player, selectedBoard.card, attackCost, "打玩家") !== "" || availableTaunts(enemy, selectedBoard.card).length > 0;
+        const faceError = selectedBoard ? faceAttackReadyError(player, selectedBoard.card, enemy) : "";
+        disabled = !selectedBoard || faceError !== "" || availableTaunts(enemy, selectedBoard.card).length > 0;
         label = `${vsAI ? "攻击 AI" : "攻击玩家"}${selectedBoard ? ` -${attackCost}` : ""}`;
         title = !selectedBoard
           ? "先选一只己方生物。"
           : disabled
             ? availableTaunts(enemy, selectedBoard.card).length > 0
               ? `对面有嘲讽，得先处理 ${availableTaunts(enemy, selectedBoard.card)[0].card.name}。`
-              : attackReadyError(player, selectedBoard.card, attackCost, "打玩家")
+              : faceError
             : tax > 0
               ? `直接打玩家。费用 ${attackCost} 食物 = 攻击力 ${Number(selectedBoard.card.atk) || 0} + 对方场上有动物额外 ${tax}。`
               : `直接打玩家。费用 ${attackCost} 食物 = 攻击力 ${Number(selectedBoard.card.atk) || 0}。`;
@@ -13591,9 +13847,9 @@ function renderActionButtons() {
     applyActionButtonDetail(endTurnBtn, locked || reactionMode ? null : endTurnState.detail);
     applyRouteMarker(endTurnBtn, focus.actionMarkers.get("endTurn") || null);
   }
-  document.querySelector("#newGameBtn").disabled = aiThinking || reactionMode || (isOnlineMode() && !isOnlineHost() && !onlineSession.conn?.open);
-  document.querySelector("#modeBtn").disabled = isOnlineMode() || aiThinking || reactionMode;
-  if (els.aiPersonaBtn) els.aiPersonaBtn.disabled = isOnlineMode() || !vsAI || aiThinking || reactionMode;
+  document.querySelector("#newGameBtn").disabled = aiThinking || reactionMode || !!pendingDiscard || (isOnlineMode() && !isOnlineHost() && !onlineSession.conn?.open);
+  document.querySelector("#modeBtn").disabled = isOnlineMode() || aiThinking || reactionMode || !!pendingDiscard;
+  if (els.aiPersonaBtn) els.aiPersonaBtn.disabled = isOnlineMode() || !vsAI || aiThinking || reactionMode || !!pendingDiscard;
   if (els.exportCurrentBtn) els.exportCurrentBtn.disabled = !game;
   if (els.exportArchiveBtn) els.exportArchiveBtn.disabled = savedArchive.length === 0;
 }
@@ -13601,8 +13857,8 @@ function renderActionButtons() {
 function logToneForAction(action = "") {
   if (action === "winner" || action === "quest_complete" || action === "hype_reward") return "reward";
   if (action === "attack_face" || action === "attack_face_guard" || action === "attack_face_guard_unstoppable" || action === "attack_creature_kill" || action === "attack_creature_pressure_kill" || action === "attack_creature_injure" || action === "attack_creature_venom" || action === "attack_creature_player_guard" || action === "kill_passive") return "attack";
-  if (action === "disaster_cast" || action === "move" || action === "guard_prompt" || action === "creature_guard_prompt" || typeof action === "string" && action.startsWith("skill")) return "trick";
-  if (action === "match_start" || action === "end_turn" || action === "summon" || action === "recover" || action === "draw_private" || action === "setup_draw" || String(action).startsWith("draw_public_") || action === "sacrifice") return "support";
+  if (action === "disaster_cast" || action === "disaster_fizzle" || action === "move" || action === "guard_prompt" || action === "creature_guard_prompt" || typeof action === "string" && action.startsWith("skill")) return "trick";
+  if (action === "match_start" || action === "end_turn" || action === "summon" || action === "recover" || action === "draw_private" || action === "setup_draw" || String(action).startsWith("draw_public_") || action === "sacrifice" || action === "discard_choice" || action === "discard_prompt" || action === "discard_overflow") return "support";
   return "neutral";
 }
 
@@ -13615,7 +13871,8 @@ function logBadgeForAction(action = "") {
   if (action === "winner") return "胜负";
   if (action === "guard_prompt" || action === "creature_guard_prompt") return "防守";
   if (action === "kill_passive") return "余震";
-  if (action === "discard_overflow") return "挤牌";
+  if (action === "discard_overflow" || action === "discard_choice" || action === "discard_prompt") return "弃牌";
+  if (action === "disaster_fizzle") return "环境";
   return showtimeReplayBadge(action);
 }
 
@@ -13631,7 +13888,9 @@ function logTitleForEvent(event) {
   if (action === "guard_prompt") return "选择是否用动物格挡";
   if (action === "creature_guard_prompt") return `选择是否保住《${event.target || "这只动物"}》`;
   if (action === "kill_passive") return `《${extra.defender || event.target || "这只生物"}》死后还在算账`;
-  if (action === "discard_overflow") return `《${event.target || "这张牌"}》被手牌上限挤掉了`;
+  if (action === "discard_overflow" || action === "discard_choice") return `《${event.target || "这张牌"}》被弃掉了`;
+  if (action === "discard_prompt") return "手牌超过上限";
+  if (action === "disaster_fizzle") return `《${event.target || "环境牌"}》空响`;
   return showtimeReplayTitle(event);
 }
 
@@ -13673,6 +13932,7 @@ function isSpotlightAction(action = "") {
 
 function buildNextBeatLine() {
   if (!game) return "新开一局后，这里会开始滚动实时摘要。";
+  if (pendingDiscard) return `下一拍：${game.players[pendingDiscard.playerId]?.name || "玩家"} 先从满手里弃 1 张。`;
   if (pendingDefense?.kind === "face") return `下一拍：${pendingDefenseGuideShortcut()}`;
   if (pendingDefense?.kind === "creature") return `下一拍：${pendingDefenseGuideShortcut()}`;
   if (vsAI && game.active === 1) {
@@ -13711,7 +13971,7 @@ function buildRecordRecap(canSave = canUseStorage(), persona = currentAIPersona(
       meta: "待开局",
       title: `AI 对手是 ${persona.label}`,
       detail: persona.blurb,
-      chips: ["热度 4 / 7 掉落", "每回合 1 张节目卡"],
+      chips: ["热度 4 / 7 掉落", "每回合 1 张环境牌"],
       next: "新开一局后，这里会变成实时回合高光。",
       aside: canSave
         ? `自动存档已开，浏览器里现在有 ${savedArchive.length} 局本地记录。`
@@ -13828,10 +14088,10 @@ function simpleLogSentenceForEvent(event) {
   const drawLevel = String(action).startsWith("draw_public_") ? action.replace("draw_public_", "") : "";
 
   if (action === "rule_tip") {
-    return `${logName("规则")}：攻击玩家费用 ${logEffect("攻击力 -1")}，遇到场上有动物 ${logEffect("+1 食物")}；普通压制留下 ${logEffect("压伤")}，同一动物第 ${logEffect("4 次")} 被压制会退场；每回合最多 ${logEffect("护场 1 次")}；水生位每只动物回合开始 ${logEffect("+1 食物")}，最多 ${logEffect("+3")}。`;
+    return `${logName("规则")}：攻击玩家费用 ${logEffect("攻击力 -1")}，遇到场上有动物 ${logEffect("+1 食物")}；水线不能直接攻击玩家；环境牌 ${logEffect(`-${DISASTER_DRAW_COST} 食物`)} 暗抽后自动发动；普通压制留下 ${logEffect("压伤")}，同一动物第 ${logEffect("4 次")} 被压制会退场；每回合最多 ${logEffect("护场 1 次")}；水生位每只动物回合开始 ${logEffect("+1 食物")}，最多 ${logEffect("+3")}。`;
   }
   if (action === "match_start") {
-    return `${prefix}${logName("开局")}，玩家一 ${logEffect("6 食物")}，AI 对手 ${logEffect("2 食物")}。`;
+    return `${prefix}${logName("开局")}，先手 ${logEffect("5 食物")}，后手 ${logEffect("2 食物")}，环境牌暗置。`;
   }
   if (action === "end_turn") {
     return `${prefix}${logName(actor)} ${logAction("结束回合")}，${logName(target || "下一位")} 获得 ${logEffect(`+${gain || "?"} 食物`)}。`;
@@ -13845,6 +14105,12 @@ function simpleLogSentenceForEvent(event) {
   }
   if (action === "discard_overflow") {
     return `${prefix}${logName(actor)} 手牌满了，${logName(target || "一张牌")} ${logAction("被弃掉")}。`;
+  }
+  if (action === "discard_choice") {
+    return `${prefix}${logName(actor)} 手牌满了，选择弃掉 ${logName(target || "一张牌")}。`;
+  }
+  if (action === "discard_prompt") {
+    return `${prefix}${logName(actor)} 手牌超过上限，需要先弃 1 张。`;
   }
   if (action === "summon") {
     return `${prefix}${logName(actor)} ${logAction("上场")} ${logName(extra.cardName || target || "动物")}${lane ? ` 到 ${logName(lane)}` : ""}${cost ? `，${cost}` : ""}。`;
@@ -13890,7 +14156,10 @@ function simpleLogSentenceForEvent(event) {
     return `${prefix}${logName(actor)} 用 ${logName(attacker)} ${logAction("攻击")} ${logName(target || extra.targetCard || "动物")}${cost ? `，${cost}` : ""}。`;
   }
   if (action === "disaster_cast") {
-    return `${prefix}${logName(actor)} ${logAction("发动事件")} ${logName(target || "节目卡")}，${logEffect(laneLabel(extra.lane) || "场地")} 结算。`;
+    return `${prefix}${logName(actor)} ${logAction("抽环境")} ${logName(target || "环境牌")}，${logEffect(laneLabel(extra.lane) || "场地")} 自动结算。`;
+  }
+  if (action === "disaster_fizzle") {
+    return `${prefix}${logName(actor)} ${logAction("抽环境")} ${logName(target || "环境牌")}，但这次没有命中目标。`;
   }
   if (typeof action === "string" && action.startsWith("skill")) {
     return `${prefix}${logName(actor)} 让 ${logName(target || extra.cardName || "动物")} ${logAction(extra.cardSkill || "发动技能")}${cost ? `，${cost}` : ""}。`;
@@ -13968,6 +14237,11 @@ function renderWinner() {
 
 function runActionButton(action, options = {}) {
   if (!game || game.winner !== null) return false;
+  if (pendingDiscard) {
+    addLog(pendingDiscard.playerId === onlineInputActorId() ? "先从手牌里点 1 张弃掉。" : onlineWaitingDetail());
+    render();
+    return false;
+  }
   if (canHumanResolveDefense()) {
     let resolved = false;
     if (action === "confirmGuard") resolved = confirmDefenseShortcut();
@@ -14180,6 +14454,7 @@ if (typeof window !== "undefined") {
     getGame: () => game,
     getSelected: () => selected,
     getPendingDefense: () => pendingDefense,
+    getPendingDiscard: () => pendingDiscard,
     setSelected(uid) {
       const loc = findCardLocation(uid);
       if (!loc) return false;
@@ -14221,6 +14496,7 @@ if (typeof window !== "undefined") {
     faceBlockCost,
     resolveDefenseDecision,
     resolveAutoDefense,
+    resolveDiscardChoice,
     resolveDirectCreatureAttack,
     resolveDirectPlayerAttack,
     beginCreatureAttack,

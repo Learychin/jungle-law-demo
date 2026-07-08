@@ -486,11 +486,22 @@ function boardButtons(selector) {
   debug.clearSelected();
   debug.render();
   assert.equal(actionButtonByName.drawPrivate.disabled, false);
-  assert.match(actionButtonByName.drawPrivate.dataset.actionDetail || "", /满手会弃新牌/);
+  assert.match(actionButtonByName.drawPrivate.dataset.actionDetail || "", /抽后要弃 1/);
   assert.equal(actionButtonByName.drawPrivate.dataset.actionDetailTone, "warning");
-  assert.match(actionButtonByName.drawPrivate.title, /立刻进弃牌/);
+  assert.match(actionButtonByName.drawPrivate.title, /选择弃掉 1 张/);
   assert.match(known.get("#resourceMeta").textContent, /手牌已满/);
-  assert.match(known.get("#resourceMeta").textContent, /挤进弃牌/);
+  assert.match(known.get("#resourceMeta").textContent, /选择弃掉 1 张/);
+  assert.equal(debug.runActionButton("drawPrivate"), true);
+  assert.equal(game.players[0].hand.length, 7);
+  assert.equal(debug.getPendingDiscard()?.playerId, 0);
+  assert.match(known.get("#selectionHint").innerHTML, /手牌满了/);
+  assert.ok(known.get("#hand").children.every((child) => child.classList.tokens.has("is-discard-choice")));
+  const discardUid = game.players[0].hand.find((card) => card.name === "猴子").uid;
+  assert.equal(debug.resolveDiscardChoice(discardUid), true);
+  assert.equal(debug.getPendingDiscard(), null);
+  assert.equal(game.players[0].hand.length, 6);
+  assert.equal(game.players[0].hand.some((card) => card.name === "孔雀鱼"), true);
+  assert.equal(game.players[0].grave.some((card) => card.name === "猴子"), true);
 }
 
 {
@@ -537,6 +548,43 @@ function boardButtons(selector) {
   assert.match(actionButtonByName.attackPlayer.dataset.actionDetail || "", /斩杀线 · 对手 -\d+/);
   assert.match(known.get("#pressureMeta").textContent, /冲脸按钮可用/);
   assert.match(known.get("#pressureMeta").textContent, /直接收掉/);
+}
+
+{
+  const game = setupGame({ p1Food: 12 });
+  const shark = place(game, 0, "water", 0, "鲨鱼");
+  const koi = place(game, 1, "water", 0, "锦鲤", { state: "rest" });
+  const sharkLoc = debug.boardCards(game.players[0]).find((loc) => loc.card.uid === shark.uid);
+  const koiLoc = debug.boardCards(game.players[1]).find((loc) => loc.card.uid === koi.uid);
+  selectCard(shark);
+  assert.equal(actionButtonByName.attackPlayer.disabled, true);
+  assert.match(actionButtonByName.attackPlayer.title, /水线生物.*不能直接攻击玩家/);
+  assert.equal(debug.resolveDirectPlayerAttack(sharkLoc), false);
+  assert.equal(game.players[1].hp, 20);
+  assert.equal(debug.resolveDirectCreatureAttack(sharkLoc, koiLoc), true);
+  assert.equal(game.players[1].board.water[0], null);
+}
+
+{
+  const game = setupGame({ p1Food: 10 });
+  const dog = place(game, 0, "land", 0, "中华田园犬");
+  const dogLoc = debug.boardCards(game.players[0]).find((loc) => loc.card.uid === dog.uid);
+  assert.equal(debug.resolveDirectPlayerAttack(dogLoc), true);
+  debug.render();
+  assert.equal(known.get("#player2Panel").classList.tokens.has("combat-damaged"), true);
+  assert.ok(boardButtons("#p1Board").some((button) => button.classList.tokens.has("combat-attacker")));
+}
+
+{
+  const game = setupGame({ p1Food: 10 });
+  const dog = place(game, 0, "land", 0, "中华田园犬");
+  const cat = place(game, 1, "land", 0, "苏格兰折耳猫", { state: "rest" });
+  const dogLoc = debug.boardCards(game.players[0]).find((loc) => loc.card.uid === dog.uid);
+  const catLoc = debug.boardCards(game.players[1]).find((loc) => loc.card.uid === cat.uid);
+  assert.equal(debug.resolveDirectCreatureAttack(dogLoc, catLoc), true);
+  debug.render();
+  assert.ok(boardButtons("#p1Board").some((button) => button.classList.tokens.has("combat-attacker")));
+  assert.ok(boardButtons("#p2Board").some((button) => button.classList.tokens.has("combat-target")));
 }
 
 {
@@ -650,31 +698,35 @@ function boardButtons(selector) {
 
 {
   const game = setupGame({ p1Food: 5 });
-  const dog = place(game, 0, "land", 0, "中华田园犬");
-  const lion = place(game, 0, "land", 1, "狮子");
-  const cat = place(game, 1, "land", 0, "苏格兰折耳猫");
-  const rhino = place(game, 1, "land", 1, "白犀牛");
-  game.players[0].turnDisaster = makeDisaster("干旱");
+  ["sky", "land", "water"].forEach((lane) => {
+    place(game, 0, lane, 0, lane === "sky" ? "蝙蝠" : lane === "water" ? "蛙" : "中华田园犬");
+    place(game, 0, lane, 1, lane === "sky" ? "猫头鹰" : lane === "water" ? "孔雀鱼" : "狮子");
+    place(game, 1, lane, 0, lane === "sky" ? "海鸥" : lane === "water" ? "锦鲤" : "苏格兰折耳猫");
+    place(game, 1, lane, 1, lane === "sky" ? "鹰" : lane === "water" ? "蓝鲸" : "白犀牛");
+  });
+  const ownBefore = debug.boardCards(game.players[0]).length;
+  const enemyBefore = debug.boardCards(game.players[1]).length;
+  game.players[0].turnDisaster = null;
   game.players[0].turnDisasterUsed = false;
   debug.render();
 
-  assert.equal(actionButtonByName.disaster.textContent, "发动 干旱 -2");
+  assert.equal(actionButtonByName.disaster.textContent, "抽环境 -2");
   assert.equal(actionButtonByName.disaster.disabled, false);
-  assert.match(actionButtonByName.disaster.title, /双方该空间各倒最多 1 只/);
+  assert.match(actionButtonByName.disaster.title, /暗置环境牌/);
+  assert.match(known.get("#disasterCard").innerHTML, /暗置环境牌/);
 
   assert.equal(debug.useTurnDisaster(game.players[0]), true);
   assert.equal(game.players[0].food, 3);
-  assert.equal(game.players[0].board.land[0], null);
-  assert.equal(game.players[0].board.land[1]?.name, lion.name);
-  assert.equal(game.players[1].board.land[0]?.name, cat.name);
-  assert.equal(game.players[1].board.land[1], null);
+  assert.ok(game.players[0].turnDisaster?.["卡名"], "drawn environment should be revealed after paying");
+  assert.equal(debug.boardCards(game.players[0]).length < ownBefore, true);
+  assert.equal(debug.boardCards(game.players[1]).length < enemyBefore, true);
   assert.equal(game.players[0].turnDisasterUsed, true);
   assert.equal(game.players[0].turnHype, 3);
   assert.equal(game.players[0].food, 3, "disaster alone should not cash the first hype reward");
   debug.render();
   assert.match(known.get("#liveReaction").innerHTML, /节目效果/);
-  assert.match(known.get("#liveReaction").innerHTML, /干旱/);
-  assert.match(known.get("#momentRack").innerHTML, /节目卡/);
+  assert.match(known.get("#liveReaction").innerHTML, new RegExp(game.players[0].turnDisaster["卡名"]));
+  assert.match(known.get("#momentRack").innerHTML, /环境牌/);
   assert.equal(known.get("#intelTabDisaster").classList.tokens.has("is-active"), true);
   assert.equal(known.get("#chaosPanel").classList.tokens.has("hidden"), false);
 }

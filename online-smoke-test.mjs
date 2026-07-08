@@ -475,4 +475,30 @@ await waitFor("guest receives post-action state", () => guest.debug.getGame().pl
 assert.equal(JSON.stringify(compactGame(host.debug)), JSON.stringify(compactGame(guest.debug)));
 assert.match(host.debug.getGame().log[0], /朋友|抽/);
 
+{
+  const hostGame = host.debug.getGame();
+  hostGame.players[1].food = 5;
+  hostGame.players[1].hand = ["猴子", "袋鼠", "马", "兔子", "松鼠", "鸭"].map((name) => {
+    const card = host.debug.makeInstance(host.debug.cardByName(name));
+    card.owner = 1;
+    return card;
+  });
+  const overflowCard = host.debug.makeInstance(host.debug.cardByName("孔雀鱼"));
+  overflowCard.owner = 1;
+  hostGame.players[1].deck = [overflowCard];
+
+  assert.equal(guest.debug.sendOnlineAction({ kind: "button", action: "drawPrivate" }), true);
+  await waitFor("host waits for guest discard", () => host.debug.getPendingDiscard()?.playerId === 1, 1000);
+  await waitFor("guest sees discard decision", () => guest.debug.getPendingDiscard()?.playerId === 1, 1000);
+  assert.equal(host.debug.getGame().players[1].hand.length, 7);
+  assert.equal(guest.debug.getGame().players[1].hand.length, 7);
+
+  const discardUid = guest.debug.getGame().players[1].hand.find((card) => card.name === "猴子").uid;
+  assert.equal(guest.debug.sendOnlineAction({ kind: "discard", uid: discardUid }), true);
+  await waitFor("host resolves guest discard", () => !host.debug.getPendingDiscard() && host.debug.getGame().players[1].hand.length === 6, 1000);
+  await waitFor("guest receives resolved discard", () => !guest.debug.getPendingDiscard() && guest.debug.getGame().players[1].hand.length === 6, 1000);
+  assert.equal(host.debug.getGame().players[1].hand.some((card) => card.name === "孔雀鱼"), true);
+  assert.equal(host.debug.getGame().players[1].grave.some((card) => card.name === "猴子"), true);
+}
+
 console.log("online smoke test passed");
