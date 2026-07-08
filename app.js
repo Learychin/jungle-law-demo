@@ -247,6 +247,9 @@ let playbookPeekScope = "";
 let endTurnConfirmScope = "";
 let damageFlashUids = new Set();
 const ONLINE_PROTOCOL = "jungle-law-peer-v1";
+const ONLINE_DATA_CONNECTION_OPTIONS = {
+  reliable: true,
+};
 let onlineSession = {
   role: "offline",
   localPlayerId: 0,
@@ -467,6 +470,13 @@ function onlinePeerOptions() {
   return {};
 }
 
+function onlineDataConnectionOptions() {
+  // PeerJS' JSON serializer does not chunk large payloads. The full game state is
+  // bigger than a single JSON data-channel message, so keep the default binary
+  // serializer and let PeerJS chunk state sync packets.
+  return { ...ONLINE_DATA_CONNECTION_OPTIONS };
+}
+
 function onlineInviteUrl(peerId) {
   const url = new URL(window.location.href);
   url.searchParams.set("room", peerId);
@@ -547,12 +557,19 @@ function onlineEnsurePeer() {
 
 function onlineSend(conn, message) {
   if (!conn?.open) return false;
-  conn.send({
-    protocol: ONLINE_PROTOCOL,
-    sentAt: Date.now(),
-    ...message,
-  });
-  return true;
+  try {
+    conn.send({
+      protocol: ONLINE_PROTOCOL,
+      sentAt: Date.now(),
+      ...message,
+    });
+    return true;
+  } catch (error) {
+    onlineSession.status = "error";
+    onlineSession.detail = `在线消息发送失败：${error?.message || error}`;
+    if (game) addLog(onlineSession.detail);
+    return false;
+  }
 }
 
 function onlineBroadcastState(reason = "state") {
@@ -691,7 +708,7 @@ function joinOnlineRoom(roomId) {
   const peer = new Peer(onlinePeerOptions());
   onlineSession.peer = peer;
   peer.on("open", () => {
-    const conn = peer.connect(roomId, { reliable: true, serialization: "json" });
+    const conn = peer.connect(roomId, onlineDataConnectionOptions());
     onlineBindConnection(conn);
   });
   peer.on("error", (error) => {
@@ -719,7 +736,7 @@ function onlineMaybeSendAction(request) {
     render();
     return true;
   }
-  onlineSend(onlineSession.conn, {
+  const sent = onlineSend(onlineSession.conn, {
     type: "action",
     request: {
       id: uid(),
@@ -728,7 +745,7 @@ function onlineMaybeSendAction(request) {
       ...onlineClone(request),
     },
   });
-  onlineSession.detail = "动作已发给房主，等牌桌同步。";
+  if (sent) onlineSession.detail = "动作已发给房主，等牌桌同步。";
   renderOnlineControls();
   return true;
 }
@@ -14221,6 +14238,21 @@ if (typeof window !== "undefined") {
     getAIPersonas() {
       return AI_PERSONAS.map((persona) => ({ id: persona.id, label: persona.label }));
     },
+    getOnlineDataConnectionOptions: onlineDataConnectionOptions,
+    getOnlineSession: () => ({
+      role: onlineSession.role,
+      localPlayerId: onlineSession.localPlayerId,
+      peerId: onlineSession.peerId,
+      inviteUrl: onlineSession.inviteUrl,
+      status: onlineSession.status,
+      detail: onlineSession.detail,
+      rev: onlineSession.rev,
+      hasOpenConnection: !!onlineSession.conn?.open,
+    }),
+    startOnlineHost,
+    joinOnlineRoom,
+    sendOnlineAction: onlineMaybeSendAction,
+    runActionButton,
     buildMatchRecord,
     buildPlaybookSuggestions,
     runHintQuickAction,

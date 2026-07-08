@@ -318,6 +318,11 @@ function countBySpace(cards) {
   assert.equal(context.window.JUNGLE_SPRITE_ATLAS.cards["狮子"].y, 0, "lion should use lion art row");
   assert.equal(context.window.JUNGLE_SPRITE_ATLAS.cards["猫头鹰"].x, 3, "owl should use owl art column");
   assert.equal(context.window.JUNGLE_SPRITE_ATLAS.cards["猫头鹰"].y, 4, "owl should use owl art row");
+  assert.equal(
+    debug.getOnlineDataConnectionOptions().serialization,
+    undefined,
+    "online mode should keep PeerJS default chunked serializer for full game-state sync",
+  );
   [
     "飞翔钱力",
     "泥烧鸽子",
