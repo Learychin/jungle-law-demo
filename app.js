@@ -296,9 +296,13 @@ const els = {
   p1Cue: document.querySelector("#p1Cue"),
   p2Cue: document.querySelector("#p2Cue"),
   player1Label: document.querySelector("#player1Label"),
+  selfZoneTitle: document.querySelector("#selfZoneTitle"),
+  selfZoneHint: document.querySelector("#selfZoneHint"),
   modeBtn: document.querySelector("#modeBtn"),
   aiPersonaBtn: document.querySelector("#aiPersonaBtn"),
   player2Label: document.querySelector("#player2Label"),
+  opponentZoneTitle: document.querySelector("#opponentZoneTitle"),
+  opponentZoneHint: document.querySelector("#opponentZoneHint"),
   turnMood: document.querySelector("#turnMood"),
   turnHint: document.querySelector("#turnHint"),
   turnHintTitle: document.querySelector("#turnHintTitle"),
@@ -406,6 +410,45 @@ function isOnlineHost() {
 
 function onlineLocalPlayerId() {
   return onlineSession.localPlayerId ?? 0;
+}
+
+function onlineOpponentPlayerId(playerId = onlineLocalPlayerId()) {
+  return playerId === 0 ? 1 : 0;
+}
+
+function tableViewPlayers() {
+  if (!game) return { self: null, opponent: null };
+  if (isOnlineMode()) {
+    const localId = onlineLocalPlayerId();
+    return {
+      self: game.players[localId] || game.players[0],
+      opponent: game.players[onlineOpponentPlayerId(localId)] || game.players[1],
+    };
+  }
+  return {
+    self: game.players[0],
+    opponent: game.players[1],
+  };
+}
+
+function onlineRoleLabel(player) {
+  if (!player) return "玩家";
+  return player.id === 0 ? "房主" : "朋友";
+}
+
+function tablePanelLabel(player, side) {
+  if (!player) return "玩家";
+  if (isOnlineMode()) {
+    const role = onlineRoleLabel(player);
+    return side === "self" ? `你 / ${role}` : role;
+  }
+  if (side === "self") return "你 / 玩家一";
+  return vsAI ? `AI 对手 · ${currentAIPersona().label}` : "玩家二";
+}
+
+function faceAttackActionLabel() {
+  if (isOnlineMode()) return "攻击对手";
+  return vsAI ? "攻击 AI" : "攻击玩家";
 }
 
 function onlineInputActorId() {
@@ -5340,7 +5383,7 @@ function fallbackRouteCueText(player = activePlayer()) {
   if (loc?.type === "board" && loc.player.id === player?.id) {
     if (!activeSkillReadyError(player, loc.card)) return `想整活就点下面那颗“发动 ${loc.card.skill}”`;
     if (!moveReadyError(player, loc)) return "想换线就点下面那颗“免费换线”";
-    if (canFaceAttackNow(player, loc.card, opponentPlayer())) return `想冲脸就点下面那颗“${vsAI ? "攻击 AI" : "攻击玩家"}”`;
+    if (canFaceAttackNow(player, loc.card, opponentPlayer())) return `想冲脸就点下面那颗“${faceAttackActionLabel()}”`;
     if (legalTargetsForCard(player, loc.card, opponentPlayer()).length) return "想开打就去点右边亮起来的目标";
   }
   return "";
@@ -6154,7 +6197,7 @@ function buildGuideFocusState(player, suggestion) {
         label: "有压血机会",
         title: suggestion.label,
         detail: suggestion.note || "这手更像直接冲玩家，先把血线压下去。",
-        chips: ["先点己方生物", vsAI ? "再点攻击 AI" : "再点攻击玩家", "有嘲讽要先清掉"],
+        chips: ["先点己方生物", `再点${faceAttackActionLabel()}`, "有嘲讽要先清掉"],
       };
     }
     if (suggestion.kind === "attack_creature" || suggestion.kind === "move_attack_creature") {
@@ -9189,9 +9232,9 @@ function handSummonStatus(player, card) {
   };
 }
 
-function renderBoard(container, player) {
+function renderBoard(container, player, side = "self") {
   container.innerHTML = "";
-  const rowOrder = player.id === 1 ? [...LANES].reverse() : LANES;
+  const rowOrder = side === "opponent" ? [...LANES].reverse() : LANES;
   const active = activePlayer();
   const focus = currentRouteFocus();
   const directSpotlight = currentDirectInteractionSpotlight(active, focus);
@@ -9467,37 +9510,46 @@ function handleSlotClick(player, lane, slotIndex) {
 }
 
 function renderPanels() {
-  const [p1, p2] = game.players;
+  const { self, opponent } = tableViewPlayers();
   const persona = currentAIPersona();
-  els.p1Panel.classList.toggle("active", game.active === 0);
-  els.p2Panel.classList.toggle("active", game.active === 1);
-  els.p1Panel.classList.toggle("reacting", pendingDefense?.defenderId === 0);
-  els.p2Panel.classList.toggle("reacting", pendingDefense?.defenderId === 1);
-  els.p1Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === 0);
-  els.p2Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === 1);
-  els.p1Status.textContent = `生命 ${p1.hp} · 食物 ${p1.food} · 技能 ${p1.turnSkills || 0}/1 · 移动 ${p1.turnMoves || 0}/1 · 献祭 ${p1.turnSacrifices}/1 · 复工 ${p1.turnRecovers}/1 · 护场 ${p1.turnProtects || 0}/1${roarActive(p1) ? " · 被虎啸" : ""}`;
-  els.p2Status.textContent = `生命 ${p2.hp} · 食物 ${p2.food} · 技能 ${p2.turnSkills || 0}/1 · 移动 ${p2.turnMoves || 0}/1 · 献祭 ${p2.turnSacrifices}/1 · 复工 ${p2.turnRecovers}/1 · 护场 ${p2.turnProtects || 0}/1${roarActive(p2) ? " · 被虎啸" : ""}`;
-  els.p1Deck.textContent = `私有 ${p1.deck.length}`;
-  els.p2Deck.textContent = `私有 ${p2.deck.length}`;
-  els.p1Hand.textContent = `手牌 ${p1.hand.length}`;
-  els.p2Hand.textContent = `手牌 ${p2.hand.length}`;
-  els.p1Grave.textContent = `阵亡 ${p1.grave.length}`;
-  els.p2Grave.textContent = `阵亡 ${p2.grave.length}`;
-  if (els.p1Hype) els.p1Hype.textContent = `热度 ${currentTurnHype(p1)}/${HYPE_THRESHOLDS[1]}`;
-  if (els.p2Hype) els.p2Hype.textContent = `热度 ${currentTurnHype(p2)}/${HYPE_THRESHOLDS[1]}`;
-  renderCuePill(els.p1Cue, p1);
-  renderCuePill(els.p2Cue, p2);
+  const statusText = (player) => `生命 ${player.hp} · 食物 ${player.food} · 技能 ${player.turnSkills || 0}/1 · 移动 ${player.turnMoves || 0}/1 · 献祭 ${player.turnSacrifices}/1 · 复工 ${player.turnRecovers}/1 · 护场 ${player.turnProtects || 0}/1${roarActive(player) ? " · 被虎啸" : ""}`;
+  els.p1Panel.classList.toggle("active", game.active === self.id);
+  els.p2Panel.classList.toggle("active", game.active === opponent.id);
+  els.p1Panel.classList.toggle("reacting", pendingDefense?.defenderId === self.id);
+  els.p2Panel.classList.toggle("reacting", pendingDefense?.defenderId === opponent.id);
+  els.p1Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === self.id);
+  els.p2Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === opponent.id);
+  els.p1Status.textContent = statusText(self);
+  els.p2Status.textContent = statusText(opponent);
+  els.p1Deck.textContent = `私有 ${self.deck.length}`;
+  els.p2Deck.textContent = `私有 ${opponent.deck.length}`;
+  els.p1Hand.textContent = `手牌 ${self.hand.length}`;
+  els.p2Hand.textContent = `手牌 ${opponent.hand.length}`;
+  els.p1Grave.textContent = `阵亡 ${self.grave.length}`;
+  els.p2Grave.textContent = `阵亡 ${opponent.grave.length}`;
+  if (els.p1Hype) els.p1Hype.textContent = `热度 ${currentTurnHype(self)}/${HYPE_THRESHOLDS[1]}`;
+  if (els.p2Hype) els.p2Hype.textContent = `热度 ${currentTurnHype(opponent)}/${HYPE_THRESHOLDS[1]}`;
+  renderCuePill(els.p1Cue, self);
+  renderCuePill(els.p2Cue, opponent);
   els.turnLabel.textContent = `第 ${game.turn} 回合 · ${activePlayer().name}`;
   els.publicCounts.textContent = `A ${game.publicPiles.A.length} · B ${game.publicPiles.B.length} · C ${game.publicPiles.C.length}`;
   renderPublicPilePreviews();
   if (els.player1Label) {
-    els.player1Label.textContent = isOnlineMode()
-      ? (onlineLocalPlayerId() === 0 ? "你 / 房主" : "房主")
-      : "你 / 玩家一";
+    els.player1Label.textContent = tablePanelLabel(self, "self");
   }
-  els.player2Label.textContent = isOnlineMode()
-    ? (onlineLocalPlayerId() === 1 ? "你 / 朋友" : "朋友")
-    : (vsAI ? `AI 对手 · ${persona.label}` : "玩家二");
+  els.player2Label.textContent = tablePanelLabel(opponent, "opponent");
+  if (els.selfZoneTitle) els.selfZoneTitle.textContent = isOnlineMode() ? `你的场地 · ${onlineRoleLabel(self)}` : "你的场地";
+  if (els.selfZoneHint) els.selfZoneHint.textContent = "选手牌后点空格上场";
+  if (els.opponentZoneTitle) {
+    els.opponentZoneTitle.textContent = isOnlineMode()
+      ? `对方场地 · ${onlineRoleLabel(opponent)}`
+      : (vsAI ? "AI 场地" : "对手场地");
+  }
+  if (els.opponentZoneHint) {
+    els.opponentZoneHint.textContent = isOnlineMode()
+      ? "选己方生物后点对方生物攻击"
+      : (vsAI ? "选己方生物后点 AI 生物攻击" : "选己方生物后点对方生物攻击");
+  }
   els.modeBtn.textContent = isOnlineMode() ? "模式：双人在线" : (vsAI ? "模式：对战 AI" : "模式：双人热座");
   if (els.aiPersonaBtn) {
     els.aiPersonaBtn.textContent = isOnlineMode() ? "AI 脾气：在线关闭" : (vsAI ? `AI 脾气：${persona.label}` : "AI 脾气：双人模式");
@@ -9778,10 +9830,10 @@ function renderTurnHint() {
 
 function renderHandPeek() {
   if (!els.handPeek || !game) return;
-  const player = game.players[0];
+  const player = isOnlineMode() ? game.players[onlineLocalPlayerId()] : game.players[0];
   const selectedHand = currentSelectedHand(player);
   const cards = player.hand.slice(0, 3);
-  const extra = game.players[0].hand.length - cards.length;
+  const extra = player.hand.length - cards.length;
   if (!cards.length) {
     els.handPeek.classList.add("hidden");
     els.handPeek.innerHTML = "";
@@ -9805,7 +9857,7 @@ function renderHandPeek() {
     })
     .join("");
   els.handPeek.innerHTML = `
-    <span class="hand-peek-label">手牌快照 · ${game.players[0].hand.length} 张</span>
+    <span class="hand-peek-label">手牌快照 · ${player.hand.length} 张</span>
     <div class="hand-peek-list">
       ${items}
       ${extra > 0 ? `<span class="hand-peek-chip more">+${extra} 张</span>` : ""}
@@ -10307,7 +10359,7 @@ function manualPlanFromSuggestion(suggestion) {
       compact: true,
       steps: [
         hintStep(`先点你的《${actor}》`, "确认是这只出手。", "current"),
-        hintStep(`再点“${vsAI ? "攻击 AI" : "攻击玩家"}”`, "如果对面有能格挡的动物，会先进入防守选择。"),
+        hintStep(`再点“${faceAttackActionLabel()}”`, "如果对面有能格挡的动物，会先进入防守选择。"),
       ],
       aside: "要是弹出防守提示，不用慌，按中间说明决定挡不挡就行。",
     };
@@ -10333,7 +10385,7 @@ function manualPlanFromSuggestion(suggestion) {
         hintStep(`先点你的《${actor}》`, "它必须先被选中。", "current"),
         hintStep("再点“免费换线”", "然后把它挪到亮起来的新位置。"),
         hintStep(
-          suggestion.kind === "move_attack_face" ? `最后点“${vsAI ? "攻击 AI" : "攻击玩家"}”` : `最后再点《${target}》`,
+          suggestion.kind === "move_attack_face" ? `最后点“${faceAttackActionLabel()}”` : `最后再点《${target}》`,
           suggestion.kind === "move_attack_face" ? "这步通常是换线后直接冲脸。" : "这步是换线后立刻咬目标。",
         ),
       ],
@@ -10568,7 +10620,7 @@ function renderHint() {
             legalTargets.length
               ? "直接去点右边亮起来的目标，卡面会写收掉 / 压休 / 毒翻。"
               : faceReady
-                ? `点“${vsAI ? "攻击 AI" : "攻击玩家"}”，这拍就能直接上脸。`
+                ? `点“${faceAttackActionLabel()}”，这拍就能直接上脸。`
                 : "也可以先补牌、换线或把资源留给下一轮。",
           ),
         ],
@@ -10585,7 +10637,7 @@ function renderHint() {
       actions: buildSelectedBoardHintActions(activePlayer(), loc),
       steps: [
         hintStep(
-          legalTargets.length ? "想打就直接点目标" : `想冲脸就点“${vsAI ? "攻击 AI" : "攻击玩家"}”`,
+          legalTargets.length ? "想打就直接点目标" : `想冲脸就点“${faceAttackActionLabel()}”`,
           legalTargets.length
             ? "右边卡面会直接写收掉 / 压休 / 毒翻，不用自己算半天。"
             : "如果对面有格挡动物或嘲讽，系统会先把你拦下来。",
@@ -10794,7 +10846,7 @@ function buildSelectedRouteStatusStep(player, suggestion) {
   if (suggestion.kind === "attack_face") {
     return {
       title: `《${loc.card.name}》已经锁定`,
-      detail: `直接点“${vsAI ? "攻击 AI" : "攻击玩家"}”就能压血线。`,
+      detail: `直接点“${faceAttackActionLabel()}”就能压血线。`,
       tone: "current",
     };
   }
@@ -13625,7 +13677,7 @@ function renderActionButtons() {
     const action = button.dataset.action;
     const buttonBand = actionBandKey(action);
     let disabled = locked;
-    let label = button.textContent;
+    let label = action === "attackPlayer" ? faceAttackActionLabel() : button.textContent;
     let title = "";
     let detail = null;
     const reactionChoice = reactionMode && ["confirmGuard", "letThrough"].includes(action);
@@ -13761,7 +13813,7 @@ function renderActionButtons() {
         const tax = selectedBoard ? faceAttackTax(enemy) : 0;
         const faceError = selectedBoard ? faceAttackReadyError(player, selectedBoard.card, enemy) : "";
         disabled = !selectedBoard || faceError !== "" || availableTaunts(enemy, selectedBoard.card).length > 0;
-        label = `${vsAI ? "攻击 AI" : "攻击玩家"}${selectedBoard ? ` -${attackCost}` : ""}`;
+        label = `${faceAttackActionLabel()}${selectedBoard ? ` -${attackCost}` : ""}`;
         title = !selectedBoard
           ? "先选一只己方生物。"
           : disabled
@@ -14326,8 +14378,9 @@ function render() {
   renderActionDock();
   renderActionBandCues();
   renderActionButtons();
-  renderBoard(els.p2Board, game.players[1]);
-  renderBoard(els.p1Board, game.players[0]);
+  const { self, opponent } = tableViewPlayers();
+  renderBoard(els.p2Board, opponent, "opponent");
+  renderBoard(els.p1Board, self, "self");
   renderHand();
   renderHint();
   renderLog();

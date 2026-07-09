@@ -179,6 +179,10 @@ const selectors = [
   "#p2Hype",
   "#p1Cue",
   "#p2Cue",
+  "#selfZoneTitle",
+  "#selfZoneHint",
+  "#opponentZoneTitle",
+  "#opponentZoneHint",
   "#endTurnBtn",
   "#newGameBtn",
   "#clearLogBtn",
@@ -433,6 +437,27 @@ function compactGame(debug) {
   };
 }
 
+function actionButton(app, action) {
+  return app.actionButtons.find((button) => button.dataset.action === action);
+}
+
+function boardText(app, selector) {
+  const board = app.known.get(selector);
+  return (board?.children || [])
+    .flatMap((row) => row.children || [])
+    .map((child) => child.innerHTML || child.textContent || "")
+    .join(" ");
+}
+
+function putBoardCard(debug, playerId, lane, slotIndex, name) {
+  const game = debug.getGame();
+  const card = debug.makeInstance(debug.cardByName(name));
+  card.owner = playerId;
+  card.lane = lane;
+  game.players[playerId].board[lane][slotIndex] = card;
+  return card;
+}
+
 const registry = { nextId: 1, peers: new Map() };
 const Peer = makeFakePeerClass(registry);
 const host = makeAppContext({ url: "https://example.test/jungle-law-demo/", Peer });
@@ -455,6 +480,18 @@ assert.equal(guest.debug.getOnlineSession().status, "connected");
 assert.equal(guest.debug.getGame().players[0].name, "房主");
 assert.equal(guest.debug.getGame().players[1].name, "朋友");
 assert.equal(JSON.stringify(compactGame(host.debug)), JSON.stringify(compactGame(guest.debug)));
+assert.equal(host.known.get("#player1Label").textContent, "你 / 房主");
+assert.equal(host.known.get("#player2Label").textContent, "朋友");
+assert.equal(host.known.get("#selfZoneTitle").textContent, "你的场地 · 房主");
+assert.equal(host.known.get("#opponentZoneTitle").textContent, "对方场地 · 朋友");
+assert.equal(host.known.get("#handTitle").textContent, "你的手牌 · 房主");
+assert.equal(actionButton(host, "attackPlayer").textContent, "攻击对手");
+assert.equal(guest.known.get("#player1Label").textContent, "你 / 朋友");
+assert.equal(guest.known.get("#player2Label").textContent, "房主");
+assert.equal(guest.known.get("#selfZoneTitle").textContent, "你的场地 · 朋友");
+assert.equal(guest.known.get("#opponentZoneTitle").textContent, "对方场地 · 房主");
+assert.equal(guest.known.get("#handTitle").textContent, "你的手牌 · 朋友");
+assert.equal(actionButton(guest, "attackPlayer").textContent, "攻击对手");
 
 const statePacketBytes = Buffer.byteLength(JSON.stringify({
   protocol: "jungle-law-peer-v1",
@@ -462,6 +499,16 @@ const statePacketBytes = Buffer.byteLength(JSON.stringify({
   game: host.debug.getGame(),
 }), "utf8");
 assert.ok(statePacketBytes > 16300, "full game-state sync should be large enough to require chunking");
+
+for (const app of [host, guest]) {
+  putBoardCard(app.debug, 0, "sky", 0, "鹰");
+  putBoardCard(app.debug, 1, "water", 0, "鲸鱼");
+  app.debug.render();
+}
+assert.match(boardText(host, "#p1Board"), /鹰/);
+assert.match(boardText(host, "#p2Board"), /鲸鱼/);
+assert.match(boardText(guest, "#p1Board"), /鲸鱼/);
+assert.match(boardText(guest, "#p2Board"), /鹰/);
 
 host.debug.handleEndTurnClick();
 host.debug.handleEndTurnClick();

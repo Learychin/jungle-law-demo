@@ -66,8 +66,8 @@
 
           <section class="player-zone self">
             <div class="zone-head">
-              <h2>你的场地</h2>
-              <span>选手牌后点空格上场</span>
+              <h2 id="selfZoneTitle">你的场地</h2>
+              <span id="selfZoneHint">选手牌后点空格上场</span>
             </div>
             <div id="p1Board" class="board compact-board"></div>
           </section>
@@ -222,7 +222,7 @@
                 <div id="pressureCue" class="action-cue"></div>
                 <div id="pressureLock" class="action-band-lock hidden"></div>
                 <div class="button-grid">
-                  <button data-action="attackPlayer">攻击 AI</button>
+                  <button data-action="attackPlayer">攻击对手</button>
                   <button data-action="attackCreature">攻击动物</button>
                 </div>
               </section>
@@ -310,8 +310,8 @@
 
           <section class="player-zone opponent">
             <div class="zone-head">
-              <h2>AI 场地</h2>
-              <span>选己方生物后点 AI 生物攻击</span>
+              <h2 id="opponentZoneTitle">AI 场地</h2>
+              <span id="opponentZoneHint">选己方生物后点 AI 生物攻击</span>
             </div>
             <div id="p2Board" class="board compact-board"></div>
           </section>
