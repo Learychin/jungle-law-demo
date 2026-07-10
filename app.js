@@ -285,6 +285,7 @@ const els = {
   p1Status: document.querySelector("#p1Status"),
   p2Status: document.querySelector("#p2Status"),
   handPeek: document.querySelector("#handPeek"),
+  opponentHandFan: document.querySelector("#opponentHandFan"),
   p1Deck: document.querySelector("#p1Deck"),
   p2Deck: document.querySelector("#p2Deck"),
   p1Hand: document.querySelector("#p1Hand"),
@@ -9561,6 +9562,23 @@ function renderPanels() {
   document.querySelector("#endTurnBtn").disabled = game.winner !== null || aiThinking || !!pendingDiscard || (vsAI && game.active === 1);
 }
 
+function renderOpponentHandFan() {
+  if (!els.opponentHandFan || !game) return;
+  const { opponent } = tableViewPlayers();
+  const count = opponent?.hand?.length || 0;
+  const shown = Math.min(count, 8);
+  els.opponentHandFan.classList.toggle("is-empty", count === 0);
+  els.opponentHandFan.innerHTML = `
+    <span class="opponent-hand-label">对方手牌</span>
+    <div class="opponent-hand-cards" style="--hand-count:${shown || 1}">
+      ${Array.from({ length: shown }, (_, index) => `
+        <span class="card-back" style="--i:${index};--tilt:${shown <= 1 ? 0 : (index - ((shown - 1) / 2)) * 2.4}deg"></span>
+      `).join("")}
+      ${count > shown ? `<span class="card-back-more">+${count - shown}</span>` : ""}
+    </div>
+  `;
+}
+
 function publicDrawCost(level) {
   return level === "A" ? 3 : 2;
 }
@@ -14361,6 +14379,7 @@ function render() {
   renderHandPeek();
   renderRouteStrip();
   renderAnnouncer();
+  renderOpponentHandFan();
   renderActionStinger();
   renderLiveReaction();
   renderMomentumStrip();
