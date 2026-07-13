@@ -1616,7 +1616,7 @@ function boardButtons(selector) {
 
   assert.match(
     known.get("#turnHintChips").innerHTML,
-    /class="is-warning"[^>]*>对手冲脸&lt;=\d+/,
+    /class="is-warning"[^>]*>打脸风险：最多 \d+ 血/,
     "turn hint should preview opponent face-threat ceiling",
   );
 

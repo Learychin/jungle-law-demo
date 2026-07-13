@@ -9235,7 +9235,11 @@ function handSummonStatus(player, card) {
 
 function renderBoard(container, player, side = "self") {
   container.innerHTML = "";
-  const rowOrder = side === "opponent" ? [...LANES].reverse() : LANES;
+  // Keep both boards in the same visual orientation so players can compare lanes at a glance.
+  const rowOrder = LANES;
+  const boardLabel = side === "self"
+    ? "你的场地"
+    : (vsAI ? "AI 场地" : (isOnlineMode() ? "对方场地" : "玩家二场地"));
   const active = activePlayer();
   const focus = currentRouteFocus();
   const directSpotlight = currentDirectInteractionSpotlight(active, focus);
@@ -9296,7 +9300,16 @@ function renderBoard(container, player, side = "self") {
       button.classList.toggle("is-direct-cta-spotlight", isDirectSpotlight);
       button.classList.toggle("is-direct-cta-muted", isDirectMuted);
       const targetPreview = card ? attackPreviewMap?.get(card.uid) : null;
-      button.innerHTML = `<span class="slot-label">${index + 1}</span><span class="slot-card">${cardMarkup(card)}</span>${targetPreview ? attackTargetPreviewMarkup(targetPreview) : ""}`;
+      const boardCardMarkup = card
+        ? `<div class="slot-card slot-card-face">${cardMarkup(card, true)}</div>`
+        : `<span class="slot-card"></span>`;
+      button.innerHTML = `<span class="slot-label">${index + 1}</span>${boardCardMarkup}${targetPreview ? attackTargetPreviewMarkup(targetPreview) : ""}`;
+      const cardLabel = card
+        ? `${card.name}，攻击 ${Number(card.atk) || 0}，防御 ${Number(card.def) || 0}`
+        : "空位";
+      if (typeof button.setAttribute === "function") {
+        button.setAttribute("aria-label", `${boardLabel}，${lane.label}，第 ${index + 1} 格，${cardLabel}`);
+      }
       const routeMarkerState = card
         ? (focus.targetMarkers.get(card.uid) || focus.boardMarkers.get(card.uid) || null)
         : (focus.slotMarkers.get(slotMarkerKey) || null);
@@ -9352,6 +9365,12 @@ function renderHand() {
       <span class="hand-summon-chip tone-${escapeHtml(discardMode ? "discard" : summonStatus.tone)}">${escapeHtml(discardMode ? "弃这张" : summonStatus.label)}</span>
       <span class="state">${discardMode ? "满手弃牌" : `上场费 ${summonCost(card)}${skillText}`}</span>
     `;
+    if (typeof button.setAttribute === "function") {
+      button.setAttribute(
+        "aria-label",
+        `${card.name}，攻击 ${Number(card.atk) || 0}，防御 ${Number(card.def) || 0}，${discardMode ? "选择弃掉这张牌" : summonStatus.label}`,
+      );
+    }
     button.title = [
       `${card.name}｜攻 ${Number(card.atk) || 0} / 防 ${Number(card.def) || 0}｜上场费 ${summonCost(card)}`,
       discardMode ? "手牌超过上限。点这张会把它弃掉，然后继续本回合。" : summonStatus.title,
@@ -9513,23 +9532,43 @@ function handleSlotClick(player, lane, slotIndex) {
 function renderPanels() {
   const { self, opponent } = tableViewPlayers();
   const persona = currentAIPersona();
-  const statusText = (player) => `生命 ${player.hp} · 食物 ${player.food} · 技能 ${player.turnSkills || 0}/1 · 移动 ${player.turnMoves || 0}/1 · 献祭 ${player.turnSacrifices}/1 · 复工 ${player.turnRecovers}/1 · 护场 ${player.turnProtects || 0}/1${roarActive(player) ? " · 被虎啸" : ""}`;
+  const statusText = (player) => `❤️ ${player.hp} · 🍖 ${player.food} · ✨ ${player.turnSkills || 0}/1 · ↔️ ${player.turnMoves || 0}/1 · 🍽️ ${player.turnSacrifices}/1 · 🔄 ${player.turnRecovers}/1 · 🛡️ ${player.turnProtects || 0}/1${roarActive(player) ? " · 🐯 被虎啸" : ""}`;
+  const statusMarkup = (player) => `
+    <span class="status-primary">
+      <span class="status-stat status-hp">❤️ <b>${player.hp}</b></span>
+      <span class="status-stat status-food">🍖 <b>${player.food}</b></span>
+    </span>
+    <span class="status-secondary">✨ ${player.turnSkills || 0}/1 · ↔️ ${player.turnMoves || 0}/1 · 🍽️ ${player.turnSacrifices}/1 · 🔄 ${player.turnRecovers}/1 · 🛡️ ${player.turnProtects || 0}/1${roarActive(player) ? " · 🐯 被虎啸" : ""}</span>
+  `;
   els.p1Panel.classList.toggle("active", game.active === self.id);
   els.p2Panel.classList.toggle("active", game.active === opponent.id);
   els.p1Panel.classList.toggle("reacting", pendingDefense?.defenderId === self.id);
   els.p2Panel.classList.toggle("reacting", pendingDefense?.defenderId === opponent.id);
   els.p1Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === self.id);
   els.p2Panel.classList.toggle("combat-damaged", combatFlash?.targetPlayerId === opponent.id);
-  els.p1Status.textContent = statusText(self);
-  els.p2Status.textContent = statusText(opponent);
-  els.p1Deck.textContent = `私有 ${self.deck.length}`;
-  els.p2Deck.textContent = `私有 ${opponent.deck.length}`;
-  els.p1Hand.textContent = `手牌 ${self.hand.length}`;
-  els.p2Hand.textContent = `手牌 ${opponent.hand.length}`;
-  els.p1Grave.textContent = `阵亡 ${self.grave.length}`;
-  els.p2Grave.textContent = `阵亡 ${opponent.grave.length}`;
-  if (els.p1Hype) els.p1Hype.textContent = `热度 ${currentTurnHype(self)}/${HYPE_THRESHOLDS[1]}`;
-  if (els.p2Hype) els.p2Hype.textContent = `热度 ${currentTurnHype(opponent)}/${HYPE_THRESHOLDS[1]}`;
+  [
+    [els.p1Panel, els.p1Status, self],
+    [els.p2Panel, els.p2Status, opponent],
+  ].forEach(([panel, status, player]) => {
+    const isTurn = game.active === player.id;
+    panel.classList.toggle("is-turn", isTurn);
+    panel.classList.toggle("is-waiting", !isTurn);
+    panel.dataset.turnState = isTurn
+      ? (panel === els.p1Panel ? "你的回合" : (vsAI ? "AI 回合" : "对方回合"))
+      : "等待中";
+    if (status) {
+      status.innerHTML = statusMarkup(player);
+      if (typeof status.setAttribute === "function") status.setAttribute("aria-label", statusText(player));
+    }
+  });
+  els.p1Deck.textContent = `🎴 ${self.deck.length}`;
+  els.p2Deck.textContent = `🎴 ${opponent.deck.length}`;
+  els.p1Hand.textContent = `🖐️ ${self.hand.length}`;
+  els.p2Hand.textContent = `🖐️ ${opponent.hand.length}`;
+  els.p1Grave.textContent = `☠️ ${self.grave.length}`;
+  els.p2Grave.textContent = `☠️ ${opponent.grave.length}`;
+  if (els.p1Hype) els.p1Hype.textContent = `🔥 ${currentTurnHype(self)}/${HYPE_THRESHOLDS[1]}`;
+  if (els.p2Hype) els.p2Hype.textContent = `🔥 ${currentTurnHype(opponent)}/${HYPE_THRESHOLDS[1]}`;
   renderCuePill(els.p1Cue, self);
   renderCuePill(els.p2Cue, opponent);
   els.turnLabel.textContent = `第 ${game.turn} 回合 · ${activePlayer().name}`;
@@ -9569,7 +9608,7 @@ function renderOpponentHandFan() {
   const shown = Math.min(count, 8);
   els.opponentHandFan.classList.toggle("is-empty", count === 0);
   els.opponentHandFan.innerHTML = `
-    <span class="opponent-hand-label">对方手牌</span>
+    <span class="opponent-hand-label">对方手牌 <b>${count}</b></span>
     <div class="opponent-hand-cards" style="--hand-count:${shown || 1}">
       ${Array.from({ length: shown }, (_, index) => `
         <span class="card-back" style="--i:${index};--tilt:${shown <= 1 ? 0 : (index - ((shown - 1) / 2)) * 2.4}deg"></span>
@@ -9585,6 +9624,23 @@ function publicDrawCost(level) {
 
 function publicTopCard(level) {
   return game?.publicPiles?.[level]?.[0] || null;
+}
+
+function drawButtonPreviewMarkup({ label, cost, card = null, count = 0, level = "", privateDeck = false }) {
+  const safeLevel = escapeHtml(level || "");
+  const safeLabel = escapeHtml(label || "");
+  const countLabel = privateDeck ? `私有牌堆 ${count} 张` : `${safeLevel} 池剩余 ${count} 张`;
+  const preview = card
+    ? `<span class="card draw-preview-card">${cardMarkup(card, true)}</span>`
+    : `<span class="draw-preview-card draw-preview-empty">${privateDeck ? "暗牌" : "已空"}</span>`;
+  return `
+    <span class="draw-button-head">
+      <strong>${safeLabel}</strong>
+      <em>-${Number(cost) || 0} 食物</em>
+    </span>
+    ${preview}
+    <span class="draw-button-foot">${escapeHtml(countLabel)}</span>
+  `;
 }
 
 function renderPublicPilePreviews() {
@@ -9652,8 +9708,8 @@ function opponentFaceThreatSummary(player = activePlayer()) {
     damage,
     attackers,
     lethal: damage >= player.hp,
-    label: `对手冲脸<=${damage}`,
-    detail: `${attackers} 只动物下回合可能直接打玩家`,
+    label: `打脸风险：最多 ${damage} 血`,
+    detail: `${attackers} 只动物下回合可能直接攻击玩家`,
   };
 }
 
@@ -9839,7 +9895,7 @@ function renderTurnHint() {
     .map((chip) => {
       let chipClass = "";
       if (String(chip).startsWith("亮起：")) chipClass = "is-suggested";
-      if (String(chip).startsWith("对手冲脸")) chipClass = "is-warning";
+      if (String(chip).startsWith("打脸风险")) chipClass = "is-warning";
       if (String(chip) === "斩杀风险") chipClass = "is-danger";
       return `<span${chipClass ? ` class="${chipClass}"` : ""}>${escapeHtml(chip)}</span>`;
     })
@@ -13688,6 +13744,17 @@ function renderActionButtons() {
   const moveMode = selected?.type === "board" && selected?.uid === selectedBoard?.card?.uid && selected?.mode === "move";
   const onlineLocked = isOnlineMode() && !onlineCanControlCurrentDecision();
   const locked = !reactionMode && (game.winner !== null || aiThinking || !!pendingDiscard || (vsAI && game.active === 1) || onlineLocked);
+  const lockedReason = onlineLocked
+    ? onlineWaitingDetail()
+    : pendingDiscard
+      ? "先从手牌里选 1 张弃掉。"
+      : aiThinking
+        ? "AI 正在行动。"
+        : (vsAI && game.active === 1)
+          ? "AI 回合中，先观战。"
+          : game.winner !== null
+            ? "本局已经结束。"
+            : "当前暂不可用。";
   const focus = currentRouteFocus();
   const actionSpotlight = currentActionButtonSpotlight(player, focus);
 
@@ -13698,6 +13765,7 @@ function renderActionButtons() {
     let label = action === "attackPlayer" ? faceAttackActionLabel() : button.textContent;
     let title = "";
     let detail = null;
+    let buttonMarkup = "";
     const reactionChoice = reactionMode && ["confirmGuard", "letThrough"].includes(action);
     if (reactionMode) {
       if (action === "confirmGuard" && pendingDefense?.kind === "face") {
@@ -13738,6 +13806,12 @@ function renderActionButtons() {
       if (action === "drawPrivate") {
         disabled = player.food < 1 || player.deck.length === 0;
         label = "抽自己牌 -1";
+        buttonMarkup = drawButtonPreviewMarkup({
+          label: "抽自己牌",
+          cost: 1,
+          count: player.deck.length,
+          privateDeck: true,
+        });
         title = disabled
           ? (player.deck.length === 0 ? "私有卡组已经空了。" : "需要至少 1 食物。")
           : player.hand.length >= 6
@@ -13750,6 +13824,13 @@ function renderActionButtons() {
         const topCard = publicTopCard("A");
         disabled = player.food < 3 || game.publicPiles.A.length === 0;
         label = `抽A：${topCard?.name || "已空"} -3`;
+        buttonMarkup = drawButtonPreviewMarkup({
+          label: "抽 A 池",
+          cost: 3,
+          card: topCard,
+          count: game.publicPiles.A.length,
+          level: "A",
+        });
         title = disabled
           ? (game.publicPiles.A.length === 0 ? "A 类公共牌抽空了。" : "需要 3 食物。")
           : player.hand.length >= 6
@@ -13762,6 +13843,13 @@ function renderActionButtons() {
         const topCard = publicTopCard("B");
         disabled = player.food < 2 || game.publicPiles.B.length === 0;
         label = `抽B：${topCard?.name || "已空"} -2`;
+        buttonMarkup = drawButtonPreviewMarkup({
+          label: "抽 B 池",
+          cost: 2,
+          card: topCard,
+          count: game.publicPiles.B.length,
+          level: "B",
+        });
         title = disabled
           ? (game.publicPiles.B.length === 0 ? "B 类公共牌抽空了。" : "需要 2 食物。")
           : player.hand.length >= 6
@@ -13774,6 +13862,13 @@ function renderActionButtons() {
         const topCard = publicTopCard("C");
         disabled = player.food < 2 || game.publicPiles.C.length === 0;
         label = `抽C：${topCard?.name || "已空"} -2`;
+        buttonMarkup = drawButtonPreviewMarkup({
+          label: "抽 C 池",
+          cost: 2,
+          card: topCard,
+          count: game.publicPiles.C.length,
+          level: "C",
+        });
         title = disabled
           ? (game.publicPiles.C.length === 0 ? "C 类公共牌抽空了。" : "需要 2 食物。")
           : player.hand.length >= 6
@@ -13876,8 +13971,18 @@ function renderActionButtons() {
         moveMode,
       });
     }
+    if (locked && !reactionMode) title = lockedReason;
     button.disabled = disabled;
-    button.textContent = label;
+    button.classList.toggle("draw-preview-button", !!buttonMarkup);
+    if (buttonMarkup) {
+      button.textContent = label;
+      button.innerHTML = buttonMarkup;
+    } else {
+      button.textContent = label;
+    }
+    if (typeof button.setAttribute === "function") {
+      button.setAttribute("aria-label", title ? `${label}。${title}` : label);
+    }
     button.title = title;
     const blockedDetail = disabled && !reactionMode ? disabledActionDetail(title) : null;
     applyActionButtonDetail(button, blockedDetail || detail);
@@ -13902,6 +14007,21 @@ function renderActionButtons() {
       && actionSpotlight.band === buttonBand,
     );
     applyRouteMarker(button, focus.actionMarkers.get(action) || null);
+  });
+
+  const actionBands = [
+    ["resource", els.actionResourceBand],
+    ["tactics", els.actionTacticsBand],
+    ["pressure", els.actionPressureBand],
+    ["defense", els.actionDefenseBand],
+  ];
+  actionBands.forEach(([bandKey, band]) => {
+    if (!band) return;
+    const enabled = [...band.querySelectorAll("[data-action]")].some((button) => !button.disabled);
+    band.classList.toggle("has-enabled-action", enabled);
+    band.classList.toggle("is-waiting", !enabled);
+    band.dataset.actionState = enabled ? "ready" : "waiting";
+    band.dataset.bandKey = bandKey;
   });
 
   const endTurnBtn = document.querySelector("#endTurnBtn");
